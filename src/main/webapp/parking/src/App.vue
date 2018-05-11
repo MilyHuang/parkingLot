@@ -13,7 +13,7 @@ export default {
 <style>
 #app {
   width: 100%;
-  height: 100%; 
+  height: 100%;
 }
 
 body,
@@ -41,6 +41,7 @@ ul li {
 .parking-top {
   width: 100%;
   height: 10%;
+  line-height: 90px;
   background-color: #98d0f2;
 }
 
@@ -61,11 +62,22 @@ ul li {
   line-height: 60px;
   border-bottom: 1px solid #fff;
 }
-.parking-con{
-    float: left;
-    width: calc(100% -200);
-    height:90%; 
-    padding: 70px;
+
+
+/* .parking-nav a:link{
+  color: #98d0f2;
+} */
+
+.parking-con {
+  float: left;
+  width: calc(100% -200);
+  height: 82%;
+  padding-left: 50px;
+  padding-top: 50px;
+}
+
+.router-link-active {
+  color: #98d0f2;
 }
 
 </style>
