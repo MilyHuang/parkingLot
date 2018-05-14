@@ -13,7 +13,21 @@
 </template>
 
 <script>
-	
+	export default {
+  data() {
+    return {
+      isShow: false
+    }
+  },
+  methods: {
+    showToggle: function() {
+      this.isShow = !this.isShow
+    },
+    LoginOut: function() {
+      this.$router.push({ path: '/' });
+    }
+  }
+}
 </script>
 
 <style scoped>
