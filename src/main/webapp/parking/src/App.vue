@@ -28,6 +28,10 @@ ul li {
   list-style: none;
 }
 
+.clearfix{
+  overflow: hidden;
+}
+
 .parking-box {
   width: 100%;
   height: 100%;
@@ -37,18 +41,21 @@ ul li {
   font-family: '微软雅黑';
   color: #777;
 }
-
+/* top改成定值 */
 .parking-top {
   width: 100%;
-  height: 10%;
-  line-height: 90px;
+  min-width: 400px;
+  /*height: 10%;*/
+  /*line-height: 90px;*/
   background-color: #98d0f2;
 }
-
+/* 导航内容等高 */
 .parking-nav {
   float: left;
+  margin-bottom: -2500px;
+  padding-bottom: 2500px; 
   width: 200px;
-  height: 90%;
+  min-height: 900px;
   background-color: #ededed;
 }
 
@@ -69,9 +76,9 @@ ul li {
 } */
 
 .parking-con {
-  float: left;
+  margin-left: 201px;
   width: calc(100% -200);
-  height: 82%;
+  height: 90%;
   padding-left: 50px;
   padding-top: 50px;
 }
