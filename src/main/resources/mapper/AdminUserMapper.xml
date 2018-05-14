@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.parkinglot.admin.dao.AdminUserDao" >
+ 	 <resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.AdminEntity" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="username" property="username" jdbcType="VARCHAR" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	   	<result column="role" property="role" jdbcType="INTEGER" />
+ 	 </resultMap>
+  
+  <!-- 添加用户信息 -->
+	<insert id="insertAdminUser" parameterType="com.parkinglot.admin.entity.AdminEntity">
+		INSERT INTO admin (username,password,role)
+		VALUES (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+		#{role,jdbcType=INTEGER})
+	
+	</insert>
+	
+	<!-- 登录 -->
+	<select id="selectUserByLogin" resultMap="BaseResultMap" parameterType="com.parkinglot.admin.entity.AdminEntity">
+		SELECT id,name,role
+		FROM admin
+		WHERE 
+		     username=#{username,jdbcType=VARCHAR} 
+		     AND password=#{password,jdbcType=VARCHAR} 
+		     AND role=#{role,jdbcType=INTEGER}
+	</select>
+
+</mapper>
