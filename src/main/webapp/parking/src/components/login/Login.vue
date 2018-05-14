@@ -1,7 +1,7 @@
 <template>
   <div class="login-bg">
     <div class="login_box">
-      <div class="login_logo"><a href="#"><img src="../../assets/login_logo.png" /></a></div>
+      <div class="login_logo"><img src="../../assets/login_logo.png" /></div>
       <div class="login">
         <form method="post">
           <el-input v-model="userInfo.username" type="text" placeholder="用户名" @keyup.13="doLogin"></el-input>
@@ -87,23 +87,22 @@ a {
 
 img {
   border: none;
+  cursor: pointer;
 }
 
 .login-bg {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
   background-color: #98d0f2;
 }
 
 .login_box {
   position: absolute;
-  top: 200px;
+  top: 25%;
   left: 50%;
   width: 350px;
   height: 370px;
-  margin-left: -200px;
+  margin-left: -170px;
   background-color: #fff;
   border-radius: 10px;
 }

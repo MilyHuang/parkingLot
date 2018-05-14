@@ -1,22 +1,24 @@
 <template>
   <div class="parking-box">
-    <div class="parking-top">
-      <span class="logo"><img src="../../assets/logo.png"></span>
-      <span class="admin-icon" @click="showToggle">
-            <img src="../../assets/login_logo.png" />
-            <ul class="admin-operate" v-show="isShow">
-                <li>修改密码</li>
-                <li @click="LoginOut">注销</li>
-            </ul>
-            <span class="admin-down-triggle" v-show="isShow"></span>
-      </span>
-    </div>
-    <div class="parking-nav">
-      <router-link to="/AdminPaking">停车场管理</router-link>
-      <router-link to="/AdminUser">用户管理</router-link>
-    </div>
-    <div class="parking-con">
-      <router-view></router-view>
+    <div class="clearfix">
+      <div class="parking-top">
+        <sapn class="logo"><img src="../../assets/logo.png"></sapn>
+        <span class="admin-icon" @click="showToggle">
+          <img src="../../assets/login_logo.png" />
+          <ul class="admin-operate"  v-show="isShow">
+            <li>修改密码</li>
+            <li @click="LoginOut">注销</li>
+          </ul>
+          <span class="admin-down-triggle" v-show="isShow"></span>
+        </span>
+      </div>
+      <div class="parking-nav">
+        <router-link to="/AdminPaking">停车场管理</router-link>
+        <router-link to="/AdminUser">用户管理</router-link>
+      </div>
+      <div class="parking-con">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -46,21 +48,22 @@ export default {
   float: right;
   width: 50px;
   height: 50px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-right: 30px;
   border: 2px solid #98d0f2;
   border-radius: 50%;
+  cursor: pointer;
   background-color: #fff;
 }
-
+/* logo定高 */
 .logo {
   display: inline-block;
   width: 310px;
-  height: 52%;
-  margin-top: 20px;
-  overflow: hidden;
+  height: 30px;
+  line-height: 90px;
+  vertical-align: 20px;
+  /*overflow: hidden;*/
 }
-
 .logo img {
   height: 100%;
 }
@@ -72,7 +75,7 @@ export default {
 
 .admin-operate {
   position: absolute;
-  top: 60px;
+  top: 63px;
   left: -27px;
   margin: 0;
   padding: 0;
@@ -91,16 +94,16 @@ export default {
   border: 1px solid #98d0f2;
   cursor: pointer;
 }
-
+1
 .admin-down-triggle {
   position: relative;
-  top: -95px;
-  left: 15px;
+  top: -24px;
+  left: 5px;
   height: 0px;
   width: 0px;
-  border-top: 8px solid transparent;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
+  border-top: 18px solid transparent;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
   border-bottom: 8px solid white;
 }
 
