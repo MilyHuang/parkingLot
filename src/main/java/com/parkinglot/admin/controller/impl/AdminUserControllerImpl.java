@@ -1,5 +1,7 @@
 package com.parkinglot.admin.controller.impl;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -12,26 +14,47 @@ import com.parkinglot.admin.service.IAdminUserService;
 import com.parkinglot.common.util.JsonResult;
 
 /**
-@Description:
-@version:1.0
-@author:MilyHuang
-@Date:May 11, 20182:31:40 PM
-@Email:Mily-ML.Huang@aia.com
-
-*/
+ * @Description:
+ * @version:1.0
+ * @author:MilyHuang
+ * @Date:May 11, 20182:31:40 PM
+ * @Email:Mily-ML.Huang@aia.com
+ * 
+ */
 @Controller
 @RequestMapping("/admin")
-public class AdminUserControllerImpl implements IAdminUserController{
+public class AdminUserControllerImpl implements IAdminUserController {
 
 	@Autowired
-	@Qualifier("com.parkinglot.admin.service.impl.AdminUserServiceImpl")
 	private IAdminUserService adminService;
-	
-	@RequestMapping("insertAdmin")
+
+	@RequestMapping("/insertAdmin")
 	@ResponseBody
 	public JsonResult insertAdminUser(AdminEntity entity) {
+
 		adminService.insertAdminUser(entity);
 		return new JsonResult("添加成功！");
+	}
+
+	@RequestMapping("/selectAdmin")
+	@ResponseBody
+	@Override
+	public JsonResult selectAdminUser(AdminEntity entity) {
+		return null;
+	}
+
+	@RequestMapping("/deleteAdmin")
+	@ResponseBody
+	@Override
+	public JsonResult deleteAdminUser(AdminEntity entity) {
+		return null;
+	}
+
+	@RequestMapping("/updateAdmin")
+	@ResponseBody
+	@Override
+	public JsonResult updateAdminUser(AdminEntity entity) {
+		return null;
 	}
 
 }

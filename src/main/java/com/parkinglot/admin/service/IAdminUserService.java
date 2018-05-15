@@ -22,5 +22,15 @@ public interface IAdminUserService {
 	 * @param entity
 	 * @return
 	 */
-	AdminEntity selectUserByLogin(AdminEntity entity);
+	AdminEntity selectAdminUser(AdminEntity entity);
+	
+	/**
+	 * 
+	 */
+	boolean deleteAdminUser(AdminEntity entity);
+	
+	/**
+	 * 
+	 */
+	AdminEntity updateAdminUser(AdminEntity entity);
 }
