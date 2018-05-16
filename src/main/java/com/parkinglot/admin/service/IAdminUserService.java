@@ -19,10 +19,10 @@ public interface IAdminUserService {
 	
 	/**
 	 * 登录
-	 * @param entity
+	 * @param entity  用户名，密码，角色
 	 * @return
 	 */
-	AdminEntity selectAdminUser(AdminEntity entity);
+	AdminEntity selectUserByLogin(AdminEntity entity);
 	
 	/**
 	 * 

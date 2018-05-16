@@ -26,10 +26,10 @@ public class AdminUserServiceImpl implements IAdminUserService{
 	
 	
 	public void insertAdminUser(AdminEntity entity) {
-		entity.setPassword(MD5Util.md5(entity.getPassword())); //瀵瑰瘑鐮佽繘琛屽姞瀵�
+		entity.setPassword(MD5Util.md5(entity.getPassword())); //MD5加密
 		int row = adminDao.insertAdminUser(entity);
 		if(row <=0 )
-			throw new ServiceException("娣诲姞鐢ㄦ埛澶辫触");
+			throw new ServiceException("添加用户失败！");
 	}
 	
 	
@@ -37,15 +37,9 @@ public class AdminUserServiceImpl implements IAdminUserService{
 		entity.setPassword(MD5Util.md5(entity.getPassword()));
 		AdminEntity user = adminDao.selectUserByLogin(entity);
 		if(user == null)
-			throw new ServiceException("鐧诲綍澶辫触!");
+			throw new ServiceException("用户名或密码错误!");
 		
 		return user;
-	}
-
-
-	@Override
-	public AdminEntity selectAdminUser(AdminEntity entity) {
-		return null;
 	}
 
 
@@ -54,8 +48,7 @@ public class AdminUserServiceImpl implements IAdminUserService{
 		return false;
 	}
 
-
-	@Override
+    @Override
 	public AdminEntity updateAdminUser(AdminEntity entity) {
 		return null;
 	}

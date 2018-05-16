@@ -1,9 +1,6 @@
 package com.parkinglot.admin.controller.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +25,7 @@ public class AdminUserControllerImpl implements IAdminUserController {
 	@Autowired
 	private IAdminUserService adminService;
 
-	@RequestMapping("/insertAdmin")
+	@RequestMapping("/insertAdminUser")
 	@ResponseBody
 	public JsonResult insertAdminUser(AdminEntity entity) {
 
@@ -36,11 +33,11 @@ public class AdminUserControllerImpl implements IAdminUserController {
 		return new JsonResult("添加成功！");
 	}
 
-	@RequestMapping("/selectAdmin")
+	@RequestMapping("/selectUserByLogin")
 	@ResponseBody
 	@Override
 	public JsonResult selectAdminUser(AdminEntity entity) {
-		return null;
+		return new  JsonResult(adminService.selectUserByLogin(entity));
 	}
 
 	@RequestMapping("/deleteAdmin")

@@ -18,7 +18,7 @@
 	
 	<!-- 登录 -->
 	<select id="selectUserByLogin" resultMap="BaseResultMap" parameterType="com.parkinglot.admin.entity.AdminEntity">
-		SELECT id,name,role
+		SELECT id,username,role
 		FROM admin
 		WHERE 
 		     username=#{username,jdbcType=VARCHAR} 
