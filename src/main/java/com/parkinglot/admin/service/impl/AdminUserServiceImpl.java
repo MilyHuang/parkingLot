@@ -36,13 +36,15 @@ public class AdminUserServiceImpl implements IAdminUserService{
 		//查询输入的用户名是否已存在
 		AdminEntity isHas = adminDao.selectUserByUsrename(entity.getUsername());
 		if(isHas != null) {
-			jsonResult = new JsonResult(new ServiceException("用户名已存在！"));
+			jsonResult = new JsonResult(new ServiceException("该用户名已存在！"));
 			return jsonResult;
 		}else {
 			entity.setPassword(MD5Util.md5(entity.getPassword())); //MD5加密
 			int row = adminDao.insertAdminUser(entity);
-			if(row <=0 )
+			if(row <=0 ) {
 				jsonResult  = new JsonResult(new ServiceException("添加用户失败！"));
+				return jsonResult;
+			}
 			return jsonResult;
 		}
 	}
@@ -59,6 +61,27 @@ public class AdminUserServiceImpl implements IAdminUserService{
 	public List<AdminEntity> selectAdminForList() {
 		List<AdminEntity> users = adminDao.selectAdminForList();
 		return users;
+	}
+
+
+	@Override
+	public AdminEntity selectAdminUserById(Integer id) {
+		AdminEntity user = adminDao.selectAdminUserById(id);
+		return user;
+	}
+
+
+	@Override
+	public JsonResult updatePasswordById(AdminEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		entity.setPassword(MD5Util.md5(entity.getPassword()));
+		int row = adminDao.updatePasswordById(entity);
+		if(row <= 0) {
+			logger.info("修改密码失败");
+			jsonResult = new JsonResult(new ServiceException("修改密码失败！"));
+			return jsonResult;
+		}
+		return jsonResult;
 	}
 
 

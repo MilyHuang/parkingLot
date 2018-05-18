@@ -2,6 +2,8 @@ package com.parkinglot.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.parkinglot.admin.entity.AdminEntity;
 
 /**
@@ -39,5 +41,21 @@ public interface IAdminUserDao {
 	 * @return  内部用户列表
 	 */
 	List<AdminEntity> selectAdminForList();
+	
+	/**
+	 * 修改密码
+	 * @param entity 
+	 * @return
+	 */
+	int  updatePasswordById(AdminEntity entity);
+	
+	/**
+	 * 通过Id查询用户信息
+	 * @param id
+	 * @return
+	 */
+	AdminEntity selectAdminUserById(@Param("id") Integer id);
+	
+	
 	
 }

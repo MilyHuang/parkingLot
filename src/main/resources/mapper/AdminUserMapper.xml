@@ -29,7 +29,7 @@
 		SELECT id,username,role
 		FROM admin
 		WHERE 
-		     username=#{username,jdbcType=VARCHAR} 
+		         username=#{username,jdbcType=VARCHAR} 
 		     AND password=#{password,jdbcType=VARCHAR} 
 	</select>
 	
@@ -40,5 +40,20 @@
 		WHERE role != 0
 	</select>
 
-
+	<!-- 通过Id查询用户信息 -->
+	<select id="selectAdminUserById" resultMap="BaseResultMap">
+		SELECT id,username,role 
+		FROM admin
+		WHERE
+			id=#{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 修改密码 -->
+	<update id="updatePasswordById" parameterType="com.parkinglot.admin.entity.AdminEntity">
+		UPDATE admin 
+		<if test="password != '' and password != null">
+			set	password = #{password,jdbcType=VARCHAR}
+		</if>
+		WHERE id=#{id,jdbcType=INTEGER}
+	</update>
 </mapper>

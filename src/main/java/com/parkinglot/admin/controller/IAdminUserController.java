@@ -8,6 +8,9 @@ package com.parkinglot.admin.controller;
 
 */
 
+import java.util.List;
+
+import com.parkinglot.admin.dao.Datas;
 import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.common.util.JsonResult;
 
@@ -32,5 +35,23 @@ public interface IAdminUserController {
 	 */
 	JsonResult selectAdminForList();
 	
+	/**
+	 * 通过ID查询用户信息
+	 */
+	JsonResult selectAdminUserById(Integer id);
+	
+	/**
+	 * 修改密码
+	 * @param entity
+	 * @return
+	 */
+	JsonResult updatePasswordById(AdminEntity entity);
+	
+	/**
+	 * 删除用户
+	 * @param datas
+	 * @return
+	 */
+	JsonResult deleteAdminUser(Datas datas);
 	
 }

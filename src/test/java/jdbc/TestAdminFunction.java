@@ -19,8 +19,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.admin.service.IAdminUserService;
+import com.parkinglot.common.util.JsonResult;
 
-public class test2 {
+public class TestAdminFunction {
 
 	private ApplicationContext ac = null;
 	
@@ -34,24 +35,31 @@ public class test2 {
         userService = (IAdminUserService) ac.getBean("com.parkinglot.admin.service.impl.AdminUserServiceImpl",IAdminUserService.class); 
 	}
 	
+	/**
+	 * 添加
+	 */
 	@Test
 	public void test() {
 		AdminEntity entity = new AdminEntity();
-		entity.setUsername("admin2");
-		entity.setPassword("admin");
+		entity.setUsername("test");
+		entity.setPassword("test");
 		entity.setRole(0);  //管理员
 		//userService.insertAdminUser(entity);
 		System.err.println(userService.insertAdminUser(entity));
 	}
 	
+	/**
+	 * 登录
+	 */
 	@Test
 	public void test2() {
 		AdminEntity entity = new AdminEntity();
-		entity.setUsername("admin");
-		entity.setPassword("admin11");
-		entity.setRole(0);
+		entity.setUsername("test");
+		entity.setPassword("12345");
+		//entity.setRole(0);
 		AdminEntity user = userService.selectUserByLogin(entity);
-		System.out.println(user);
+		JsonResult jsonResult = new JsonResult(user);
+		System.out.println(jsonResult);
 	}
 	
 	@Test
@@ -59,4 +67,19 @@ public class test2 {
 		List<AdminEntity> users = userService.selectAdminForList();
 		System.err.println(users);
 	}
+	
+	/**
+	 * 测试修改密码
+	 */
+	@Test
+	public void test4() {
+		AdminEntity user = userService.selectAdminUserById(1);
+		System.err.println(user);
+		AdminEntity entity = new AdminEntity();
+		entity.setPassword("12345");
+		entity.setId(3);
+		userService.updatePasswordById(entity);
+		System.err.println("....");
+	}
+	
 }

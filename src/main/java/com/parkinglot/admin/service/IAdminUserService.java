@@ -33,4 +33,35 @@ public interface IAdminUserService {
 	 */
 	List<AdminEntity> selectAdminForList();
 	
+	/**
+	 * 通过ID查询用户信息
+	 * @param id
+	 * @return
+	 */
+	AdminEntity selectAdminUserById(Integer id);
+	
+	/**
+	 * 修改密码
+	 * @param id
+	 * @return
+	 */
+	JsonResult updatePasswordById(AdminEntity entity);
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

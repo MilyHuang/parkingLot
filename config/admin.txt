@@ -1,9 +1,25 @@
 1.login	
 	url:http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin
 	input:username,password
-	return:id,username,role
+	output:id,username,role
 	
 2.insert new user
 	url:http://10.65.35.190:8080/parkingLot/admin/insertAdminUser
 	input:username,password,role(0 admin , 1 manager ,2 operator)
 	
+3.select admin user for list:
+	url:http://10.65.35.190:8080/parkingLot/admin/selectUserForList
+	ouput:id,username,role
+	
+4.select user info by id(通过ID查询用户信息)
+	url:http://10.65.35.190:8080/parkingLot/admin/selectAdminInfoById
+	input:id
+	output:id,username,role
+
+5.update admin user password(修改密码)
+	url:http://10.65.35.190:8080/parkingLot/admin/updatePasswordById
+	input:id,password
+	
+6.delete admin user(删除用户)
+	url:http://10.65.35.190:8080/parkingLot/admin/deleteAdminUser
+	input:datas[]
