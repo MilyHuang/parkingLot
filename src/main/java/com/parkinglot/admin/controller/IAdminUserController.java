@@ -8,8 +8,6 @@ package com.parkinglot.admin.controller;
 
 */
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.common.util.JsonResult;
 
@@ -21,10 +19,18 @@ public interface IAdminUserController {
 	 */
 	JsonResult insertAdminUser(AdminEntity entity);
 	
+	/**
+	 * 内部用户登录
+	 * @param entity
+	 * @return
+	 */
 	JsonResult selectAdminUser(AdminEntity entity);
 	
-	JsonResult deleteAdminUser(AdminEntity entity);
+	/**
+	 * 查询内部用户的列表
+	 * @return
+	 */
+	JsonResult selectAdminForList();
 	
-	JsonResult updateAdminUser(AdminEntity entity);
 	
 }

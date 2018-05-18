@@ -1,5 +1,8 @@
 package com.parkinglot.admin.service.impl;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +11,7 @@ import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.admin.service.IAdminUserService;
 import com.parkinglot.common.security.MD5Util;
 import com.parkinglot.common.service.ServiceException;
+import com.parkinglot.common.util.JsonResult;
 
 /**
 @Description:
@@ -21,37 +25,43 @@ import com.parkinglot.common.service.ServiceException;
 //@Service
 public class AdminUserServiceImpl implements IAdminUserService{
 
+	 private static Logger logger = Logger.getLogger(AdminUserServiceImpl.class);
+	
 	@Autowired
 	private IAdminUserDao adminDao;
 	
 	
-	public void insertAdminUser(AdminEntity entity) {
-		entity.setPassword(MD5Util.md5(entity.getPassword())); //MD5加密
-		int row = adminDao.insertAdminUser(entity);
-		if(row <=0 )
-			throw new ServiceException("添加用户失败！");
+	public JsonResult insertAdminUser(AdminEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		//查询输入的用户名是否已存在
+		AdminEntity isHas = adminDao.selectUserByUsrename(entity.getUsername());
+		if(isHas != null) {
+			jsonResult = new JsonResult(new ServiceException("用户名已存在！"));
+			return jsonResult;
+		}else {
+			entity.setPassword(MD5Util.md5(entity.getPassword())); //MD5加密
+			int row = adminDao.insertAdminUser(entity);
+			if(row <=0 )
+				jsonResult  = new JsonResult(new ServiceException("添加用户失败！"));
+			return jsonResult;
+		}
 	}
 	
 	
 	public AdminEntity selectUserByLogin(AdminEntity entity) {
 		entity.setPassword(MD5Util.md5(entity.getPassword()));
 		AdminEntity user = adminDao.selectUserByLogin(entity);
-		if(user == null)
-			throw new ServiceException("用户名或密码错误!");
-		
 		return user;
 	}
 
 
 	@Override
-	public boolean deleteAdminUser(AdminEntity entity) {
-		return false;
+	public List<AdminEntity> selectAdminForList() {
+		List<AdminEntity> users = adminDao.selectAdminForList();
+		return users;
 	}
 
-    @Override
-	public AdminEntity updateAdminUser(AdminEntity entity) {
-		return null;
-	}
+
 	
 
 }

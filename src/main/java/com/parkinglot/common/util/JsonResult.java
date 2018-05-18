@@ -48,6 +48,7 @@ public class JsonResult {
 		public int getState() {
 			return state;
 		}
+		
 		public String getMessage() {
 			return message;
 		}

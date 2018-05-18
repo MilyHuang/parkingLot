@@ -1,5 +1,7 @@
 package com.parkinglot.admin.dao;
 
+import java.util.List;
+
 import com.parkinglot.admin.entity.AdminEntity;
 
 /**
@@ -18,6 +20,12 @@ public interface IAdminUserDao {
 	 */
 	int insertAdminUser(AdminEntity entity);
 	
+	/**
+	 * 查询用户是否存在
+	 * @param username  用户名
+	 * @return  用户实体类
+	 */
+	AdminEntity selectUserByUsrename(String username);
 	
 	/**
 	 * 登录
@@ -25,4 +33,11 @@ public interface IAdminUserDao {
 	 * @return
 	 */
 	AdminEntity selectUserByLogin(AdminEntity entity);
+	
+	/**
+	 * 查询用户列表
+	 * @return  内部用户列表
+	 */
+	List<AdminEntity> selectAdminForList();
+	
 }

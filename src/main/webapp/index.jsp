@@ -7,9 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-   <form action="${pageContext.request.contextPath }/admin/selectAdmin"  method="post">
+   <form action="${pageContext.request.contextPath }/admin/selectUserByLogin"  method="post">
       <input name="username" type="text">
       <input name = "password" type="password">
+      <input name="role" type="0">
       <input type="submit" value="登录">
    </form>
 </body>

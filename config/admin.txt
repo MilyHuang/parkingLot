@@ -1,0 +1,9 @@
+1.login	
+	url:http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin
+	input:username,password
+	return:id,username,role
+	
+2.insert new user
+	url:http://10.65.35.190:8080/parkingLot/admin/insertAdminUser
+	input:username,password,role(0 admin , 1 manager ,2 operator)
+	

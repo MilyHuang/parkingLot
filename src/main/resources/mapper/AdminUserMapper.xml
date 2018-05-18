@@ -16,14 +16,29 @@
 	
 	</insert>
 	
-	<!-- 登录 -->
+	<!-- 查询用户是否存在 -->
+	<select id="selectUserByUsrename" parameterType="com.parkinglot.admin.entity.AdminEntity" resultMap="BaseResultMap">
+		SELECT id,username,role
+		FROM admin
+		WHERE 
+			username=#{username,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 内部用户登录 -->
 	<select id="selectUserByLogin" resultMap="BaseResultMap" parameterType="com.parkinglot.admin.entity.AdminEntity">
 		SELECT id,username,role
 		FROM admin
 		WHERE 
 		     username=#{username,jdbcType=VARCHAR} 
 		     AND password=#{password,jdbcType=VARCHAR} 
-		     AND role=#{role,jdbcType=INTEGER}
 	</select>
+	
+	<!-- 查询内部用户列表 -->
+	<select id="selectAdminForList" resultMap="BaseResultMap">
+		SELECT id,username,role
+		FROM admin
+		WHERE role != 0
+	</select>
+
 
 </mapper>

@@ -8,6 +8,8 @@ package jdbc;
 
 */
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Before;
@@ -38,18 +40,23 @@ public class test2 {
 		entity.setUsername("admin2");
 		entity.setPassword("admin");
 		entity.setRole(0);  //管理员
-		System.out.println(entity);
-		userService.insertAdminUser(entity);
-		System.out.println("...");
+		//userService.insertAdminUser(entity);
+		System.err.println(userService.insertAdminUser(entity));
 	}
 	
 	@Test
 	public void test2() {
 		AdminEntity entity = new AdminEntity();
 		entity.setUsername("admin");
-		entity.setPassword("admin");
+		entity.setPassword("admin11");
 		entity.setRole(0);
 		AdminEntity user = userService.selectUserByLogin(entity);
 		System.out.println(user);
+	}
+	
+	@Test
+	public void test3() {
+		List<AdminEntity> users = userService.selectAdminForList();
+		System.err.println(users);
 	}
 }

@@ -1,13 +1,18 @@
 package com.parkinglot.admin.controller.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IAdminUserController;
 import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.admin.service.IAdminUserService;
+import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
 
 /**
@@ -25,33 +30,46 @@ public class AdminUserControllerImpl implements IAdminUserController {
 	@Autowired
 	private IAdminUserService adminService;
 
-	@RequestMapping("/insertAdminUser")
+	@RequestMapping(value = "/insertAdminUser" ,method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult insertAdminUser(AdminEntity entity) {
-
-		adminService.insertAdminUser(entity);
-		return new JsonResult("添加成功！");
+	public JsonResult insertAdminUser(@RequestBody AdminEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		if(entity == null)
+			jsonResult = new JsonResult(new ServiceException("输入的用户信息不能为空！"));
+		jsonResult = adminService.insertAdminUser(entity);
+		return jsonResult;
 	}
 
-	@RequestMapping("/selectUserByLogin")
-	@ResponseBody
-	@Override
-	public JsonResult selectAdminUser(AdminEntity entity) {
-		return new  JsonResult(adminService.selectUserByLogin(entity));
-	}
-
-	@RequestMapping("/deleteAdmin")
+	@RequestMapping(value = "/selectUserByLogin",method = RequestMethod.POST)
 	@ResponseBody
 	@Override
-	public JsonResult deleteAdminUser(AdminEntity entity) {
-		return null;
+	public JsonResult selectAdminUser(@RequestBody AdminEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		if(entity == null) {
+			jsonResult = new JsonResult(new ServiceException("用户名或密码不能为空！"));
+			return jsonResult;
+		}
+		//登录
+		AdminEntity user = adminService.selectUserByLogin(entity);
+		if(user != null) {
+			jsonResult = new JsonResult(user);
+			return jsonResult;
+		}else {
+			jsonResult = new JsonResult(new ServiceException("用户名或密码错误！"));
+			return jsonResult;
+		}
 	}
 
-	@RequestMapping("/updateAdmin")
+	@RequestMapping(value = "/selectUserForList",method = RequestMethod.POST)
 	@ResponseBody
 	@Override
-	public JsonResult updateAdminUser(AdminEntity entity) {
-		return null;
+	public JsonResult selectAdminForList() {
+		List<AdminEntity> users = adminService.selectAdminForList();
+		JsonResult jsonResult = new JsonResult(users);
+		return jsonResult;
 	}
 
+
+	
+	
 }
