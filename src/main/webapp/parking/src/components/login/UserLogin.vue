@@ -22,15 +22,14 @@ export default {
       }
     };
   },
-  
   methods: {
     doLogin() {
-      if (this.userInfo.username == ''||this.userInfo.password == '') {
-        this.$notify({
-          title: '提示信息',
-          message:'请填写完整',
-          type: 'error'
-        });
+      if (this.userInfo.username == '') {
+        alert('用户名不能为空');
+        return false
+      }
+      if (this.userInfo.password == '') {
+        alert('密码名不能为空');
         return false
       }else{
         this.axios.post('http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
@@ -44,20 +43,6 @@ export default {
                 message: '登录成功',
                 type: 'success'
               });
-              switch(data.role)
-              {
-              case 0:
-                this.$router.push({ path: '/AdminIndex' });
-                break;
-              case 1:
-                console.log('运营商');
-                break;
-              case 2:
-                console.log('操作员');
-                break;
-              default:
-                console.log('error');
-              }
             }
             else{
               this.$notify({
@@ -75,11 +60,14 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
+          this.$notify({
+            title: '提示信息',
+            message: '登录失败',
+            type: 'error'
+          });
         })
       }
-      
-      
     }
   }
 }

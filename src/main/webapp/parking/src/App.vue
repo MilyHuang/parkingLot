@@ -22,6 +22,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-y: hidden;
 }
 
 ul li {

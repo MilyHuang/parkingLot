@@ -4,8 +4,6 @@ import Login from '@/components/login/Login'
 import AdminIndex from '@/components/admin/AdminIndex'
 import AdminPaking from '@/components/admin/AdminPaking'
 import AdminUser from '@/components/admin/AdminUser'
-import AdminManger from '@/components/admin/AdminManger'
-import AdminOperator from '@/components/admin/AdminOperator'
 
 Vue.use(Router)
 
@@ -27,20 +25,8 @@ export default new Router({
         },
         {
           path: '/AdminUser',
-          redirect: '/AdminManger',
           name: 'AdminUser',
           component: AdminUser,
-          children: [{
-              path: '/AdminManger',
-              name: 'AdminManger',
-              component: AdminManger
-            },
-            {
-              path: '/AdminOperator',
-              name: 'AdminOperator',
-              component: AdminOperator
-            }
-          ]
         }
       ]
     },
