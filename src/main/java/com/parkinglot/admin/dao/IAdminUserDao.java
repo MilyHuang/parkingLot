@@ -56,6 +56,11 @@ public interface IAdminUserDao {
 	 */
 	AdminEntity selectAdminUserById(@Param("id") Integer id);
 	
-	
+	/**
+	 * 删除用户
+	 * @param id
+	 * @return
+	 */
+	int deleteAdminUsers(@Param("id") Integer id);
 	
 }

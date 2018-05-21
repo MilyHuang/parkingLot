@@ -56,4 +56,10 @@
 		</if>
 		WHERE id=#{id,jdbcType=INTEGER}
 	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="deleteAdminUsers">
+		DELETE FROM admin WHERE id=#{id,jdbcType=INTEGER}
+	</delete>
+	
 </mapper>

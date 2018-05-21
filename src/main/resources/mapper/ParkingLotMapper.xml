@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.parkinglot.admin.dao.IParkingLotDao" >
+ 	 <resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingLotEntity" >
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+	    <result column="parking_name" property="parkingName" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="total" property="total" jdbcType="INTEGER" />
+	    <result column="inuse" property="inuse" jdbcType="INTEGER" />
+	   	<result column="rent" property="rent" jdbcType="DOUBLE" />
+ 	 </resultMap>
+  
+  <!-- 添加用户信息 -->
+	<insert id="insertParkingLot" parameterType="BaseResultMap">
+		INSERT INTO parking_lot 
+			(parking_num,parking_name,address,total,inuse,rent)
+		VALUES(
+			#{parking_num,jdbcType=VARCHAR},
+			#{parking_name,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{total,jdbcType=INTEGER},
+			#{inuse,jdbcType=INTEGER},
+			#{rent,jdbcType=DOUBLE}
+		)	
+	</insert>
+	
+
+</mapper>

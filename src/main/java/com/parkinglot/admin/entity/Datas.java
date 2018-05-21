@@ -1,4 +1,4 @@
-package com.parkinglot.admin.dao;
+package com.parkinglot.admin.entity;
 
 import java.util.Arrays;
 
