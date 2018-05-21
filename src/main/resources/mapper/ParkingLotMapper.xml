@@ -12,12 +12,11 @@
  	 </resultMap>
   
   <!-- 添加用户信息 -->
-	<insert id="insertParkingLot" parameterType="BaseResultMap">
-		INSERT INTO parking_lot 
-			(parking_num,parking_name,address,total,inuse,rent)
+	<insert id="insertParkingLot" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
+		INSERT INTO parking_lot(parking_num,parking_name,address,total,inuse,rent)
 		VALUES(
-			#{parking_num,jdbcType=VARCHAR},
-			#{parking_name,jdbcType=VARCHAR},
+			#{parkingNum,jdbcType=VARCHAR},
+			#{parkingName,jdbcType=VARCHAR},
 			#{address,jdbcType=VARCHAR},
 			#{total,jdbcType=INTEGER},
 			#{inuse,jdbcType=INTEGER},
