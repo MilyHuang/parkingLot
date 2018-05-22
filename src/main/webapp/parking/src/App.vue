@@ -6,7 +6,12 @@
 </template>
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted: function() {
+    this.$nextTick(function() {
+      global.baseURI='http://10.65.35.180:8080/parkingLot';
+    })
+  }
 }
 
 </script>

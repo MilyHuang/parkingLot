@@ -26,26 +26,34 @@
 
 <script>
 	export default {
-  data() {
-    return {
-      updateCode:{
-        name:'',
-        code:'',
-        surecode:''
-      },
-      isShow: false,
-      updateCodeVisible:false
-    }
-  },
-  methods: {
-    showToggle: function() {
-      this.isShow = !this.isShow
+    // mounted: function() {
+        // 路由拦截
+    //   this.$nextTick(function () {
+    //     if (!sessionStorage.token) { 
+    //         this.$router.push({ path: '/' });
+    //     }
+    //   })
+    // },
+    data() {
+      return {
+        updateCode:{
+          name:'',
+          code:'',
+          surecode:''
+        },
+        isShow: false,
+        updateCodeVisible:false
+      }
     },
-    LoginOut: function() {
-      sessionStorage.username="",
-      this.$router.push({ path: '/' });
+    methods: {
+      showToggle: function() {
+        this.isShow = !this.isShow
+      },
+      LoginOut: function() {
+        sessionStorage.token="",
+        this.$router.push({ path: '/' });
+      }
     }
-  }
 }
 </script>
 

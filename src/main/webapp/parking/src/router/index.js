@@ -18,7 +18,8 @@ import SearchCard from '@/components/operator/SearchCard'
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'Login',
       component: Login
@@ -83,4 +84,4 @@ export default new Router({
       ]
     },
   ]
-})
+});

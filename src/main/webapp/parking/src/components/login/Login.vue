@@ -22,8 +22,32 @@ export default {
       }
     };
   },
-  
+  mounted: function() {
+    //token路由判断角色跳转
+    this.$nextTick(function () {
+      if (!sessionStorage.token) { 
+        this.RoleChange(sessionStorage.token.role);
+      }
+    })
+  },
   methods: {
+    //登录角色跳转
+    RoleChange(role){
+      switch(role)
+      {
+        case 0:
+          this.$router.push({ path: '/AdminIndex' });
+          break;
+        case 1:
+          this.$router.push({ path: '/ManagerIndex'});
+          break;
+        case 2:
+          this.$router.push({ path: '/OperatorIndex'});
+          break;
+        default:
+          console.log('error');
+      }
+    },
     doLogin() {
       if (this.userInfo.username == ''||this.userInfo.password == '') {
         this.$notify({
@@ -34,31 +58,24 @@ export default {
         return false
       }else{
         //登录接口
-        this.axios.post('http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
+        this.axios.post(baseURI+'/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
         .then(res => {
           console.log(res);
           if (res.status == 200) {
-            var data=res.data.data
+            var data=res.data.data;
             if(data){
+
+              var user={};
+              user.name=data.username;
+              user.role=data.role;
+              sessionStorage.setItem("token",user);  
+
               this.$notify({
                 title: '提示信息',
                 message: '登录成功',
                 type: 'success'
               });
-              switch(data.role)
-              {
-              case 0:
-                this.$router.push({ path: '/AdminIndex' });
-                break;
-              case 1:
-                this.$router.push({ path: '/ManagerIndex'});
-                break;
-              case 2:
-                this.$router.push({ path: '/OperatorIndex'});
-                break;
-              default:
-                console.log('error');
-              }
+              this.RoleChange(data.role);
             }
             else{
               this.$notify({

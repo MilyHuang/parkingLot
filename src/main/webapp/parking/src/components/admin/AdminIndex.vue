@@ -3,8 +3,8 @@
     <parking-top></parking-top>
     <div class="clearfix">
       <div class="parking-nav">
-        <router-link to="/AdminPaking">停车场管理</router-link>
-        <router-link to="/AdminUser">用户管理</router-link>
+        <router-link to="/AdminIndex/AdminPaking">停车场管理</router-link>
+        <router-link to="/AdminIndex/AdminUser">用户管理</router-link>
       </div>
       <div class="parking-con">
         <router-view></router-view>
