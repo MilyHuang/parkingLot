@@ -42,7 +42,7 @@ public class TestParkingCard {
 		entity.setParkingNum("001");
 		entity.setUsersId(1);
 		entity.setCardNum("2018052201");
-		ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
+		ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum(),entity.getParkingNum());
 		System.err.println(card);
 		//cardService.insertParkingCard(entity);
 		System.err.println("添加成功");

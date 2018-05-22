@@ -4,3 +4,16 @@
 2.add parking lot
 	url:http://10.65.35.180:8080/parkingLot/parkinglot/insertParkinglot
 	input:parking_num,parking_name,address,total,rent
+	
+3.select user by phone 通过手机号查询用户信息
+	url:url:http://10.65.35.180:8080/parkingLot/parkingCard/selectUserInfoByPhone
+	input:phone
+	output:id,username,phone
+	
+4.new user add parking card 新用户办卡
+	url:http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingCard
+	input:username,phone,password,parkingNum,cardNum
+	
+5.old user add parking card 老用户办卡
+	url:http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingByOldUser
+	input:userId(用户的id),parkingNum,cardNum

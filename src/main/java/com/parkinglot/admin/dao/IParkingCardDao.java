@@ -26,5 +26,5 @@ public interface IParkingCardDao {
 	 * @param cardNum
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum);
+	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("parkingNum") String parkingNum);
 }

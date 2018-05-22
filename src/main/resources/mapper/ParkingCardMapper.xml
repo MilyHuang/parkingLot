@@ -25,7 +25,10 @@
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT id,users_id,parking_num,card_num
 		FROM parking_card
-		WHERE card_num=#{cardNum,jdbcType=VARCHAR}
+		WHERE 
+			card_num=#{cardNum,jdbcType=VARCHAR}
+		AND
+			parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
 
 

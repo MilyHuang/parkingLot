@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.parkinglot.admin.dao.IParkingLotDao;
 import com.parkinglot.admin.entity.ParkingLotEntity;
@@ -19,6 +20,7 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
+@Transactional
 @Service("com.parkinglot.admin.service.impl.ParkingLotServiceImpl")
 public class ParkingLotServiceImpl implements IParkingLotService{
 

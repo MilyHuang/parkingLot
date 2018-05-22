@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.parkinglot.admin.dao.IAdminUserDao;
 import com.parkinglot.admin.entity.AdminEntity;
@@ -22,6 +23,7 @@ import com.parkinglot.common.util.JsonResult;
 
 */
 @Service("com.parkinglot.admin.service.impl.AdminUserServiceImpl")
+@Transactional
 //@Service
 public class AdminUserServiceImpl implements IAdminUserService{
 
@@ -29,7 +31,6 @@ public class AdminUserServiceImpl implements IAdminUserService{
 	
 	@Autowired
 	private IAdminUserDao adminDao;
-	
 	
 	public JsonResult insertAdminUser(AdminEntity entity) {
 		JsonResult jsonResult = new JsonResult();
@@ -69,7 +70,6 @@ public class AdminUserServiceImpl implements IAdminUserService{
 		AdminEntity user = adminDao.selectAdminUserById(id);
 		return user;
 	}
-
 
 	@Override
 	public JsonResult updatePasswordById(AdminEntity entity) {

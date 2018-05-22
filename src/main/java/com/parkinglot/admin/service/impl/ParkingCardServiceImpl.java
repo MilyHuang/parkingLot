@@ -2,6 +2,7 @@ package com.parkinglot.admin.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.parkinglot.admin.dao.IParkingCardDao;
 import com.parkinglot.admin.entity.ParkingCardEntity;
@@ -17,6 +18,7 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
+@Transactional
 @Service("com.parkinglot.admin.service.impl.ParkingCardServiceImpl")
 public class ParkingCardServiceImpl implements IParkingCardService{
 	
@@ -36,8 +38,8 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
-	public ParkingCardEntity selectParkingCardByCardNum(String cardNum) {
-		return cardDao.selectCardByCardNum(cardNum);
+	public ParkingCardEntity selectParkingCardByCardNum(String cardNum,String parkingNum) {
+		return cardDao.selectCardByCardNum(cardNum,parkingNum);
 	}
 
 }
