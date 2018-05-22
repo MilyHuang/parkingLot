@@ -26,4 +26,11 @@ public interface IParkingLotService {
 	 * @return
 	 */
 	List<ParkingLotEntity> selectParkingLotForList();
+	
+	/**
+	 * 通过停车场编号查询停车场信息
+	 * @param parkingNum
+	 * @return
+	 */
+	ParkingLotEntity selectParkingLotByNum(String parkingNum);
 }

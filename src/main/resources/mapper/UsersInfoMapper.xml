@@ -12,7 +12,7 @@
 
 
 	<!-- 添加用户信息（首次办卡） -->
-	<insert id="insertUserInfo" parameterType="com.parkinglot.admin.entity.UsersInfoEntity">
+	<insert id="insertUserInfo" parameterType="com.parkinglot.admin.entity.UsersInfoEntity" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO users_info(username,phone,password)
 		VALUES(
 			#{username,jdbcType=VARCHAR},

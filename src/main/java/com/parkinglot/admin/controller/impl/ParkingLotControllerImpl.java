@@ -50,6 +50,11 @@ public class ParkingLotControllerImpl implements IParkingLotController{
 			jsonResult = new JsonResult(new ServiceException("输入的停车场信息不能为空"));
 			return jsonResult;
 		}else {
+			ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
+			if(parkingLot != null) {
+				jsonResult = new JsonResult(new ServiceException("该停车场编号已存在"));
+				return jsonResult;
+			}
 			jsonResult = parkingLotService.insertParkingLot(entity);
 			return jsonResult;
 		}

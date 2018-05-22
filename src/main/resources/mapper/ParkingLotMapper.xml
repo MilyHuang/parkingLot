@@ -30,4 +30,11 @@
 		FROM parking_lot
 	</select>
 
+	<!-- 查询停车场是否存在 -->
+	<select id="selectParkingLotByNum" resultMap="BaseResultMap">
+		SELECT id,parking_num,parking_name,address,total,inuse,rent
+		FROM parking_lot
+		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
+	</select>
+
 </mapper>

@@ -6,22 +6,24 @@
 		type="com.parkinglot.admin.entity.ParkingCardEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="users_id" property="usersId" jdbcType="INTEGER" />
+		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
 	</resultMap>
 
 
 	<!-- 办理停车卡 -->
 	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
-		INSERT INTO parking_card(users_id,card_num)
+		INSERT INTO parking_card(users_id,parking_num,card_num)
 		VALUES(
 			#{usersId,jdbcType=INTEGER},
-			#{cardNum,jdbcType=VARCHAR},
+			#{parkingNum,jdbcType=VARCHAR},
+			#{cardNum,jdbcType=VARCHAR}
 		)
 	</insert>
 
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
-		SELECT id,users_id,card_num
+		SELECT id,users_id,parking_num,card_num
 		FROM parking_card
 		WHERE card_num=#{cardNum,jdbcType=VARCHAR}
 	</select>

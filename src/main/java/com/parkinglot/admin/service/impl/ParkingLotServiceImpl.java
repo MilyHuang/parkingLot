@@ -44,4 +44,10 @@ public class ParkingLotServiceImpl implements IParkingLotService{
 		return parkings;
 	}
 
+	@Override
+	public ParkingLotEntity selectParkingLotByNum(String parkingNum) {
+		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(parkingNum);
+		return parkingLot;
+	}
+
 }
