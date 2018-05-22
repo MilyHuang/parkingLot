@@ -33,6 +33,7 @@ export default {
         });
         return false
       }else{
+        //登录接口
         this.axios.post('http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
         .then(res => {
           console.log(res);
@@ -50,10 +51,10 @@ export default {
                 this.$router.push({ path: '/AdminIndex' });
                 break;
               case 1:
-                console.log('运营商');
+                this.$router.push({ path: '/ManagerIndex'});
                 break;
               case 2:
-                console.log('操作员');
+                this.$router.push({ path: '/OperatorIndex'});
                 break;
               default:
                 console.log('error');

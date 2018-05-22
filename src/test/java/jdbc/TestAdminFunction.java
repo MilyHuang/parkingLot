@@ -82,4 +82,18 @@ public class TestAdminFunction {
 		System.err.println("....");
 	}
 	
+	/**
+	 * 测试删除功能
+	 */
+	@Test
+	public void test5() {
+		JsonResult jsonResult = new JsonResult();
+		jsonResult = userService.deleteAdminUsers(7);
+		System.out.println(jsonResult);
+	}
+	
+	
+	
+	
+	
 }

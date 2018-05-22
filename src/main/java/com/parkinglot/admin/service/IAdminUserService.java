@@ -47,6 +47,13 @@ public interface IAdminUserService {
 	 */
 	JsonResult updatePasswordById(AdminEntity entity);
 	
+	/**
+	 * 删除用户
+	 * @param id
+	 * @return
+	 */
+	JsonResult deleteAdminUsers(Integer id);
+	
 }
 
 

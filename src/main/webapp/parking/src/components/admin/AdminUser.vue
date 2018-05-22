@@ -178,8 +178,6 @@ export default {
 		// 删除用户
 		delUser(){
 			console.log(this.delUserId[0]);
-			// var qs = require('qs');
-			// var data=this.delUserId.join(',');
 			this.axios.post('http://10.65.35.190:8080/parkingLot/admin/deleteAdminUser',{"datas":this.delUserId})
 		        .then(res => {
 		        	console.log(res);
@@ -189,6 +187,7 @@ export default {
 				            message: '删除成功',
 				            type: 'success'
 			          	});
+			          	this.init();
 		        	}else{
 		        		this.$notify({
 			                title: '提示信息',

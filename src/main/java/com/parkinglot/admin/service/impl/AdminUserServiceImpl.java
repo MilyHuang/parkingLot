@@ -85,6 +85,18 @@ public class AdminUserServiceImpl implements IAdminUserService{
 	}
 
 
+	@Override
+	public JsonResult deleteAdminUsers(Integer id) {
+		JsonResult jsonResult = new JsonResult();
+		int rows = adminDao.deleteAdminUsers(id);
+		if(rows <=0 ) {
+			jsonResult = new JsonResult(new ServiceException("删除用户失败"));
+			return jsonResult;
+		}
+		return jsonResult;
+	}
+
+
 	
 
 }
