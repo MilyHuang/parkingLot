@@ -8,6 +8,8 @@ package com.parkinglot.admin.service;
 
 */
 
+import java.util.List;
+
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.common.util.JsonResult;
 
@@ -18,4 +20,10 @@ public interface IParkingLotService {
 	 * @return
 	 */
 	JsonResult insertParkingLot(ParkingLotEntity entity);
+	
+	/**
+	 * 查询停车场列表
+	 * @return
+	 */
+	List<ParkingLotEntity> selectParkingLotForList();
 }

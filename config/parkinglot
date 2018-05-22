@@ -1,0 +1,6 @@
+1.select parking lot list
+	url:http://10.65.35.180:8080/parkingLot/parkinglot/selectParkinglot
+	
+2.add parking lot
+	url:http://10.65.35.180:8080/parkingLot/parkinglot/insertParkinglot
+	input:parking_num,parking_name,address,total,rent

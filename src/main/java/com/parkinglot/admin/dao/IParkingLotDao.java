@@ -1,5 +1,7 @@
 package com.parkinglot.admin.dao;
 
+import java.util.List;
+
 import com.parkinglot.admin.entity.ParkingLotEntity;
 
 /**
@@ -17,4 +19,11 @@ public interface IParkingLotDao {
 	 * @return
 	 */
 	int insertParkingLot(ParkingLotEntity entity);
+	
+	/**
+	 * 查询停车场列表
+	 * @return 停车场列表集合
+	 */
+	List<ParkingLotEntity> selectParkingLotForList();
+	
 }

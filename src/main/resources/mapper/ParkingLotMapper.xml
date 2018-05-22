@@ -24,5 +24,10 @@
 		)	
 	</insert>
 	
+	<!-- 查询停车场列表 -->
+	<select id="selectParkingLotForList" resultMap="BaseResultMap">
+		SELECT id,parking_num,parking_name,address,total,inuse,rent
+		FROM parking_lot
+	</select>
 
 </mapper>

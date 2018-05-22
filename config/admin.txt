@@ -1,5 +1,5 @@
 1.login	
-	url:http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin
+	url:http://10.65.35.180:8080/parkingLot/admin/selectUserByLogin
 	input:username,password
 	output:id,username,role
 	
