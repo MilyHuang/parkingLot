@@ -1,5 +1,9 @@
 package com.parkinglot.admin.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.parkinglot.admin.entity.ParkingLotEntity;
 
 /**
@@ -17,4 +21,18 @@ public interface IParkingLotDao {
 	 * @return
 	 */
 	int insertParkingLot(ParkingLotEntity entity);
+	
+	/**
+	 * 查询停车场列表
+	 * @return 停车场列表集合
+	 */
+	List<ParkingLotEntity> selectParkingLotForList();
+	
+	/**
+	 * 通过停车场编号查询停车场是否存在
+	 * @param parkingNum
+	 * @return
+	 */
+	ParkingLotEntity selectParkingLotByNum(@Param("parkingNum") String parkingNum);
+	
 }

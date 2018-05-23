@@ -29,9 +29,9 @@ DROP TABLE IF EXISTS users_info;
 
 CREATE TABLE users_info(
 	id int(8) auto_increment comment 'systemId',
-	username varchar(10) not null,
-	phone varchar(11) not null,
-	password varchar(500) not null,
+	username varchar(10) not null,  /**用户名*/
+	phone varchar(11) not null, /*手机号码*/
+	password varchar(500) not null, /*登录密码*/
 	primary key(id)
 );
 
@@ -40,8 +40,9 @@ DROP TABLE IF EXISTS parking_card;
 
 CREATE TABLE parking_card(
 	id int(8) auto_increment comment 'systemId',
-	users_id int(8) not null comment 'users id',
-	card_num varchar(20) not null,
+	users_id int(8) not null comment 'users id',  /*关联users_info表的ID*/
+	parking_num varchar(10) not null, /**停车场编号*/
+	card_num varchar(20) not null,  /*停车卡号*/
 	primary key(id)
 );
 

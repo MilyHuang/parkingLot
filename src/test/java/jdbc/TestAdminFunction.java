@@ -73,12 +73,13 @@ public class TestAdminFunction {
 	 */
 	@Test
 	public void test4() {
-		AdminEntity user = userService.selectAdminUserById(1);
-		System.err.println(user);
+		
 		AdminEntity entity = new AdminEntity();
-		entity.setPassword("12345");
+		entity.setPassword("1234511");
 		entity.setId(3);
 		userService.updatePasswordById(entity);
+		AdminEntity user = userService.selectAdminUserById(3);
+		System.err.println(user);
 		System.err.println("....");
 	}
 	
