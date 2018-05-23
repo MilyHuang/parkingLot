@@ -14,21 +14,21 @@
 			    label="停车场编号"
 			    width="150">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.lotId}}</span>
+                 	<span>{{scope.row.parkingNum}}</span>
                  </template> 
 		        </el-table-column>
 		        <el-table-column
 		        label="停车场名字"
 		        width="170">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.lotName}}</span>
+                 	<span>{{scope.row.parkingName}}</span>
                  </template>
 	            </el-table-column>
 	            <el-table-column
 	            label="价格"
 	            width="170">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.price}}</span>
+                 	<span>{{scope.row.rent}}</span>
                  </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -45,7 +45,7 @@
 	            label="车位总数"
 	            width="170">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.totalCount}}</span>
+                 	<span>{{scope.row.total}}</span>
                  </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -59,7 +59,7 @@
 	            <template slot-scope="scope">
 	            	<el-button
 	            	size="mini"
-	            	@click="priceFormVisible = true">修改价格</el-button>
+	            	@click="appearDialog(scope.row.id,scope.row.rent)">修改价格</el-button>
 	            	<el-button
 	            	size="mini"
 	            	@click="checkReport(scope.row.lotName)">查看报表</el-button><!-- 
@@ -78,13 +78,16 @@
             			@change="output()">
             		    </el-date-picker>
             		</el-form-item> -->
-            		<el-form-item label="价格" label-width="180">
-            			<el-input v-model="modifyPrice" ></el-input>
+            		<el-form-item label="价格" label-width="180" :rules="[
+            		{ required: true, message: '价格不能为空'},
+            		{ type: 'number', message: '价格必须为数字值'}
+            		]">
+            			<el-input v-model.number="modifyPrice"></el-input>
             		</el-form-item>
             	</el-form>
             	<div slot="footer" class="dialog-footer">
             		<el-button @click="priceFormVisible = false">取 消</el-button>
-            		<el-button type="primary" @click="dialogFormVisible = false">提交修改</el-button>
+            		<el-button type="primary" @click="modifyLotPrice()">提交修改</el-button>
             	</div>
             </el-dialog>
         </div>
@@ -94,14 +97,21 @@
 <script>
 	export default{
 		name: `PriceManage`,
+		mounted(){
+			this.$nextTick(() => {
+                this.loadParkingLot();
+			})
+		},
 		data(){
 			return{
 				//搜索内容
 				searchNumber: '',
 				// 修改价格弹窗
 				priceFormVisible: false,
+				//修改停车场Id
+				currentLotId: '1',
 				//修改的价格
-				modifyPrice: '',
+				modifyPrice: '1000',
 				//停车场数据
 				sellData: [{
 					lotId: '01',
@@ -125,11 +135,42 @@
 					totalCount: 100
 				}],
 				
-					
 				
 			}
 		},
 		methods:{
+			// 加载停车场
+		    loadParkingLot(){
+		    	this.axios.get(this.kangip + `/parkingLot/parkinglot/selectParkinglot`)
+		    	.then(res => {
+		    		this.sellData = res.data.data;
+		    	})
+		    },
+		    // 显示修改框
+		    appearDialog(lotId,lotLent){
+                this.priceFormVisible = true;
+                this.currentLotId = lotId;
+                this.modifyPrice = lotLent;
+		    },
+		    // 修改当前停车场价格
+		    modifyLotPrice(){
+                this.priceFormVisible = false;
+                this.axios.post(this.kangip + `/parkingLot/parkingLotPrice/updateParkingLotPrice`,{
+                    id: this.currentLotId,
+                    price: this.modifyPrice
+                }).then( res => {
+                	console.log(res);
+                	if(res.data.message == "OK"){
+                		this.$notify({
+                			title: '修改成功',
+                			message: '价格修改成功',
+                			type: 'success'
+                		});
+                	}
+                    // this.loadParkingLot();
+                })
+		    },
+		    //查看报表
             checkReport(lotName){
             	this.$router.push({
             		name: `SellManage`,
@@ -154,11 +195,13 @@
 .el-input {
 	display: inline-block;
 	width: 200px;
-	margin-bottom: 30px;}
+	margin-bottom: 30px;
+}
 .el-dialog {
 }
 .el-form{
 	margin-left: 60px;
 	margin-bottom: -40px;
 }
+
 </style>
