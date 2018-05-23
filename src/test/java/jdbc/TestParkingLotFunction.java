@@ -41,12 +41,13 @@ public class TestParkingLotFunction {
 	@Test
 	public void test1() {
 		ParkingLotEntity entity= new ParkingLotEntity();
-		entity.setParkingNum("002");
-		entity.setParkingName("yuexiuPark");
-		entity.setAddress("guangdongguangzhouyuexiu");
-		entity.setTotal(300);
-		entity.setInuse(0);
-		entity.setRent(8000.00);
+		entity.setParkingNum("001");
+		entity.setParkingName("TianHePark");
+		entity.setAddress("guangdongguangzhoutianhe");
+		entity.setTotal(500);
+//		entity.setInuse(0);
+//		entity.setPrice(0.0);
+		entity.setRent(10000.00);
 		JsonResult jsonResult = new JsonResult();
 		jsonResult = parkingLotService.insertParkingLot(entity);
 		System.err.println(jsonResult);

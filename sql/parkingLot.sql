@@ -19,6 +19,7 @@ CREATE TABLE parking_lot(
 	address varchar(100) not null,  /*地址*/
 	total int(8) not null,  /*容量*/
 	inuse int(8) not null, /*已使用*/
+	price double not null, /*停车场价格*/
 	rent double not null, /*租金*/
 	primary key(id)
 );

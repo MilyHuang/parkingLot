@@ -28,6 +28,8 @@ public class ParkingLotEntity implements Serializable{
 	private Integer total;
 	/**已使用的车位*/
 	private Integer inuse;
+	/**价格*/
+	private Double price;
 	/**租金*/
 	private Double rent;
 	public Integer getId() {
@@ -67,6 +69,13 @@ public class ParkingLotEntity implements Serializable{
 	public void setInuse(Integer inuse) {
 		this.inuse = inuse;
 	}
+	
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	public Double getRent() {
 		return rent;
 	}
@@ -76,7 +85,8 @@ public class ParkingLotEntity implements Serializable{
 	@Override
 	public String toString() {
 		return "ParkingLotEntity [id=" + id + ", parkingNum=" + parkingNum + ", parkingName=" + parkingName
-				+ ", address=" + address + ", total=" + total + ", inuse=" + inuse + ", rent=" + rent + "]";
+				+ ", address=" + address + ", total=" + total + ", inuse=" + inuse + ", price=" + price + ", rent="
+				+ rent + "]";
 	}
 	
 	

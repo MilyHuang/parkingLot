@@ -8,31 +8,33 @@
 	    <result column="address" property="address" jdbcType="VARCHAR" />
 	    <result column="total" property="total" jdbcType="INTEGER" />
 	    <result column="inuse" property="inuse" jdbcType="INTEGER" />
+	    <result column="price" property="price" jdbcType="DOUBLE" />
 	   	<result column="rent" property="rent" jdbcType="DOUBLE" />
  	 </resultMap>
   
   <!-- 添加用户信息 -->
 	<insert id="insertParkingLot" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
-		INSERT INTO parking_lot(parking_num,parking_name,address,total,inuse,rent)
+		INSERT INTO parking_lot(parking_num,parking_name,address,total,inuse,price,rent)
 		VALUES(
 			#{parkingNum,jdbcType=VARCHAR},
 			#{parkingName,jdbcType=VARCHAR},
 			#{address,jdbcType=VARCHAR},
 			#{total,jdbcType=INTEGER},
 			#{inuse,jdbcType=INTEGER},
+			#{price,jdbcType=VARCHAR},
 			#{rent,jdbcType=DOUBLE}
 		)	
 	</insert>
 	
 	<!-- 查询停车场列表 -->
 	<select id="selectParkingLotForList" resultMap="BaseResultMap">
-		SELECT id,parking_num,parking_name,address,total,inuse,rent
+		SELECT id,parking_num,parking_name,address,total,inuse,price,rent
 		FROM parking_lot
 	</select>
 
 	<!-- 查询停车场是否存在 -->
 	<select id="selectParkingLotByNum" resultMap="BaseResultMap">
-		SELECT id,parking_num,parking_name,address,total,inuse,rent
+		SELECT id,parking_num,parking_name,address,total,inuse,price,rent
 		FROM parking_lot
 		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
