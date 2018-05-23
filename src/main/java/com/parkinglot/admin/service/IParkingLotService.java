@@ -33,4 +33,11 @@ public interface IParkingLotService {
 	 * @return
 	 */
 	ParkingLotEntity selectParkingLotByNum(String parkingNum);
+	
+	/**
+	 * 更新停车场价格
+	 * @param entity
+	 * @return
+	 */
+	JsonResult updateParkingLotPrice(ParkingLotEntity entity);	
 }

@@ -21,7 +21,7 @@
 			#{address,jdbcType=VARCHAR},
 			#{total,jdbcType=INTEGER},
 			#{inuse,jdbcType=INTEGER},
-			#{price,jdbcType=VARCHAR},
+			#{price,jdbcType=DOUBLE},
 			#{rent,jdbcType=DOUBLE}
 		)	
 	</insert>
@@ -38,5 +38,14 @@
 		FROM parking_lot
 		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
+
+   <!-- 更新停车场价格 -->
+   <update id="updateParkingLotPrice" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
+         update parking_lot 
+         <if test="price != '' and price != null">
+			set	price = #{price,jdbcType=DOUBLE}
+		</if>
+         where parking_num = #{parkingNum,jdbcType=VARCHAR}
+   </update>
 
 </mapper>

@@ -35,4 +35,10 @@ public interface IParkingLotDao {
 	 */
 	ParkingLotEntity selectParkingLotByNum(@Param("parkingNum") String parkingNum);
 	
+	/**
+	 * 更新停车场价格
+	 * @param entity
+	 * @return
+	 */
+    int updateParkingLotPrice(ParkingLotEntity entity);	
 }

@@ -54,4 +54,15 @@ public class ParkingLotServiceImpl implements IParkingLotService{
 		return parkingLot;
 	}
 
+	@Override
+	public JsonResult updateParkingLotPrice(ParkingLotEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingLotDao.updateParkingLotPrice(entity);
+		if(rows <= 0) {
+			jsonResult = new JsonResult(new ServiceException("更新停车场价格失败"));
+			return jsonResult;
+		}
+		return jsonResult;
+	}
+
 }

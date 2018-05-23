@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS parking_lot;
 
 CREATE TABLE parking_lot(
 	id int(8) auto_increment comment 'systemId',
-	parking_num varchar(10) not null, /*停车场编号*/
+	parking_num varchar(10) not null unique, /*停车场编号*/
 	parking_name varchar(50) not null, /*名字*/
 	address varchar(100) not null,  /*地址*/
 	total int(8) not null,  /*容量*/
@@ -48,6 +48,15 @@ CREATE TABLE parking_card(
 );
 
 
+/**停车卡信息表*/
+DROP TABLE IF EXISTS parkingPrice_report;
 
+CREATE TABLE parkingPrice_report(
+	id int(8) auto_increment comment 'systemId',
+	parkingNum varchar(20) not null,            /*关联的parkint_lot表id*/
+	price double not null,            /*修改的价格*/
+	datetime varchar(20) not null,        /*修改的时间*/
+	primary key(id)
+);
 
 
