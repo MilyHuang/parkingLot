@@ -1,10 +1,10 @@
 <template>
 	<div class="price-manage">
 		<!-- 搜索停车场 -->
-		<div class="price-search">
+		<!-- <div class="price-search">
 			<el-input v-model="searchNumber" placeholder="请输入停车场编号"></el-input>
 			<el-button type="primary">查找</el-button>
-		</div>
+		</div> -->
 		<!-- 停车场详细信息 -->
 		<div class="sell-detail">
 			<el-table
@@ -25,17 +25,17 @@
                  </template>
 	            </el-table-column>
 	            <el-table-column
-	            label="价格(元/月)"
+	            label="价格"
 	            width="120">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.price}} </span>
+                 	<span>{{scope.row.price + "￥" }} </span>
                  </template>
                 </el-table-column>
                  <el-table-column
-	            label="租金(元/月)"
+	            label="租金"
 	            width="120">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.rent}}</span>
+                 	<span>{{scope.row.rent  + "￥"}}</span>
                  </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -113,31 +113,16 @@
 				// 修改价格弹窗
 				priceFormVisible: false,
 				//修改停车场Id
-				currentLotId: '1',
+				currentLotId: '',
 				//修改的价格
-				modifyPrice: '1000',
+				modifyPrice: '',
 				//停车场数据
-				sellData: [/*{
-					lotId: '01',
-					lotName: '天河停车场',
-					price: '999￥',
-					totalCount: 100
-				}, {
-					lotId: '02',
-					lotName: '白云停车场',
-					price: '999￥',
-					totalCount: 100
-				}, {
-					lotId: '03',
-					lotName: '越秀停车场',
-					price: '999￥',
-					totalCount: 100
-				}, {
-					lotId: '04',
-					lotName: '荔湾停车场',
-					price: '999￥',
-					totalCount: 100
-				}*/],
+				sellData: [{
+					lotId: '',
+					lotName: '',
+					price: '',
+					totalCount: ``
+				}],
 				
 				
 			}
@@ -145,7 +130,7 @@
 		methods:{
 			// 加载停车场
 		    loadParkingLot(){
-		    	this.axios.get(this.baseURI + `/parkinglot/selectParkinglot`)
+		    	this.axios.get(`http://10.65.35.180:8080/parkingLot/parkinglot/selectParkinglot`)
 		    	.then(res => {
 		    		this.sellData = res.data.data;
 		    	})
@@ -161,7 +146,7 @@
                 this.priceFormVisible = false;
                 if(typeof(this.modifyPrice) == `number` 
                    && this.modifyPrice > 0){
-                	this.axios.post(this.baseURI + `/parkinglot/updateParkingLotPrice`,{
+                	this.axios.post(`http://10.65.35.180:8080/parkingLot/parkinglot/updateParkingLotPrice`,{
                 		parkingNum: this.currentLotId,
                 		price: this.modifyPrice
                 	}).then( res => {
@@ -206,9 +191,6 @@
 .price-manage {
    width: 90%;
    min-width: 950px;
-}
-.price-search {
-
 }
 .sell-detail {
 
