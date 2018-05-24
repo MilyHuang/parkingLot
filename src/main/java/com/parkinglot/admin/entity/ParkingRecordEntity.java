@@ -14,7 +14,7 @@ import java.util.Date;
 public class ParkingRecordEntity implements Serializable{
 
 	/**
-	 * 
+	 *ffffffffffffffff
 	 */
 	private static final long serialVersionUID = 1L;
 	/**系统id*/
