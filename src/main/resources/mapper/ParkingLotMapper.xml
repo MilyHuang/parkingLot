@@ -4,8 +4,8 @@
  	 <resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingLotEntity" >
 	    <id column="id" property="id" jdbcType="INTEGER" />
 	    <result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
-	    <result column="parking_name" property="parkingName" jdbcType="VARCHAR" />
-	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="parking_name" property="parkingName" jdbcType="NVARCHAR" />
+	    <result column="address" property="address" jdbcType="NVARCHAR" />
 	    <result column="total" property="total" jdbcType="INTEGER" />
 	    <result column="inuse" property="inuse" jdbcType="INTEGER" />
 	    <result column="price" property="price" jdbcType="DOUBLE" />
@@ -17,8 +17,8 @@
 		INSERT INTO parking_lot(parking_num,parking_name,address,total,inuse,price,rent)
 		VALUES(
 			#{parkingNum,jdbcType=VARCHAR},
-			#{parkingName,jdbcType=VARCHAR},
-			#{address,jdbcType=VARCHAR},
+			#{parkingName,jdbcType=NVARCHAR},
+			#{address,jdbcType=NVARCHAR},
 			#{total,jdbcType=INTEGER},
 			#{inuse,jdbcType=INTEGER},
 			#{price,jdbcType=DOUBLE},
