@@ -12,23 +12,30 @@
 			style="width: 100%">
 			    <el-table-column
 			    label="停车场编号"
-			    width="150">
+			    width="140">
                  <template slot-scope="scope">
                  	<span>{{scope.row.parkingNum}}</span>
                  </template> 
 		        </el-table-column>
 		        <el-table-column
 		        label="停车场名字"
-		        width="170">
+		        width="160">
                  <template slot-scope="scope">
                  	<span>{{scope.row.parkingName}}</span>
                  </template>
 	            </el-table-column>
 	            <el-table-column
 	            label="价格"
-	            width="170">
+	            width="120">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.rent}}</span>
+                 	<span>{{scope.row.price + "￥" }} </span>
+                 </template>
+                </el-table-column>
+                 <el-table-column
+	            label="租金"
+	            width="120">
+                 <template slot-scope="scope">
+                 	<span>{{scope.row.rent  + "￥"}}</span>
                  </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -59,10 +66,10 @@
 	            <template slot-scope="scope">
 	            	<el-button
 	            	size="mini"
-	            	@click="appearDialog(scope.row.id,scope.row.rent)">修改价格</el-button>
+	            	@click="appearDialog(scope.row.parkingNum,scope.row.price)">修改价格</el-button>
 	            	<el-button
 	            	size="mini"
-	            	@click="checkReport(scope.row.lotName)">查看报表</el-button><!-- 
+	            	@click="checkReport(scope.row.parkingName)">查看报表</el-button><!-- 
 	            	<router-link to="/ManagerIndex/SellManage/123">jump</router-link> -->
 	            </template>
                 </el-table-column>
@@ -78,10 +85,7 @@
             			@change="output()">
             		    </el-date-picker>
             		</el-form-item> -->
-            		<el-form-item label="价格" label-width="180" :rules="[
-            		{ required: true, message: '价格不能为空'},
-            		{ type: 'number', message: '价格必须为数字值'}
-            		]">
+            		<el-form-item label="价格" label-width="180" >
             			<el-input v-model.number="modifyPrice"></el-input>
             		</el-form-item>
             	</el-form>
@@ -147,28 +151,45 @@
 		    	})
 		    },
 		    // 显示修改框
-		    appearDialog(lotId,lotLent){
+		    appearDialog(lotId,price){
                 this.priceFormVisible = true;
                 this.currentLotId = lotId;
-                this.modifyPrice = lotLent;
+                this.modifyPrice = price;
 		    },
 		    // 修改当前停车场价格
 		    modifyLotPrice(){
                 this.priceFormVisible = false;
-                this.axios.post(this.kangip + `/parkingLot/parkingLotPrice/updateParkingLotPrice`,{
-                    id: this.currentLotId,
-                    price: this.modifyPrice
-                }).then( res => {
-                	console.log(res);
-                	if(res.data.message == "OK"){
-                		this.$notify({
-                			title: '修改成功',
-                			message: '价格修改成功',
-                			type: 'success'
-                		});
-                	}
-                    // this.loadParkingLot();
-                })
+                if(typeof(this.modifyPrice) == `number` 
+                   && this.modifyPrice > 0){
+                	this.axios.post(this.kangip + `/parkingLot/parkinglot/updateParkingLotPrice`,{
+                		parkingNum: this.currentLotId,
+                		price: this.modifyPrice
+                	}).then( res => {
+                		console.log(res);
+                		if(res.data.message == "OK"){
+                			this.$notify({
+                				title: '提示',
+                				message: '价格修改成功',
+                				type: 'success'
+                			});
+                		}
+                		else{
+                			this.$notify({
+                				title: '提示',
+                				message: '价格修改失败',
+                				type: 'error'
+                			});
+                		}
+                		this.loadParkingLot();
+                	})
+                }
+                else{
+                	this.$notify({
+                		title: '提示',
+                		message: '价格只能为正数',
+                		type: 'error'
+                	});
+                }
 		    },
 		    //查看报表
             checkReport(lotName){
@@ -184,7 +205,7 @@
 <style scoped>
 .price-manage {
    width: 90%;
-   min-width: 900px;
+   min-width: 950px;
 }
 .price-search {
 

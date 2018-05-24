@@ -58,8 +58,27 @@
 		data(){
 			return{
 				month:'',
+        benefitData: [{
+            rend: 100,
+            totalBenefit: 2000,
+            expectBenefit: 20000
+          }, {
+            rend: 100,
+            totalBenefit: 2000,
+            expectBenefit: 20000
+          }, {
+            rend: 100,
+            totalBenefit: 2000,
+            expectBenefit: 20000
+          }, {
+            rend: 100,
+            totalBenefit: 2000,
+            expectBenefit: 20000
+          }]
 				// benefitData:{
-
+    //        rend: 100,
+    //        totalBenefit: 3000,
+    //        expectBenefit: 30000
 				// },
 				// useData:{
 				// }
