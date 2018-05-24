@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.parkinglot.admin.dao.IParkingRecordDao">
+
+	<resultMap id="BaseResultMap"
+		type="com.parkinglot.admin.entity.ParkingRecordEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
+		<result column="card_id" property="cardId" jdbcType="INTEGER" />
+		<result column="checkin_time" property="checkinTime" jdbcType="DATETIME" />
+		<result column="ckeckout_time" property="checkoutTime" jdbcType="DATETIME" />
+		<result column="flag" property="flag" jdbcType="INTEGER" />
+	</resultMap>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
