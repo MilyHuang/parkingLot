@@ -69,7 +69,7 @@
 
 <style scoped>
 	.user-info{
-
+       min-width: 900px;
 	}
 	.user-card h3{
 		margin-top: 40px;

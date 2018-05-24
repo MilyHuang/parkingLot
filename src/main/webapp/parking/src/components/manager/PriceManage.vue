@@ -1,10 +1,10 @@
 <template>
 	<div class="price-manage">
 		<!-- 搜索停车场 -->
-		<div class="price-search">
+		<!-- <div class="price-search">
 			<el-input v-model="searchNumber" placeholder="请输入停车场编号"></el-input>
 			<el-button type="primary">查找</el-button>
-		</div>
+		</div> -->
 		<!-- 停车场详细信息 -->
 		<div class="sell-detail">
 			<el-table

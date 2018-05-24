@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // 登录
 import Login from '@/components/login/Login'
+import UserLogin from '@/components/login/UserLogin'
 // Actor管理员
 import AdminIndex from '@/components/admin/AdminIndex'
 import AdminPaking from '@/components/admin/AdminPaking'
@@ -14,6 +15,9 @@ import SellManage from '@/components/manager/SellManage'
 import OperatorIndex from '@/components/operator/OperatorIndex'
 import CreateCard from '@/components/operator/CreateCard'
 import SearchCard from '@/components/operator/SearchCard'
+//User
+import UserIndex from '@/components/user/UserIndex'
+import UserInfo from '@/components/user/UserInfo'
 
 Vue.use(Router)
 
@@ -23,6 +27,11 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/UserLogin',
+      name: 'UserLogin',
+      component: UserLogin
     },
     {
       path: '/AdminIndex',
@@ -83,5 +92,25 @@ export default new Router({
         },
       ]
     },
+    {
+      // 用户页面
+      path: '/UserIndex',
+      redirect: '/UserIndex/UserInfo',
+      name: 'UserIndex',
+      component: UserIndex,
+      children: [{
+        //个人信息
+          path: '/UserIndex/UserInfo',
+          name: 'UserInfo',
+          component: UserInfo
+        },
+        // //停车卡查询
+        // {
+        //   path: '/UserIndex/SearchCard',
+        //   name: 'SearchCard',
+        //   component: SearchCard
+        // },
+      ]
+    }
   ]
 });

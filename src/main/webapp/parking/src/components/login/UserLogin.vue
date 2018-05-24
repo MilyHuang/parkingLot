@@ -4,7 +4,7 @@
       <div class="login_logo"><img src="../../assets/login_logo.png" /></div>
       <div class="login">
         <form method="post">
-          <el-input v-model="userInfo.username" type="text" placeholder="用户名" @keyup.13="doLogin"></el-input>
+          <el-input v-model="userInfo.phone" type="text" placeholder="手机号码" @keyup.13="doLogin"></el-input>
           <el-input v-model="userInfo.password" type="password" placeholder="密码" @keyup.13="doLogin" />
           <el-button type="primary" @click="doLogin">登录</el-button>
         </form>
@@ -17,22 +17,22 @@ export default {
   data() {
     return {
       userInfo: {
-        username: '',
+        phone: '',
         password: '',
       }
     };
   },
   methods: {
     doLogin() {
-      if (this.userInfo.username == '') {
-        alert('用户名不能为空');
+      if (this.userInfo.phone == '') {
+        alert('手机号码不能为空');
         return false
       }
       if (this.userInfo.password == '') {
         alert('密码名不能为空');
         return false
       }else{
-        this.axios.post('http://10.65.35.190:8080/parkingLot/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
+        this.axios.post(this.baseURI + '/userinfo/login',{"phone":this.userInfo.phone,"password":this.userInfo.password})
         .then(res => {
           console.log(res);
           if (res.status == 200) {
@@ -43,6 +43,7 @@ export default {
                 message: '登录成功',
                 type: 'success'
               });
+              this.$router.push({ path: '/UserIndex' });
             }
             else{
               this.$notify({
