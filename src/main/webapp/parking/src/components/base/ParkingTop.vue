@@ -9,7 +9,7 @@
 			</ul>
 			<span class="admin-down-triggle" v-show="isShow"></span>
 		</span>
-    <el-dialog title="修改密码" :visible.sync="updateCodeVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="修改密码" :visible.sync="updateCodeVisible" width="30%">
         <form method="post">
           用户名<el-input v-model="updateCode.name" type="text" /> 
           重置密码<el-input v-model="updateCode.code" type="text" />
@@ -21,13 +21,12 @@
         </span>
       </el-dialog>
 	</div>
-  
 </template>
 
 <script>
 	export default {
     // mounted: function() {
-        // 路由拦截
+    //     路由拦截
     //   this.$nextTick(function () {
     //     if (!sessionStorage.token) { 
     //         this.$router.push({ path: '/' });
