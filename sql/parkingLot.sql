@@ -57,7 +57,7 @@ CREATE TABLE parkingPrice_report(
 	id int(8) auto_increment comment 'systemId',
 	parkingNum varchar(20) not null,            /*关联的parkint_lot表id*/
 	price double not null,            /*修改的价格*/
-	datetime varchar(20) not null,        /*修改的时间*/
+	datetime datetime not null,        /*修改的时间*/
 	primary key(id)
 );
 

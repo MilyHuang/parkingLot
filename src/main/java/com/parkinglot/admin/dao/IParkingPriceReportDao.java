@@ -12,5 +12,10 @@ public interface IParkingPriceReportDao {
 	 */
 	int insertParkingPriceReport(ParkingPriceReportEntity entity);
 	
-	
+	/**
+	 * 修改停车场价格
+	 * @param entity
+	 * @return
+	 */
+	int updateParkingPrice(ParkingPriceReportEntity entity);
 }

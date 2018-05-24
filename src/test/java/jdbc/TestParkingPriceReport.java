@@ -32,9 +32,7 @@ public class TestParkingPriceReport {
 	@Test
 	public void test() {
 		ParkingPriceReportEntity entity = new ParkingPriceReportEntity();
-		Date date = new Date();
-		String str = new SimpleDateFormat("YYYY-MM").format(date);
-		entity.setDatetime(str);
+		entity.setDatetime(new Date());
 		entity.setParkingNum("001");
 		entity.setPrice(800.0);
 		ps.insertParkingPriceReport(entity);

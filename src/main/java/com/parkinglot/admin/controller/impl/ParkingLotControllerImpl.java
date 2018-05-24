@@ -77,18 +77,11 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		JsonResult jsonResult = new JsonResult();
 		System.out.println(entity.getPrice());
 		if ("".equals(entity.getPrice()) || entity.getPrice() == 0) {
+			logger.info("输入价格不能为空");
 			jsonResult = new JsonResult(new ServiceException("輸入的價格不能為空"));
 			return jsonResult;
 		}
-		ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-		parkingLot.setPrice(entity.getPrice());
-		jsonResult = parkingLotService.updateParkingLotPrice(parkingLot);
-		Date date = new Date();
-		String str = new SimpleDateFormat("YYYY-MM").format(date);
-		pentity.setParkingNum(entity.getParkingNum());
-		pentity.setPrice(entity.getPrice());
-		pentity.setDatetime(str);
-		parkingPriceReportService.insertParkingPriceReport(pentity);
+		jsonResult = parkingLotService.updateParkingLotPrice(entity);
 		return jsonResult;
 	}
 

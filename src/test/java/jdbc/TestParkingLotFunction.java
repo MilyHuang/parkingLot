@@ -73,7 +73,7 @@ public class TestParkingLotFunction {
 
 	@Test
 	public void test4() {
-		ParkingLotEntity entity = parkingLotService.selectParkingLotByNum("002");
+		ParkingLotEntity entity = parkingLotService.selectParkingLotByNum("007");
 		System.out.println(entity);
 		entity.setPrice(700.0);
 		System.out.println(entity);

@@ -6,7 +6,7 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="parkingNum" property="parkingNum" jdbcType="VARCHAR" />
 		<result column="price" property="price" jdbcType="DOUBLE" />
-		<result column="datetime" property="datetime" jdbcType="VARCHAR" />
+		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 	<!-- 添加用户信息 -->
@@ -17,7 +17,7 @@
 		VALUES(
 		#{parkingNum,jdbcType=VARCHAR},
 		#{price,jdbcType=DOUBLE},
-		#{datetime,jdbcType=VARCHAR}
+		#{datetime,jdbcType=TIMESTAMP}
 		)
 	</insert>
 
