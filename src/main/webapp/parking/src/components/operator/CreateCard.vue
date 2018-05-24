@@ -34,11 +34,11 @@
        <el-form ref="oldInfo" :model="oldInfo" label-width="50px">
         <el-form-item>
           <span>用户名</span>
-          <el-input v-model="oldInfo.name" disabled></el-input>
+          <el-input v-model="oldInfo.username" disabled></el-input>
         </el-form-item>
         <el-form-item>
           <span>电话</span>
-          <el-input v-model="oldInfo.phoneNumber" disabled></el-input>
+          <el-input v-model="oldInfo.phone" disabled></el-input>
         </el-form-item>
         <el-form-item>
           <span>停车场编号</span>
@@ -64,7 +64,14 @@ export default {
       // 新老用户
       changeFlag: true,
       // 老用户信息
-      oldInfo: ``,
+      oldInfo: {
+        id: ``,
+        username: ``,
+        phone: ``,
+        lotNumber: ``,
+        cardAccount: ``
+      },
+      //搜索信息
       searchNumber: ``,
       cardInfo: {
         name: `YongKang`,
@@ -90,7 +97,7 @@ export default {
         });
         return false;
       } else {
-        this.axios.post('http://10.65.35.72:8080/parkingLot/parkingCard/selectUserInfoByPhone', { "phone": this.searchNumber})
+        this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/selectUserInfoByPhone', { "phone": this.searchNumber})
           .then(res => {
             console.log(res.data);
             var data = res.data;
@@ -113,9 +120,15 @@ export default {
     },
     //老用户注册
     createOldCard(){
-      this.axios.post('http://10.65.35.72:8080/parkingLot/parkingCard/createNewParkingByOldUser', { "userId": id,"parkingNum": `001`,"cardNum": this.cardInfo.cardAccount})
+      this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingByOldUser', { "userId": this.oldInfo.id,"parkingNum": this.oldInfo.lotNumber,"cardNum": this.oldInfo.cardAccount})
         .then(res => {
-          console.log(res);
+          if(res.data.message == `OK`){
+              this.$notify({
+                    title: '提示',
+                    message: '老用户注册成功',
+                    type: 'success'
+              });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -124,7 +137,7 @@ export default {
     //新用户注册
     createNewCard() {
       if (this.cardInfo.name && this.cardInfo.phoneNumber && this.cardInfo.lotNumber && this.cardInfo.cardAccount && this.cardInfo.password) {
-        this.axios.post('http://10.65.35.72:8080/parkingLot/parkingCard/createNewParkingCard', { "username": this.cardInfo.name, "phone": this.cardInfo.phoneNumber, "password": this.cardInfo.password,"parkingNum": this.cardInfo.lotNumber,"cardNum": this.cardInfo.cardAccount})
+        this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingCard', { "username": this.cardInfo.name, "phone": this.cardInfo.phoneNumber, "password": this.cardInfo.password,"parkingNum": this.cardInfo.lotNumber,"cardNum": this.cardInfo.cardAccount})
           .then(res => {
             console.log(res);
             //判断为老用户
