@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -41,8 +42,8 @@ public class TestAdminFunction {
 	@Test
 	public void test() {
 		AdminEntity entity = new AdminEntity();
-		entity.setUsername("test");
-		entity.setPassword("test");
+		entity.setUsername("123456");
+		entity.setPassword("123456");
 		entity.setRole(0);  //管理员
 		//userService.insertAdminUser(entity);
 		System.err.println(userService.insertAdminUser(entity));
@@ -54,12 +55,12 @@ public class TestAdminFunction {
 	@Test
 	public void test2() {
 		AdminEntity entity = new AdminEntity();
-		entity.setUsername("test");
-		entity.setPassword("12345");
+		entity.setUsername("123456");
+		entity.setPassword("123456");
 		//entity.setRole(0);
 		AdminEntity user = userService.selectUserByLogin(entity);
-		JsonResult jsonResult = new JsonResult(user);
-		System.out.println(jsonResult);
+		
+		Assert.assertEquals("123456", user.getUsername());
 	}
 	
 	@Test
@@ -75,7 +76,7 @@ public class TestAdminFunction {
 	public void test4() {
 		
 		AdminEntity entity = new AdminEntity();
-		entity.setPassword("1234511");
+		entity.setPassword("1234512");
 		entity.setId(3);
 		userService.updatePasswordById(entity);
 		AdminEntity user = userService.selectAdminUserById(3);

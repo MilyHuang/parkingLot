@@ -32,6 +32,8 @@ public class ParkingLotServiceImpl implements IParkingLotService{
 		JsonResult jsonResult = new JsonResult();
 		//设置初始使用的停车位为0
 		entity.setInuse(0);
+		//设置初始价格为0元/月
+		entity.setPrice(0.0);
 		int rows = parkingLotDao.insertParkingLot(entity);
 		if(rows <= 0) {
 			jsonResult = new JsonResult(new ServiceException("添加停车场失败"));
@@ -50,6 +52,17 @@ public class ParkingLotServiceImpl implements IParkingLotService{
 	public ParkingLotEntity selectParkingLotByNum(String parkingNum) {
 		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(parkingNum);
 		return parkingLot;
+	}
+
+	@Override
+	public JsonResult updateParkingLotPrice(ParkingLotEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingLotDao.updateParkingLotPrice(entity);
+		if(rows <= 0) {
+			jsonResult = new JsonResult(new ServiceException("更新停车场价格失败"));
+			return jsonResult;
+		}
+		return jsonResult;
 	}
 
 }
