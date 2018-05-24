@@ -1,15 +1,9 @@
 <template>
   <div style="width: 980px;">
     <el-table
-    ref="multipleTable"
     :data="adminPackingLotTable"
     tooltip-effect="dark"
-    style="width: 100%"
-    @selection-change="handleSelectionChange">
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
+    style="width: 100%">
     <el-table-column
       label="停车场编号"
       width="100">
@@ -32,7 +26,7 @@
     </el-table-column>
     <el-table-column
       prop="rent"
-      label="租金"
+      label="租金(元/月)"
       show-overflow-tooltip>
     </el-table-column>
   </el-table>
@@ -43,9 +37,9 @@
     <el-dialog title="提示" :visible.sync="deldialogVisible" width="30%">
       <span>是否确定删除选择的停车场？</span>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="deldialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="deldialogVisible = false">确 定</el-button>
-  </span>
+        <el-button @click="deldialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deldialogVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
     <el-dialog title="添加停车场" :visible.sync="adddialogVisible" width="30%">
           停车场编号<el-input v-model="parkinglot.parkingNum" type="text"/>
@@ -54,9 +48,9 @@
           容量<el-input v-model="parkinglot.total" type="text"/>
           租金<el-input v-model="parkinglot.rent" type="text"/>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="adddialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="addPackingLot()">确 定</el-button>
-  </span>
+        <el-button @click="adddialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addPackingLot()">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -64,6 +58,7 @@
 export default {
   data() {
     return {
+      //管理员管理停车场字段
       parkinglot: {
           parkingNum: '',
           parkingName: '',
@@ -71,14 +66,17 @@ export default {
           total: '',
           rent:''
       },
+      //停车场列表
       adminPackingLotTable: [],
-      multipleSelection: [],
+      //删除停车场弹窗
       deldialogVisible: false,
+      //增加停车场弹窗
       adddialogVisible: false
     }
   },
   mounted: function() {
     this.$nextTick(function() {
+      //初始化停车场列表
       this.initPackingLot();
     })
   },
@@ -96,18 +94,6 @@ export default {
         .catch(err => {
           console.log(err);
         })
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     //增加停车场
     addPackingLot(){
@@ -139,10 +125,6 @@ export default {
 .el-table {
   width: 100%;
   font-size: 14px;
-}
-
-thead th{
-  text-align: center;
 }
 
 </style>
