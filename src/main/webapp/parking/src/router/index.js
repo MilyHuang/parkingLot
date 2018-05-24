@@ -14,15 +14,12 @@ import SellManage from '@/components/manager/SellManage'
 import OperatorIndex from '@/components/operator/OperatorIndex'
 import CreateCard from '@/components/operator/CreateCard'
 import SearchCard from '@/components/operator/SearchCard'
-//Actor用户
-import UserIndex from '@/components/user/UserIndex'
-import UserInfo from '@/components/user/UserInfo'
-
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'Login',
       component: Login
@@ -86,25 +83,5 @@ export default new Router({
         },
       ]
     },
-    {
-      // 用户页面
-      path: '/UserIndex',
-      redirect: '/UserIndex/UserInfo',
-      name: 'UserIndex',
-      component: UserIndex,
-      children: [{
-        //个人信息
-          path: '/UserIndex/UserInfo',
-          name: 'UserInfo',
-          component: UserInfo
-        },
-        //停车卡查询
-        // {
-        //   path: '/UserIndex/SearchCard',
-        //   name: 'SearchCard',
-        //   component: SearchCard
-        // },
-      ]
-    },
   ]
-})
+});

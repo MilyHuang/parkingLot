@@ -94,7 +94,7 @@ export default {
   methods: {
     // 初始化列表信息
     init() {
-      this.axios.post(baseURI + '/admin/selectUserForList')
+      this.axios.post(this.baseURI + '/admin/selectUserForList')
         .then(res => {
           this.adminUserTable = [];
           var data = res.data.data;
@@ -144,7 +144,7 @@ export default {
         });
         return false
       } else {
-        this.axios.post(baseURI + '/admin/insertAdminUser', { "username": this.adduser.username, "password": this.adduser.password, "role": this.adduser.usertype })
+        this.axios.post(this.baseURI + '/admin/insertAdminUser', { "username": this.adduser.username, "password": this.adduser.password, "role": this.adduser.usertype })
           .then(res => {
             console.log(res);
             var data = res.data;
@@ -172,7 +172,7 @@ export default {
     // 删除用户
     delUser() {
       console.log(this.delUserId[0]);
-      this.axios.post(baseURI + '/admin/deleteAdminUser', { "datas": this.delUserId })
+      this.axios.post(this.baseURI + '/admin/deleteAdminUser', { "datas": this.delUserId })
         .then(res => {
           console.log(res);
           if (res.data.state == 1) {
@@ -212,7 +212,7 @@ export default {
         });
         return false
       } else {
-        this.axios.post(baseURI + '/admin/updatePasswordById', { "id": id, "password": this.updateCode.code })
+        this.axios.post(this.baseURI + '/admin/updatePasswordById', { "id": id, "password": this.updateCode.code })
           .then(res => {
             console.log(res);
             this.updateCodeVisible = false;

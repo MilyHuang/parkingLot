@@ -25,17 +25,17 @@
                  </template>
 	            </el-table-column>
 	            <el-table-column
-	            label="价格"
+	            label="价格(元/月)"
 	            width="120">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.price + "￥" }} </span>
+                 	<span>{{scope.row.price}} </span>
                  </template>
                 </el-table-column>
                  <el-table-column
-	            label="租金"
+	            label="租金(元/月)"
 	            width="120">
                  <template slot-scope="scope">
-                 	<span>{{scope.row.rent  + "￥"}}</span>
+                 	<span>{{scope.row.rent}}</span>
                  </template>
                 </el-table-column>
                 <!-- <el-table-column
@@ -117,7 +117,7 @@
 				//修改的价格
 				modifyPrice: '1000',
 				//停车场数据
-				sellData: [{
+				sellData: [/*{
 					lotId: '01',
 					lotName: '天河停车场',
 					price: '999￥',
@@ -137,7 +137,7 @@
 					lotName: '荔湾停车场',
 					price: '999￥',
 					totalCount: 100
-				}],
+				}*/],
 				
 				
 			}
@@ -145,7 +145,7 @@
 		methods:{
 			// 加载停车场
 		    loadParkingLot(){
-		    	this.axios.get(this.kangip + `/parkingLot/parkinglot/selectParkinglot`)
+		    	this.axios.get(this.baseURI + `/parkinglot/selectParkinglot`)
 		    	.then(res => {
 		    		this.sellData = res.data.data;
 		    	})
@@ -161,7 +161,7 @@
                 this.priceFormVisible = false;
                 if(typeof(this.modifyPrice) == `number` 
                    && this.modifyPrice > 0){
-                	this.axios.post(this.kangip + `/parkingLot/parkinglot/updateParkingLotPrice`,{
+                	this.axios.post(this.baseURI + `/parkinglot/updateParkingLotPrice`,{
                 		parkingNum: this.currentLotId,
                 		price: this.modifyPrice
                 	}).then( res => {

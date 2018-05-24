@@ -74,11 +74,11 @@ export default {
       //搜索信息
       searchNumber: ``,
       cardInfo: {
-        name: `YongKang`,
-        phoneNumber: `110`,
-        lotNumber: `001`,
-        cardAccount: `85280110`,
-        password: `12345678`
+        name: ``,
+        phoneNumber: ``,
+        lotNumber: ``,
+        cardAccount: ``,
+        password: ``
       },
       formLabelAlign: {
         name: '123',
@@ -97,7 +97,7 @@ export default {
         });
         return false;
       } else {
-        this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/selectUserInfoByPhone', { "phone": this.searchNumber})
+        this.axios.post(this.baseURI + '/parkingCard/selectUserInfoByPhone', { "phone": this.searchNumber})
           .then(res => {
             console.log(res.data);
             var data = res.data;
@@ -120,7 +120,7 @@ export default {
     },
     //老用户注册
     createOldCard(){
-      this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingByOldUser', { "userId": this.oldInfo.id,"parkingNum": this.oldInfo.lotNumber,"cardNum": this.oldInfo.cardAccount})
+      this.axios.post(this.baseURI +'/parkingCard/createNewParkingByOldUser', { "userId": this.oldInfo.id,"parkingNum": this.oldInfo.lotNumber,"cardNum": this.oldInfo.cardAccount})
         .then(res => {
           if(res.data.message == `OK`){
               this.$notify({
@@ -137,7 +137,7 @@ export default {
     //新用户注册
     createNewCard() {
       if (this.cardInfo.name && this.cardInfo.phoneNumber && this.cardInfo.lotNumber && this.cardInfo.cardAccount && this.cardInfo.password) {
-        this.axios.post('http://10.65.35.180:8080/parkingLot/parkingCard/createNewParkingCard', { "username": this.cardInfo.name, "phone": this.cardInfo.phoneNumber, "password": this.cardInfo.password,"parkingNum": this.cardInfo.lotNumber,"cardNum": this.cardInfo.cardAccount})
+        this.axios.post(this.baseURI + '/parkingCard/createNewParkingCard', { "username": this.cardInfo.name, "phone": this.cardInfo.phoneNumber, "password": this.cardInfo.password,"parkingNum": this.cardInfo.lotNumber,"cardNum": this.cardInfo.cardAccount})
           .then(res => {
             console.log(res);
             //判断为老用户

@@ -2,7 +2,7 @@
   <div style="width: 980px;">
     <el-table
     ref="multipleTable"
-    :data="tableData3"
+    :data="adminPackingLotTable"
     tooltip-effect="dark"
     style="width: 100%"
     @selection-change="handleSelectionChange">
@@ -13,10 +13,10 @@
     <el-table-column
       label="停车场编号"
       width="100">
-      <template slot-scope="scope">{{ scope.row.id }}</template>
+      <template slot-scope="scope">{{ scope.row.parkingNum }}</template>
     </el-table-column>
     <el-table-column
-      prop="name"
+      prop="parkingName"
       label="停车场名"
       width="100">
     </el-table-column>
@@ -26,8 +26,13 @@
       width="300">
     </el-table-column>
     <el-table-column
-      prop="number"
+      prop="total"
       label="容量"
+      width="200">
+    </el-table-column>
+    <el-table-column
+      prop="rent"
+      label="租金"
       show-overflow-tooltip>
     </el-table-column>
   </el-table>
@@ -43,15 +48,14 @@
   </span>
     </el-dialog>
     <el-dialog title="添加停车场" :visible.sync="adddialogVisible" width="30%">
-      <form method="post">
-          停车场编号<el-input v-model="parkinglot.id" type="text"/>
-          停车场名<el-input v-model="parkinglot.name" type="text"/>
+          停车场编号<el-input v-model="parkinglot.parkingNum" type="text"/>
+          停车场名<el-input v-model="parkinglot.parkingName" type="text"/>
           地址<el-input v-model="parkinglot.address" type="text"/>
-          容量<el-input v-model="parkinglot.number" type="text"/>
-        </form>
+          容量<el-input v-model="parkinglot.total" type="text"/>
+          租金<el-input v-model="parkinglot.rent" type="text"/>
       <span slot="footer" class="dialog-footer">
     <el-button @click="adddialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="adddialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="addPackingLot()">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -61,29 +65,38 @@ export default {
   data() {
     return {
       parkinglot: {
-          id: '',
-          name: '',
+          parkingNum: '',
+          parkingName: '',
           address: '',
-          number: ''
+          total: '',
+          rent:''
       },
-      tableData3: [{
-          id: '1',
-          name: 'pl1',
-          address: '上海市普陀区金沙江路 1518 弄',
-          number: 55
-        }, {
-         id: '2',
-          name: 'pl2',
-          address: '上海市普陀区金沙江路 1518 弄',
-          number: 70
-        }],
+      adminPackingLotTable: [],
       multipleSelection: [],
       deldialogVisible: false,
       adddialogVisible: false
     }
   },
-
+  mounted: function() {
+    this.$nextTick(function() {
+      this.initPackingLot();
+    })
+  },
   methods: {
+    initPackingLot(){
+      this.axios.post(this.baseURI +'/parkinglot/selectParkinglot')
+        .then(res => {
+          this.adminPackingLotTable = [];
+          var data = res.data.data;
+          for (var i = 0; i < data.length; i++) {
+            this.adminPackingLotTable.push(data[i]);
+          }
+          console.log(this.adminPackingLotTable);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -95,6 +108,27 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    //增加停车场
+    addPackingLot(){
+      if (this.parkinglot.parkingNum && this.parkinglot.parkingName && this.parkinglot.address && this.parkinglot.total&& this.parkinglot.rent) {
+        this.axios.post(this.baseURI + '/parkinglot/insertParkinglot', { "parkingNum": this.parkinglot.parkingNum, "parkingName": this.parkinglot.parkingName, "address": this.parkinglot.address,"total": this.parkinglot.total,"rent": this.parkinglot.rent })
+          .then(res => { //插入成功执行
+            console.log(res);
+            this.adddialogVisible = false;
+            this.initPackingLot();
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }else{ //插入失败执行
+          this.$notify({ 
+          title: '提示信息',
+          message: '请填写完整',
+          type: 'error'
+        });
+        return false
+      }
     }
   }
 }

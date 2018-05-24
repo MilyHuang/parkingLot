@@ -58,7 +58,7 @@ export default {
         return false
       }else{
         //登录接口
-        this.axios.post(baseURI+'/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
+        this.axios.post(this.baseURI+'/admin/selectUserByLogin',{"username":this.userInfo.username,"password":this.userInfo.password})
         .then(res => {
           console.log(res);
           if (res.status == 200) {
