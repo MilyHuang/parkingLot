@@ -14,17 +14,17 @@ import java.util.Date;
 public class ParkingRecordEntity implements Serializable{
 
 	/**
-	 *ffffffffffffffff
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	/**系统id*/
 	private Integer id;
-	/**用户表ID*/
-	private Integer userId;
-	/**停车场ID*/
-	private Integer parkingId;
-	/**停车卡ID*/
-	private Integer cardId;
+	/**用户手机号*/
+	private String phone;
+	/**停车场编号*/
+	private String parkingNum;
+	/**停车卡编号*/
+	private String cardNum;
 	/**停车时间*/
 	private Date checkinTime;
 	/**取车时间*/
@@ -37,23 +37,24 @@ public class ParkingRecordEntity implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getUserId() {
-		return userId;
+
+	public String getPhone() {
+		return phone;
 	}
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public Integer getParkingId() {
-		return parkingId;
+	public String getParkingNum() {
+		return parkingNum;
 	}
-	public void setParkingId(Integer parkingId) {
-		this.parkingId = parkingId;
+	public void setParkingNum(String parkingNum) {
+		this.parkingNum = parkingNum;
 	}
-	public Integer getCardId() {
-		return cardId;
+	public String getCardNum() {
+		return cardNum;
 	}
-	public void setCardId(Integer cardId) {
-		this.cardId = cardId;
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
 	}
 	public Date getCheckinTime() {
 		return checkinTime;
@@ -75,8 +76,8 @@ public class ParkingRecordEntity implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "ParkingRecordEntity [id=" + id + ", userId=" + userId + ", parkingId=" + parkingId + ", cardId="
-				+ cardId + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
+		return "ParkingRecordEntity [id=" + id + ", phone=" + phone + ", parkingNum=" + parkingNum + ", cardNum="
+				+ cardNum + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
 	}
 	
 	
