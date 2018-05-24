@@ -1,0 +1,4 @@
+1.login
+ URL:http://10.65.35.190:8080/parkingLot/userinfo/login
+  input:phone,password
+  outout:id ,username,phone
