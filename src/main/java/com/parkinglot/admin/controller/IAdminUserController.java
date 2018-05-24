@@ -8,8 +8,6 @@ package com.parkinglot.admin.controller;
 
 */
 
-import java.util.List;
-
 import com.parkinglot.admin.entity.AdminEntity;
 import com.parkinglot.admin.entity.Datas;
 import com.parkinglot.common.util.JsonResult;

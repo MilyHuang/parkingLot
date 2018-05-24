@@ -5,19 +5,23 @@
 	<resultMap id="BaseResultMap"
 		type="com.parkinglot.admin.entity.ParkingCardEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="users_id" property="usersId" jdbcType="INTEGER" />
+		<result column="users_id" property="userId" jdbcType="INTEGER" />
 		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
+		<result column="state" property="state" jdbcType="INTEGER" />
 	</resultMap>
 
 
 	<!-- 办理停车卡 -->
 	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
-		INSERT INTO parking_card(users_id,parking_num,card_num)
+		INSERT INTO parking_card(users_id,parking_num,card_num,createdTime,state)
 		VALUES(
-			#{usersId,jdbcType=INTEGER},
+			#{userId,jdbcType=INTEGER},
 			#{parkingNum,jdbcType=VARCHAR},
-			#{cardNum,jdbcType=VARCHAR}
+			#{cardNum,jdbcType=VARCHAR},
+			now(),
+			#{state,jdbcType=INTEGER}
 		)
 	</insert>
 

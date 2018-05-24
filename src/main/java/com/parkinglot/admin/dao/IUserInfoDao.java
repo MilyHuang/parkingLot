@@ -26,4 +26,11 @@ public interface IUserInfoDao {
 	 * @return
 	 */
 	UsersInfoEntity selectUserInfoByPhone(@Param("phone") String phone);
+	
+	/**
+	 * 用户登录
+	 * @param entity
+	 * @return
+	 */
+	UsersInfoEntity selectUserInfoByLogin(UsersInfoEntity entity);
 }

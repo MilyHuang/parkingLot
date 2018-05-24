@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IParkingCardController;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
+import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
@@ -43,15 +45,21 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	@Autowired
 	private IParkingLotService parkingService;
 	
+	
 	/**
 	 * 新用户办理停车卡
 	 */
-	@RequestMapping("/createNewParkingCard")
+	@RequestMapping(value = "/createNewParkingCard" ,method = RequestMethod.POST)
 	@ResponseBody
 	@Override
-	public JsonResult createNewParkingCard(@RequestBody UsersInfoEntity userEntity,  @RequestBody ParkingCardEntity cardEntity) {
-		logger.info(userEntity);
-		logger.info(cardEntity);
+	public JsonResult createNewParkingCard(@RequestBody UserAndCardEntity entity) {
+		UsersInfoEntity userEntity = new UsersInfoEntity();
+		userEntity.setPhone(entity.getPhone());
+		userEntity.setUsername(entity.getUsername());
+		userEntity.setPassword(entity.getPassword());
+		ParkingCardEntity cardEntity = new ParkingCardEntity();
+		cardEntity.setParkingNum(entity.getParkingNum());
+		cardEntity.setCardNum(entity.getCardNum());
 		JsonResult jsonResult = new JsonResult();
 		//判断输入的信息是否为null
 		if(userEntity == null || cardEntity == null) {
@@ -62,8 +70,6 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 				UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
 				//查询停车卡号是否存在
 				ParkingCardEntity card = cardService.selectParkingCardByCardNum(cardEntity.getCardNum(), cardEntity.getParkingNum());
-				System.err.println(user);
-				System.err.println(card);
 				//如果该用户存在
 				if(user != null) {
 					jsonResult = new JsonResult(user);
@@ -71,15 +77,13 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 				}else if(card != null) {
 					jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
 					return jsonResult;
-				}else if(!isHasParkingLot(cardEntity.getCardNum())) {
-					System.err.println(isHasParkingLot(cardEntity.getParkingNum()));
+				}else if(isHasParkingLot(cardEntity.getCardNum())) {
 					jsonResult = new JsonResult(new ServiceException("不存在该编号的停车场"));
 					return jsonResult;
 				}else {
 					//注册新用户
 					userService.insertUserInfo(userEntity);
-					cardEntity.setUsersId(userEntity.getId());
-					System.err.println("id:"+userEntity.getId());
+					cardEntity.setUserId(userEntity.getId());
 					//添加停车卡
 					cardService.insertParkingCard(cardEntity);
 					return jsonResult;
@@ -97,7 +101,6 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 		JsonResult jsonResult = new JsonResult();
 		//判断输入的信息是否为空
 		if(cardEntity == null) {
-			System.err.println(cardEntity);
 			jsonResult = new JsonResult(new ServiceException("输入的信息不能为空"));
 			return jsonResult;
 		}
@@ -106,7 +109,7 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 		if(card != null) {
 			jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
 			return jsonResult;
-		}else if(!isHasParkingLot(cardEntity.getCardNum())) {
+		}else if(isHasParkingLot(cardEntity.getCardNum())) {
 			jsonResult = new JsonResult(new ServiceException("不存在该编号的停车场"));
 			return jsonResult;
 		}else {
@@ -119,20 +122,23 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	@RequestMapping("/selectUserInfoByPhone")
 	@ResponseBody
 	@Override
-	public JsonResult selectUserByPhone(@RequestBody String phone) {
+	public JsonResult selectUserByPhone(@RequestBody UsersInfoEntity userEntity) {
+		System.out.println(userEntity.getPhone());
 		JsonResult jsonResult = new JsonResult();
-		if(phone == null) {
+		if(userEntity.getPhone() == null) {
 			jsonResult = new JsonResult(new ServiceException("查询的手机号不能为空"));
 			return jsonResult;
 		}
-		UsersInfoEntity user = userService.selectUserInfoByPhone(phone);
+		UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
+		System.out.println(user);
 		//查询不到该用户
 		if(user == null) {
 			jsonResult = new JsonResult(new ServiceException("该用户不存在"));
 			return jsonResult;
+		}else {
+			jsonResult = new JsonResult(user);
+			return jsonResult;
 		}
-		jsonResult = new JsonResult(user);
-		return jsonResult;
 	}
 	
 	/***
@@ -141,11 +147,12 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	 * @return  不存在则返回false ，存在则返回true
 	 */
 	private boolean isHasParkingLot(String parkingNum) {
-		boolean flag = true;
+		boolean flag = false;
 		ParkingLotEntity parking = parkingService.selectParkingLotByNum(parkingNum);
 		//如果为Null,则不存在该编号的停车场
-		if(parking==null) {
-			flag = false;
+		if(parking!=null) {
+			flag = true;
+			return flag;
 		}
 		return flag; 
 	}

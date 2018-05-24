@@ -1,6 +1,7 @@
 package com.parkinglot.admin.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
 @Description:停车卡实体类
@@ -19,22 +20,28 @@ public class ParkingCardEntity implements Serializable{
 	/**系统ID*/
 	private Integer id;
 	/**用户信息表ID*/
-	private Integer usersId;
+	private Integer userId;
 	/**停车场编号*/
 	private String parkingNum;
 	/**停车卡号*/
 	private String cardNum;
+	/**创建时间*/
+	private Date createdTime;
+	/**卡的状态 0可用，1不可用*/
+	private Integer state ;
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getUsersId() {
-		return usersId;
+	
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setUsersId(Integer usersId) {
-		this.usersId = usersId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	public String getCardNum() {
 		return cardNum;
@@ -49,10 +56,24 @@ public class ParkingCardEntity implements Serializable{
 	public void setParkingNum(String parkingNum) {
 		this.parkingNum = parkingNum;
 	}
+	
+	
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	@Override
 	public String toString() {
-		return "ParkingCardEntity [id=" + id + ", usersId=" + usersId + ", parkingNum=" + parkingNum + ", cardNum="
-				+ cardNum + "]";
+		return "ParkingCardEntity [id=" + id + ", userId=" + userId + ", parkingNum=" + parkingNum + ", cardNum="
+				+ cardNum + ", createdTime=" + createdTime + ", state=" + state + "]";
 	}
 	
 	

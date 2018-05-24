@@ -5,17 +5,13 @@
 	<resultMap id="BaseResultMap"
 		type="com.parkinglot.admin.entity.ParkingRecordEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="user_id" property="userId" jdbcType="INTEGER" />
-		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
-		<result column="card_id" property="cardId" jdbcType="INTEGER" />
-		<result column="checkin_time" property="checkinTime" jdbcType="DATETIME" />
-		<result column="ckeckout_time" property="checkoutTime" jdbcType="DATETIME" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="checkin_time" property="checkinTime" jdbcType="TIMESTAMP" />
+		<result column="checkout_time" property="checkoutTime" jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
 	</resultMap>
-
-
-
-
 
 
 

@@ -22,9 +22,9 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
-@Service("com.parkinglot.admin.service.impl.AdminUserServiceImpl")
-@Transactional
-//@Service
+//@Transactional
+//@Service("com.parkinglot.admin.service.impl.AdminUserServiceImpl")
+@Service
 public class AdminUserServiceImpl implements IAdminUserService{
 
 	 private static Logger logger = Logger.getLogger(AdminUserServiceImpl.class);

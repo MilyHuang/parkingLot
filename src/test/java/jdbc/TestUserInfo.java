@@ -51,4 +51,17 @@ public class TestUserInfo {
 		}
 	}
 	
+	/**
+	 * 测试登录
+	 */
+	@Test
+	public void test2() {
+		
+		UsersInfoEntity entity = new UsersInfoEntity();
+		entity.setPhone("13012341234");
+		entity.setPassword("1234561");
+		UsersInfoEntity user = userService.selectUserInfoByLogin(entity);
+		System.out.println(user);
+	}
+	
 }

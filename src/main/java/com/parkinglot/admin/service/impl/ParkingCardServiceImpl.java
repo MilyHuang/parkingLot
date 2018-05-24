@@ -18,7 +18,7 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
-@Transactional
+//@Transactional
 @Service("com.parkinglot.admin.service.impl.ParkingCardServiceImpl")
 public class ParkingCardServiceImpl implements IParkingCardService{
 	
@@ -28,6 +28,7 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	@Override
 	public JsonResult insertParkingCard(ParkingCardEntity entity) {
 		JsonResult jsonResult = new JsonResult();
+		entity.setState(0);
 		//办理停车卡
 		int rows = cardDao.insertParkingCard(entity);
 		if(rows <=0 ) {

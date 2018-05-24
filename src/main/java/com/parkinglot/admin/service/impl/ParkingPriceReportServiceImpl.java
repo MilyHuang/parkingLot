@@ -11,7 +11,7 @@ import com.parkinglot.admin.service.IParkingPriceReportService;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
 
-@Transactional
+//@Transactional
 @Service("com.parkinglot.admin.service.impl.ParkingPriceReportServiceImpl")
 public class ParkingPriceReportServiceImpl implements IParkingPriceReportService {
 

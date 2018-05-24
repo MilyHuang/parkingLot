@@ -20,7 +20,7 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
-@Transactional
+//@Transactional
 @Service("com.parkinglot.admin.service.impl.ParkingLotServiceImpl")
 public class ParkingLotServiceImpl implements IParkingLotService{
 

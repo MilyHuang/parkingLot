@@ -17,7 +17,6 @@ import com.parkinglot.admin.service.IParkingRecordService;
 @Service
 public class ParkingRecordServiceImpl implements IParkingRecordService{
 	
-	@Autowired
-	private IParkingRecordDao recodeDao;
+	
 
 }

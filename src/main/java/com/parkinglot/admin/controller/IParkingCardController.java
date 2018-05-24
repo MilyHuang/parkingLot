@@ -9,6 +9,7 @@ package com.parkinglot.admin.controller;
 */
 
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.common.util.JsonResult;
 
@@ -19,7 +20,7 @@ public interface IParkingCardController {
 	 * @param cardEntity 停车卡信息
 	 * @return
 	 */
-	JsonResult createNewParkingCard(UsersInfoEntity userEntity,ParkingCardEntity cardEntity);
+	JsonResult createNewParkingCard(UserAndCardEntity entity);
 	
 	/**
 	 * 老用户办卡
@@ -33,7 +34,7 @@ public interface IParkingCardController {
 	 * @param phone 手机号
 	 * @return
 	 */
-	JsonResult selectUserByPhone(String phone);
+	JsonResult selectUserByPhone(UsersInfoEntity userEntity);
 	
 	
 }

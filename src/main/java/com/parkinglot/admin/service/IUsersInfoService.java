@@ -28,4 +28,11 @@ public interface IUsersInfoService {
 	 * @return
 	 */
 	UsersInfoEntity selectUserInfoByPhone(String phone);
+	
+	/**
+	 * 登录
+	 * @param entity
+	 * @return
+	 */
+	UsersInfoEntity selectUserInfoByLogin(UsersInfoEntity entity);
 }

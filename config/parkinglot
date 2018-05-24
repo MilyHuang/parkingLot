@@ -3,10 +3,10 @@
 	
 2.add parking lot
 	url:http://10.65.35.180:8080/parkingLot/parkinglot/insertParkinglot
-	input:parking_num,parking_name,address,total,rent
+	input:parkingNum,parkingName,address,total,rent
 	
 3.select user by phone 通过手机号查询用户信息
-	url:url:http://10.65.35.180:8080/parkingLot/parkingCard/selectUserInfoByPhone
+	url:http://10.65.35.180:8080/parkingLot/parkingCard/selectUserInfoByPhone
 	input:phone
 	output:id,username,phone
 	

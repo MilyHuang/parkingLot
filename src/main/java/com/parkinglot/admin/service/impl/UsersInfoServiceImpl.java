@@ -19,7 +19,7 @@ import com.parkinglot.common.util.JsonResult;
 @Email:Mily-ML.Huang@aia.com
 
 */
-@Transactional
+//@Transactional
 @Service("com.parkinglot.admin.service.impl.UsersInfoServiceImpl")
 public class UsersInfoServiceImpl implements IUsersInfoService{
 
@@ -44,5 +44,15 @@ public class UsersInfoServiceImpl implements IUsersInfoService{
 		UsersInfoEntity user = userDao.selectUserInfoByPhone(phone);
 		return user;
 	}
+
+	@Override
+	public UsersInfoEntity selectUserInfoByLogin(UsersInfoEntity entity) {
+		UsersInfoEntity user = new UsersInfoEntity();
+		entity.setPassword(MD5Util.md5(entity.getPassword()));
+		user = userDao.selectUserInfoByLogin(entity);
+		return user;
+	}
+	
+	
 
 }

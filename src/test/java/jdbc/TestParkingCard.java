@@ -40,11 +40,11 @@ public class TestParkingCard {
 	public void test1() {
 		ParkingCardEntity entity = new ParkingCardEntity();
 		entity.setParkingNum("001");
-		entity.setUsersId(1);
-		entity.setCardNum("2018052201");
+		entity.setUserId(1);
+		entity.setCardNum("2018052205");
 		ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum(),entity.getParkingNum());
 		System.err.println(card);
-		//cardService.insertParkingCard(entity);
+		cardService.insertParkingCard(entity);
 		System.err.println("添加成功");
 	}
 	
