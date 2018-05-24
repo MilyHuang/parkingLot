@@ -55,6 +55,7 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 	@ResponseBody
 	@Override
 	public JsonResult insertParkingLot(@RequestBody ParkingLotEntity entity) {
+		System.out.println(entity);
 		JsonResult jsonResult = new JsonResult();
 		if (entity == null) {
 			jsonResult = new JsonResult(new ServiceException("输入的停车场信息不能为空"));
