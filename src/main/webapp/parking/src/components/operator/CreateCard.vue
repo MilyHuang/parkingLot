@@ -5,6 +5,7 @@
       <el-button type="primary" @click="SelectUser()">查找</el-button>
       <div class="tip" v-show="isDisabled">今日办卡业务暂停</div>
       <div v-if="changeFlag">
+        <div class="tit">新用户办卡页面</div>
       <el-form ref="cardInfo" :model="cardInfo" label-width="50px"  :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
@@ -32,6 +33,7 @@
       </el-form>
       </div>
       <div v-else="changeFlag">
+        <div class="tit">老用户办卡页面</div>
        <el-form ref="oldInfo" :model="oldInfo" label-width="50px" :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
@@ -43,11 +45,11 @@
         </el-form-item>
         <el-form-item>
           <span>停车场编号</span>
-          <el-input v-model="oldInfo.lotNumber"></el-input>
+          <el-input v-model="oldInfo.lotNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <span>卡号</span>
-          <el-input v-model="oldInfo.cardAccount"></el-input>
+          <el-input v-model="oldInfo.cardAccount" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <a href="#" @click="changeFlag = true">为其他用户办理新卡</a>
@@ -246,6 +248,15 @@ export default {
 
 </script>
 <style scoped>
+.tit{
+  position: absolute;
+  left: 400px;
+  width: 40px;
+  height: 300px;
+  font-size: 25px;
+  color: #98d0f2;
+  /* background-color: #ccc; */
+}
 .tip{
   margin-bottom: 20px;
   color: #f00;
