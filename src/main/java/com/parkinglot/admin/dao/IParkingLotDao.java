@@ -41,4 +41,12 @@ public interface IParkingLotDao {
 	 * @return
 	 */
     int updateParkingLotPrice(ParkingLotEntity entity);	
+    
+   /**
+    * 更改停车场使用情况
+    * @param parkingNum  停车场编号
+    * @param inuse  已使用车位
+    * @return
+    */
+    int updateParkingLotInuse(@Param("parkingNum") String parkingNum,@Param("inuse") int inuse);
 }

@@ -39,7 +39,7 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
-	public ParkingCardEntity selectParkingCardByCardNum(String cardNum,String parkingNum) {
+	public ParkingCardEntity selectParkingCardByCardNumAndParkingNum(String cardNum,String parkingNum) {
 		return cardDao.selectCardByCardNum(cardNum,parkingNum);
 	}
 

@@ -27,7 +27,7 @@
 
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
-		SELECT id,users_id,parking_num,card_num
+		SELECT id,users_id,parking_num,card_num,createdTime,state
 		FROM parking_card
 		WHERE 
 			card_num=#{cardNum,jdbcType=VARCHAR}

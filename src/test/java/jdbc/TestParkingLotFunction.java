@@ -80,4 +80,12 @@ public class TestParkingLotFunction {
 		parkingLotService.updateParkingLotPrice(entity);
 	}
 	
+	@Test
+	public void test5() {
+		JsonResult jsonResult = new JsonResult();
+		jsonResult = parkingLotService.updateParkingLotInuse("007");
+		System.out.println(jsonResult);
+		System.out.println(parkingLotService.selectParkingLotByNum("007"));
+		}
+	
 }

@@ -25,5 +25,5 @@ public interface IParkingCardService {
 	 * @param parkingNum 停车场编号
 	 * @return
 	 */
-	ParkingCardEntity selectParkingCardByCardNum(String cardNum,String parkingNum);
+	ParkingCardEntity selectParkingCardByCardNumAndParkingNum(String cardNum,String parkingNum);
 }

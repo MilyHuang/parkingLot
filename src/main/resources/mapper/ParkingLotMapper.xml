@@ -48,4 +48,14 @@
          where parking_num = #{parkingNum,jdbcType=VARCHAR}
    </update>
 
+	<!-- 更新停车场使用情况 -->
+	<update id="updateParkingLotInuse">
+		UPDATE parking_lot 
+			<if test="inuse != null">
+				SET inuse=#{inuse,jdbcType=INTEGER}
+			</if>
+		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
+	</update>
+	
+	
 </mapper>

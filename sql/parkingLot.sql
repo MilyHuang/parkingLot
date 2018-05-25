@@ -80,7 +80,7 @@ alter table parking_record add constraint flag_check check(flag in(0,1));
 
 
 
-
+insert into parking_record(phone,parking_num,card_num,checkin_time,flag) values('12','123','123',now(),0);
 
 
 

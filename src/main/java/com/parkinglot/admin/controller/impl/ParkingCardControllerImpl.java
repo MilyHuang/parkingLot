@@ -1,6 +1,7 @@
 package com.parkinglot.admin.controller.impl;
 
-import java.util.PrimitiveIterator.OfDouble;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,11 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 		cardEntity.setParkingNum(entity.getParkingNum());
 		cardEntity.setCardNum(entity.getCardNum());
 		JsonResult jsonResult = new JsonResult();
+		//判断当前是否是出账日，出账日不能办理新卡
+		if(isLastDay()) {
+			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
+			return jsonResult;
+		}
 		//判断输入的信息是否为null
 		if(userEntity == null || cardEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("输入的信息不能为空"));
@@ -69,7 +75,7 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 			//查询该用户是否存在，如果存在则反显用户信息
 				UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
 				//查询停车卡号是否存在
-				ParkingCardEntity card = cardService.selectParkingCardByCardNum(cardEntity.getCardNum(), cardEntity.getParkingNum());
+				ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(cardEntity.getCardNum(), cardEntity.getParkingNum());
 				//如果该用户存在
 				if(user != null) {
 					jsonResult = new JsonResult(user);
@@ -77,8 +83,10 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 				}else if(card != null) {
 					jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
 					return jsonResult;
-				}else if(isHasParkingLot(cardEntity.getCardNum())) {
-					jsonResult = new JsonResult(new ServiceException("不存在该编号的停车场"));
+				}else if(isHasParkingLot(cardEntity.getParkingNum())) {
+					System.out.println(cardEntity.getParkingNum());
+					jsonResult = new JsonResult(new ServiceException("该编号停车场不存在"));
+					System.out.println(jsonResult);
 					return jsonResult;
 				}else {
 					//注册新用户
@@ -99,18 +107,23 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	@Override
 	public JsonResult createNewParkingCardByOldUser(@RequestBody ParkingCardEntity cardEntity) {
 		JsonResult jsonResult = new JsonResult();
+		//判断当前是否是出账日，出账日不能办理新卡
+		if(isLastDay()) {
+			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
+			return jsonResult;
+		}
 		//判断输入的信息是否为空
 		if(cardEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("输入的信息不能为空"));
 			return jsonResult;
 		}
 		//查询停车卡号是否存在
-		ParkingCardEntity card = cardService.selectParkingCardByCardNum(cardEntity.getCardNum(), cardEntity.getParkingNum());
+		ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(cardEntity.getCardNum(), cardEntity.getParkingNum());
 		if(card != null) {
 			jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
 			return jsonResult;
-		}else if(isHasParkingLot(cardEntity.getCardNum())) {
-			jsonResult = new JsonResult(new ServiceException("不存在该编号的停车场"));
+		}else if(isHasParkingLot(cardEntity.getParkingNum())) {
+			jsonResult = new JsonResult(new ServiceException("该停车场编号不存在"));
 			return jsonResult;
 		}else {
 			//添加停车卡
@@ -123,14 +136,12 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	@ResponseBody
 	@Override
 	public JsonResult selectUserByPhone(@RequestBody UsersInfoEntity userEntity) {
-		System.out.println(userEntity.getPhone());
 		JsonResult jsonResult = new JsonResult();
 		if(userEntity.getPhone() == null) {
 			jsonResult = new JsonResult(new ServiceException("查询的手机号不能为空"));
 			return jsonResult;
 		}
 		UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
-		System.out.println(user);
 		//查询不到该用户
 		if(user == null) {
 			jsonResult = new JsonResult(new ServiceException("该用户不存在"));
@@ -144,18 +155,33 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 	/***
 	 * 判断该停车场是否存在
 	 * @param parkingNum  停车场编号
-	 * @return  不存在则返回false ，存在则返回true
+	 * @return  不存在则返回true ，存在则返回false
 	 */
 	private boolean isHasParkingLot(String parkingNum) {
 		boolean flag = false;
 		ParkingLotEntity parking = parkingService.selectParkingLotByNum(parkingNum);
 		//如果为Null,则不存在该编号的停车场
-		if(parking!=null) {
+		if(parking==null) {
 			flag = true;
 			return flag;
 		}
 		return flag; 
 	}
 	
+	/**
+	 * 判断是否是指定的日期
+	 * @return
+	 */
+	private boolean isLastDay() {
+		boolean flag = false;
+		Date date = new Date();
+		SimpleDateFormat time = new SimpleDateFormat("MM/dd");
+		String now = time.format(date);
+		if("03/31".equals(now) || "06/30".equals(now) || "09/30".equals(now) || "12/31".equals(now)) {
+			flag = true;
+			return flag;
+		}
+		return flag;
+	}
 
 }

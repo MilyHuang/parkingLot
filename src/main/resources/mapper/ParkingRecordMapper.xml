@@ -14,7 +14,16 @@
 	</resultMap>
 
 
-
+	<!-- 取车 -->
+	<update id="updateParkingRecord" parameterType="com.parkinglot.admin.entity.ParkingRecordEntity">
+		UPDATE parking_record SET checkout_time=now(),flag=#{flag,jdbcType=INTEGER}
+		WHERE 
+			card_num=#{cardNum,jdbcType=VARCHAR} 
+		AND 
+			parking_num = #{parkingNum,jdbcType=VARCHAR}
+		AND 
+			flag=0
+	</update>
 
 
 

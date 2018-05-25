@@ -79,4 +79,19 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		return jsonResult;
 	}
 
+	@Override
+	public JsonResult updateParkingLotInuse(String parkingNum) {
+		JsonResult jsonResult = new JsonResult();
+		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(parkingNum);
+		int inuse = parkingLot.getInuse()-1;
+		if(inuse>0) {
+			int rows = parkingLotDao.updateParkingLotInuse(parkingNum,inuse);
+			if(rows <=0 ) {
+				jsonResult  = new JsonResult(new ServiceException("更新使用情况失败"));
+				return jsonResult;
+			}
+		}
+		return jsonResult;
+	}
+
 }
