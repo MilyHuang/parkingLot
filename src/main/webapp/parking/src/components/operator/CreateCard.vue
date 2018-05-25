@@ -3,35 +3,36 @@
     
       <el-input v-model="searchNumber" placeholder="请输入手机号"></el-input>
       <el-button type="primary" @click="SelectUser()">查找</el-button>
+      <div class="tip" v-show="isDisabled">今日办卡业务暂停</div>
       <div v-if="changeFlag">
-      <el-form ref="cardInfo" :model="cardInfo" label-width="50px">
+      <el-form ref="cardInfo" :model="cardInfo" label-width="50px"  :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
-          <el-input v-model="cardInfo.name"></el-input>
+          <el-input v-model="cardInfo.name" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <span>电话</span>
-          <el-input v-model="cardInfo.phoneNumber"></el-input>
+          <el-input v-model="cardInfo.phoneNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <span>停车场编号</span>
-          <el-input v-model="cardInfo.lotNumber"></el-input>
+          <el-input v-model="cardInfo.lotNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <span>卡号</span>
-          <el-input v-model="cardInfo.cardAccount"></el-input>
+          <el-input v-model="cardInfo.cardAccount" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
           <span>密码</span>
-          <el-input type="password" v-model="cardInfo.password"></el-input>
+          <el-input type="password" v-model="cardInfo.password" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="deal-button" type="primary" @click="createNewCard()">办理</el-button>
+          <el-button class="deal-button" type="primary" @click="createNewCard()">新用户办理</el-button>
         </el-form-item>
       </el-form>
       </div>
       <div v-else="changeFlag">
-       <el-form ref="oldInfo" :model="oldInfo" label-width="50px">
+       <el-form ref="oldInfo" :model="oldInfo" label-width="50px" :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
           <el-input v-model="oldInfo.username" disabled></el-input>
@@ -49,8 +50,8 @@
           <el-input v-model="oldInfo.cardAccount"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="changeFlag = true">返回</el-button>
-          <el-button class="deal-button" type="primary" @click="createOldCard()">办理</el-button>
+          <a href="#" @click="changeFlag = true">为其他用户办理新卡</a>
+          <el-button class="deal-button" type="primary" @click="createOldCard()">老用户办理</el-button>
         </el-form-item>
       </el-form>  
       </div>
@@ -63,6 +64,9 @@ export default {
     return {
       // 新老用户
       changeFlag: true,
+      //输入框禁用
+      isDisabled:false,
+      isPass:false,
       // 老用户信息
       oldInfo: {
         id: ``,
@@ -87,7 +91,62 @@ export default {
       }
     }
   },
+  mounted: function() {
+    //token路由判断角色跳转
+    this.$nextTick(function () {
+      this.inputDisabled();
+    })
+  },
   methods:{
+    inputDisabled(){
+      var date=new Date();
+      var nowDate=date.getMonth()+1+'/'+date.getDate();
+      if(nowDate=='3/31'/*nowDate=='5/25'*/||nowDate=='6/30'||nowDate=='9/30'||nowDate=='12/31'){
+        console.log(nowDate);
+        this.isDisabled=true;
+      }
+    },
+    newInputLimit(info){
+      if(!(info.name && info.phoneNumber && info.lotNumber && info.cardAccount && info.password)){
+        this.$notify({
+          title: '提示信息',
+          message: '请填写完整',
+          type: 'error'
+        });
+      }
+      else if(!(/^1[34578]\d{9}$/.test(info.phoneNumber))){
+        this.$notify({
+          title: '提示信息',
+          message: '手机号码格式错误',
+          type: 'error'
+        });
+      }else if(!(/^[0-9]*$/.test(info.cardAccount))){
+        this.$notify({
+          title: '提示信息',
+          message: '卡号必须为数字',
+          type: 'error'
+        });
+      }else{
+        this.isPass=true;
+      }
+    },
+    oldInputLimit(info){
+      if(!(info.lotNumber && info.cardAccount)){
+        this.$notify({
+          title: '提示信息',
+          message: '请填写完整',
+          type: 'error'
+        });
+      }else if(!(/^[0-9]*$/.test(info.cardAccount))){
+        this.$notify({
+          title: '提示信息',
+          message: '卡号必须为数字',
+          type: 'error'
+        });
+      }else{
+        this.isPass=true;
+      }
+    },
     SelectUser(){
       if (this.searchNumber == '') {
         this.$notify({
@@ -120,13 +179,23 @@ export default {
     },
     //老用户注册
     createOldCard(){
+      //表单检验
+      this.oldInputLimit(this.oldInfo);
+      if(this.isPass)
       this.axios.post(this.baseURI +'/parkingCard/createNewParkingByOldUser', { "userId": this.oldInfo.id,"parkingNum": this.oldInfo.lotNumber,"cardNum": this.oldInfo.cardAccount})
         .then(res => {
           if(res.data.message == `OK`){
               this.$notify({
                     title: '提示',
-                    message: '老用户注册成功',
+                    message: '老用户办卡成功',
                     type: 'success'
+              });
+              this.isPass=false;
+          }else if(res.data.state == 0){
+            this.$notify({
+                    title: '提示',
+                    message: res.data.message,
+                    type: 'error'
               });
           }
         })
@@ -136,7 +205,9 @@ export default {
     },
     //新用户注册
     createNewCard() {
-      if (this.cardInfo.name && this.cardInfo.phoneNumber && this.cardInfo.lotNumber && this.cardInfo.cardAccount && this.cardInfo.password) {
+      //表单检验
+      this.newInputLimit(this.cardInfo);
+      if(this.isPass)
         this.axios.post(this.baseURI + '/parkingCard/createNewParkingCard', { "username": this.cardInfo.name, "phone": this.cardInfo.phoneNumber, "password": this.cardInfo.password,"parkingNum": this.cardInfo.lotNumber,"cardNum": this.cardInfo.cardAccount})
           .then(res => {
             console.log(res);
@@ -162,26 +233,23 @@ export default {
                     message: '新用户注册成功',
                     type: 'success'
               });
+
             }
-           
+           this.isPass=false;
           })
           .catch(err => {
             console.log(err)
           })
-        }else{
-          this.$notify({
-          title: '提示信息',
-          message: '请填写完整',
-          type: 'error'
-        });
-        return false;
-      }
     },
   }
 }
 
 </script>
 <style scoped>
+.tip{
+  margin-bottom: 20px;
+  color: #f00;
+}
 .create-card {
   overflow: hidden;
   text-align: center;

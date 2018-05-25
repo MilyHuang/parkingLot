@@ -74,7 +74,8 @@
       		    </el-date-picker>
       		</el-form-item> -->
       		<el-form-item label="价格" label-width="180" >
-      			<el-input v-model.number="modifyPrice"></el-input>
+      			<div class="tip" v-show="isDisabled">今日办卡业务暂停</div>
+      			<el-input v-model.number="modifyPrice" :disabled="isDisabled"></el-input>
       		</el-form-item>
       	</el-form>
       	<div slot="footer" class="dialog-footer">
@@ -100,6 +101,8 @@
 				searchNumber: '',
 				// 修改价格弹窗
 				priceFormVisible: false,
+				//输入框隐藏
+				isDisabled:false,
 				//修改停车场Id
 				currentLotId: '1',
 				//修改的价格
@@ -131,6 +134,15 @@
 			}
 		},
 		methods:{
+			//出账日输入限制
+			inputDisabled(){
+	      var date=new Date();
+	      var nowDate=date.getMonth()+1+'/'+date.getDate();
+	      if(/*nowDate=='3/31'*/nowDate=='5/25'||nowDate=='6/30'||nowDate=='9/30'||nowDate=='12/31'){
+	        console.log(nowDate);
+	        this.isDisabled=true;
+	      }
+    	},
 			// 加载停车场
 	    loadParkingLot(){
 	    	this.axios.get(this.baseURI + `/parkinglot/selectParkinglot`)
@@ -147,6 +159,8 @@
 	    // 修改当前停车场价格
 	    modifyLotPrice(){
         this.priceFormVisible = false;
+        this.inputDisabled();
+        if(!this.isDisabled){
         if(typeof(this.modifyPrice) == `number` 
            && this.modifyPrice > 0){
         	this.axios.post(this.baseURI + `/parkinglot/updateParkingLotPrice`,{
@@ -178,6 +192,14 @@
         		type: 'error'
         	});
         }
+        }
+        else{
+        	this.$notify({
+        		title: '提示',
+        		message: '今日为出账日，禁止修改价格',
+        		type: 'error'
+        	});
+        }
 	  	},
     //查看报表
     checkReport(lotName){
@@ -191,6 +213,10 @@
 </script>
 
 <style scoped>
+.tip{
+  margin-bottom: 20px;
+  color: #f00;
+}
 .price-manage {
    width: 90%;
    min-width: 950px;
