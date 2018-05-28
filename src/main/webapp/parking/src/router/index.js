@@ -18,6 +18,7 @@ import SearchCard from '@/components/operator/SearchCard'
 //User
 import UserIndex from '@/components/user/UserIndex'
 import UserInfo from '@/components/user/UserInfo'
+import ParkingManage from '@/components/user/ParkingManage'
 
 Vue.use(Router)
 
@@ -104,12 +105,12 @@ export default new Router({
           name: 'UserInfo',
           component: UserInfo
         },
-        // //停车卡查询
-        // {
-        //   path: '/UserIndex/SearchCard',
-        //   name: 'SearchCard',
-        //   component: SearchCard
-        // },
+        //停车管理
+        {
+          path: '/UserIndex/ParkingManage',
+          name: 'ParkingManage',
+          component: ParkingManage
+        },
       ]
     }
   ]
