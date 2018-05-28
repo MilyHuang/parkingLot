@@ -5,7 +5,7 @@
       <div class="login">
         <form method="post">
           <el-input v-model="userInfo.phone" type="text" placeholder="手机号码" @keyup.13="doLogin"></el-input>
-          <el-input v-model="userInfo.password" type="password" placeholder="密码" @keyup.13="doLogin" />
+          <el-input v-model="userInfo.password" type="password" placeholder="密码" @keyup.13="doLogin"/>
           <el-button type="primary" @click="doLogin">登录</el-button>
         </form>
       </div>
