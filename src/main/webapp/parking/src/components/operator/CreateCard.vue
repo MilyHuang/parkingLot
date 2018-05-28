@@ -8,23 +8,23 @@
       <el-form ref="cardInfo" :model="cardInfo" label-width="50px"  :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
-          <el-input v-model="cardInfo.name" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="cardInfo.name"></el-input>
         </el-form-item>
         <el-form-item>
           <span>电话</span>
-          <el-input v-model="cardInfo.phoneNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="cardInfo.phoneNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <span>停车场编号</span>
-          <el-input v-model="cardInfo.lotNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="cardInfo.lotNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <span>卡号</span>
-          <el-input v-model="cardInfo.cardAccount" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="cardInfo.cardAccount"></el-input>
         </el-form-item>
         <el-form-item>
           <span>密码</span>
-          <el-input type="password" v-model="cardInfo.password" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input type="password" v-model="cardInfo.password"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="deal-button" type="primary" @click="createNewCard()">新用户办理</el-button>
@@ -43,11 +43,11 @@
         </el-form-item>
         <el-form-item>
           <span>停车场编号</span>
-          <el-input v-model="oldInfo.lotNumber" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="oldInfo.lotNumber"></el-input>
         </el-form-item>
         <el-form-item>
           <span>卡号</span>
-          <el-input v-model="oldInfo.cardAccount" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"></el-input>
+          <el-input v-model="oldInfo.cardAccount"></el-input>
         </el-form-item>
         <el-form-item>
           <a href="#" @click="changeFlag = true">为其他用户办理新卡</a>
@@ -95,9 +95,19 @@ export default {
     //token路由判断角色跳转
     this.$nextTick(function () {
       this.inputDisabled();
+      this.spaceLimit();
     })
   },
   methods:{
+    spaceLimit(){
+      var input=document.getElementsByTagName("input");
+      console.log(input);
+      for(var i=0;i<input.length;i++){
+        input[i].onkeyup=function(){
+          this.value=this.value.replace(/^ +| +$/g,'');
+        }
+      }
+    },
     inputDisabled(){
       var date=new Date();
       var nowDate=date.getMonth()+1+'/'+date.getDate();
