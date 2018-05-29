@@ -33,6 +33,17 @@ public class ParkingRecordServiceImpl implements IParkingRecordService{
 		}
 		return jsonResult;
 	}
+
+	@Override
+	public JsonResult insertParkingRecord(ParkingRecordEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		int rows  = recordDao.insertParkingRecord(entity);
+		if(rows <= 0) {
+			jsonResult = new JsonResult(new ServiceException("停车失败"));
+			return jsonResult;
+		}
+		return jsonResult;
+	}
 	
 	
 

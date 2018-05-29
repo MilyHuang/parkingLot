@@ -1,5 +1,7 @@
 package com.parkinglot.admin.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingCardEntity;
@@ -27,4 +29,20 @@ public interface IParkingCardDao {
 	 * @return
 	 */
 	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("parkingNum") String parkingNum);
+	
+	/**
+	 * 查找停车场中能用的卡的总数
+	 * @return
+	 */
+	int selectCards(@Param("parkingNum") String parkingNum);
+	
+	/**
+	 * 停车后更新停车卡信息
+	 * @param entity
+	 * @return
+	 */
+	int updateParkingCard(ParkingCardEntity entity);
+	
+	
+	
 }

@@ -48,4 +48,10 @@ public class TestParkingCard {
 		System.err.println("添加成功");
 	}
 	
+	
+	@Test
+	public void test() {
+		ParkingCardEntity entity = new ParkingCardEntity();
+		System.err.println( cardService.selectCards("002"));
+	}
 }

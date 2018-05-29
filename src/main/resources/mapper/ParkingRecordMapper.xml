@@ -5,27 +5,41 @@
 	<resultMap id="BaseResultMap"
 		type="com.parkinglot.admin.entity.ParkingRecordEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<!-- <result column="phone" property="phone" jdbcType="VARCHAR" /> -->
 		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
 		<result column="checkin_time" property="checkinTime" jdbcType="TIMESTAMP" />
-		<result column="checkout_time" property="checkoutTime" jdbcType="TIMESTAMP" />
+		<result column="checkout_time" property="checkoutTime"
+			jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
 	</resultMap>
 
 
 	<!-- 取车 -->
 	<update id="updateParkingRecord" parameterType="com.parkinglot.admin.entity.ParkingRecordEntity">
-		UPDATE parking_record SET checkout_time=now(),flag=#{flag,jdbcType=INTEGER}
-		WHERE 
-			card_num=#{cardNum,jdbcType=VARCHAR} 
-		AND 
-			parking_num = #{parkingNum,jdbcType=VARCHAR}
-		AND 
-			flag=0
+		UPDATE
+		parking_record SET
+		checkout_time=#{checkoutTime,jdbcType=TIMESTAMP},flag=#{flag,jdbcType=INTEGER}
+		WHERE
+		card_num=#{cardNum,jdbcType=VARCHAR}
+		AND
+		parking_num =
+		#{parkingNum,jdbcType=VARCHAR}
+		AND
+		flag=1
 	</update>
 
-
+	<!--停车 -->
+	<insert id="insertParkingRecord" parameterType="com.parkinglot.admin.entity.ParkingRecordEntity">
+		insert into
+		parking_record (parking_num,card_num,checkin_time,flag)
+		values(
+		#{parkingNum,jdbcType=VARCHAR},
+		#{cardNum,jdbcType=VARCHAR},
+		#{checkinTime,jdbcType=TIMESTAMP},
+		#{flag,jdbcType=INTEGER}
+		)
+	</insert>
 
 
 

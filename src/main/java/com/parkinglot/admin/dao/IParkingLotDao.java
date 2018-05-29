@@ -48,5 +48,5 @@ public interface IParkingLotDao {
     * @param inuse  已使用车位
     * @return
     */
-    int updateParkingLotInuse(@Param("parkingNum") String parkingNum,@Param("inuse") int inuse);
+    int updateParkingLotInuse(ParkingLotEntity entity);
 }

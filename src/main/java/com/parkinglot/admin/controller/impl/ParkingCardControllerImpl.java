@@ -88,7 +88,11 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 					jsonResult = new JsonResult(new ServiceException("该编号停车场不存在"));
 					System.out.println(jsonResult);
 					return jsonResult;
-				}else {
+				}else if(cardService.selectCards(entity.getParkingNum())>=parkingService.selectParkingLotByNum(entity.getParkingNum()).getTotal()){
+					jsonResult = new JsonResult(new ServiceException("该停车场已满"));
+					return jsonResult;
+				}
+				else {
 					//注册新用户
 					userService.insertUserInfo(userEntity);
 					cardEntity.setUserId(userEntity.getId());
@@ -124,6 +128,9 @@ public class ParkingCardControllerImpl implements IParkingCardController{
 			return jsonResult;
 		}else if(isHasParkingLot(cardEntity.getParkingNum())) {
 			jsonResult = new JsonResult(new ServiceException("该停车场编号不存在"));
+			return jsonResult;
+		}else if(cardService.selectCards(cardEntity.getParkingNum())>=parkingService.selectParkingLotByNum(cardEntity.getParkingNum()).getTotal()){
+			jsonResult = new JsonResult(new ServiceException("该停车场已满"));
 			return jsonResult;
 		}else {
 			//添加停车卡

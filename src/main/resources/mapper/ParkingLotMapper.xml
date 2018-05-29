@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.parkinglot.admin.dao.IParkingLotDao" >
- 	 <resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingLotEntity" >
-	    <id column="id" property="id" jdbcType="INTEGER" />
-	    <result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
-	    <result column="parking_name" property="parkingName" jdbcType="NVARCHAR" />
-	    <result column="address" property="address" jdbcType="NVARCHAR" />
-	    <result column="total" property="total" jdbcType="INTEGER" />
-	    <result column="inuse" property="inuse" jdbcType="INTEGER" />
-	    <result column="price" property="price" jdbcType="DOUBLE" />
-	   	<result column="rent" property="rent" jdbcType="DOUBLE" />
- 	 </resultMap>
-  
-  <!-- 添加用户信息 -->
+<mapper namespace="com.parkinglot.admin.dao.IParkingLotDao">
+	<resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingLotEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="parking_name" property="parkingName" jdbcType="NVARCHAR" />
+		<result column="address" property="address" jdbcType="NVARCHAR" />
+		<result column="total" property="total" jdbcType="INTEGER" />
+		<result column="inuse" property="inuse" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="rent" property="rent" jdbcType="DOUBLE" />
+	</resultMap>
+
+	<!-- 添加用户信息 -->
 	<insert id="insertParkingLot" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
-		INSERT INTO parking_lot(parking_num,parking_name,address,total,inuse,price,rent)
+		INSERT INTO
+		parking_lot(parking_num,parking_name,address,total,inuse,price,rent)
 		VALUES(
-			#{parkingNum,jdbcType=VARCHAR},
-			#{parkingName,jdbcType=NVARCHAR},
-			#{address,jdbcType=NVARCHAR},
-			#{total,jdbcType=INTEGER},
-			#{inuse,jdbcType=INTEGER},
-			#{price,jdbcType=DOUBLE},
-			#{rent,jdbcType=DOUBLE}
-		)	
+		#{parkingNum,jdbcType=VARCHAR},
+		#{parkingName,jdbcType=NVARCHAR},
+		#{address,jdbcType=NVARCHAR},
+		#{total,jdbcType=INTEGER},
+		#{inuse,jdbcType=INTEGER},
+		#{price,jdbcType=DOUBLE},
+		#{rent,jdbcType=DOUBLE}
+		)
 	</insert>
-	
+
 	<!-- 查询停车场列表 -->
 	<select id="selectParkingLotForList" resultMap="BaseResultMap">
-		SELECT id,parking_num,parking_name,address,total,inuse,price,rent
-		FROM parking_lot
+		SELECT
+		id,parking_num,parking_name,address,total,inuse,price,rent
+		FROM
+		parking_lot
 	</select>
 
 	<!-- 查询停车场是否存在 -->
 	<select id="selectParkingLotByNum" resultMap="BaseResultMap">
-		SELECT id,parking_num,parking_name,address,total,inuse,price,rent
-		FROM parking_lot
+		SELECT
+		id,parking_num,parking_name,address,total,inuse,price,rent
+		FROM
+		parking_lot
 		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
 
-   <!-- 更新停车场价格 -->
-   <update id="updateParkingLotPrice" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
-         update parking_lot 
-         <if test="price != '' and price != null">
-			set	price = #{price,jdbcType=DOUBLE}
-		</if>
-         where parking_num = #{parkingNum,jdbcType=VARCHAR}
-   </update>
+	<!-- 更新停车场价格 -->
+	<update id="updateParkingLotPrice" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
+		update parking_lot
+		set price = #{price,jdbcType=DOUBLE},inuse = #{inuse,jdbcType=INTEGER}
+		where parking_num = #{parkingNum,jdbcType=VARCHAR}
+	</update>
 
 	<!-- 更新停车场使用情况 -->
-	<update id="updateParkingLotInuse">
-		UPDATE parking_lot 
-			<if test="inuse != null">
-				SET inuse=#{inuse,jdbcType=INTEGER}
-			</if>
+	<update id="updateParkingLotInuse" parameterType="com.parkinglot.admin.entity.ParkingLotEntity">
+		UPDATE parking_lot
+			SET inuse=#{inuse,jdbcType=INTEGER}
 		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</update>
-	
-	
+
+
 </mapper>

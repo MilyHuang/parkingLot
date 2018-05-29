@@ -46,5 +46,5 @@ public interface IParkingLotService {
 	 * @param parkingNum
 	 * @return
 	 */
-	JsonResult updateParkingLotInuse(String parkingNum);
+	JsonResult updateParkingLotInuse(ParkingLotEntity entity);
 }

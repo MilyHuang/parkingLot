@@ -43,4 +43,20 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		return cardDao.selectCardByCardNum(cardNum,parkingNum);
 	}
 
+	@Override
+	public int selectCards(String parkingNum) {
+		return cardDao.selectCards(parkingNum);
+	}
+
+	@Override
+	public JsonResult updateParkingCard(ParkingCardEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		int rows = cardDao.updateParkingCard(entity);
+		if(rows <=0 ) {
+			jsonResult = new JsonResult(new ServiceException("更新停车卡失败"));
+			return jsonResult;
+		}
+		return jsonResult;
+	}
+
 }

@@ -65,9 +65,10 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity en = selectParkingLotByNum(entity.getParkingNum());
 		en.setPrice(entity.getPrice());
+		en.setInuse(entity.getInuse() + 1);
 		int rows = parkingLotDao.updateParkingLotPrice(en);
 		if (rows <= 0) {
-			jsonResult = new JsonResult(new ServiceException("更新停车场价格失败"));
+			jsonResult = new JsonResult(new ServiceException("更新停车场失败"));
 			return jsonResult;
 		}
 
@@ -80,18 +81,14 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 	}
 
 	@Override
-	public JsonResult updateParkingLotInuse(String parkingNum) {
+	public JsonResult updateParkingLotInuse(ParkingLotEntity entity) {
 		JsonResult jsonResult = new JsonResult();
-		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(parkingNum);
-		int inuse = parkingLot.getInuse()-1;
-		if(inuse>0) {
-			int rows = parkingLotDao.updateParkingLotInuse(parkingNum,inuse);
-			if(rows <=0 ) {
-				jsonResult  = new JsonResult(new ServiceException("更新使用情况失败"));
+		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(entity.getParkingNum());
+			int rows = parkingLotDao.updateParkingLotInuse(entity);
+			if (rows <= 0) {
+				jsonResult = new JsonResult(new ServiceException("更新使用情况失败"));
 				return jsonResult;
 			}
-		}
-		return jsonResult;
+			return jsonResult;
 	}
-
 }

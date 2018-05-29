@@ -17,4 +17,11 @@ public interface IParkingRecordDao {
 	 * @return
 	 */
 	int updateParkingRecord(ParkingRecordEntity entity);
+	
+	/**
+	 * 停车
+	 * @param entity 停车卡号，停车场编号，手机号
+	 * @return
+	 */
+	int insertParkingRecord(ParkingRecordEntity entity);
 }

@@ -19,8 +19,8 @@ public class ParkingRecordEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	/**系统id*/
 	private Integer id;
-	/**用户手机号*/
-	private String phone;
+//	/**用户手机号*/
+//	private String phone;
 	/**停车场编号*/
 	private String parkingNum;
 	/**停车卡编号*/
@@ -38,12 +38,12 @@ public class ParkingRecordEntity implements Serializable{
 		this.id = id;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+//	public String getPhone() {
+//		return phone;
+//	}
+//	public void setPhone(String phone) {
+//		this.phone = phone;
+//	}
 	public String getParkingNum() {
 		return parkingNum;
 	}
@@ -76,7 +76,7 @@ public class ParkingRecordEntity implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "ParkingRecordEntity [id=" + id + ", phone=" + phone + ", parkingNum=" + parkingNum + ", cardNum="
+		return "ParkingRecordEntity [id=" + id + " , parkingNum=" + parkingNum + ", cardNum="
 				+ cardNum + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
 	}
 	
