@@ -7,9 +7,8 @@
       <div><span>停车场：</span>{{billData.lotName}}</div>
       <div><span>单价：</span>{{billData.singlePrice}}元/月</div>
       <div><span>总费用：</span>{{billData.totalPrice}}元</div>
-      <div><span>账单日期：</span>{{billData.billTime}}</div>
+      <div><span>计费时间段：</span>{{billData.billTime}}</div>
       <div><span>出账日期：</span>{{billData.outBillTime}}</div>
-      <div><span>欠费：</span>{{billData.oweBill}}元</div>
       <el-button type="primary" >{{billData.state}}</el-button>
     </div>
 	</div>
@@ -28,7 +27,6 @@
           lotName:`A停车场`,
           billTime:`2018-3-31~2018-6-30`,
           outBillTime:`2018-6-30`,
-          oweBill:300,
           state: `未缴费`
         }
 			}
