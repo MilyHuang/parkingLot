@@ -43,9 +43,10 @@ export default {
                 message: '登录成功',
                 type: 'success'
               });
+              sessionStorage.setItem("phone",this.userInfo.phone);
+              sessionStorage.setItem("token",this.userInfo.username);
+              console.log(data);
               this.$router.push({ path: '/UserIndex' });
-              //暂存电话号码
-              sessionStorage.setItem("phone",data.phone);
             }
             else{
               this.$notify({
