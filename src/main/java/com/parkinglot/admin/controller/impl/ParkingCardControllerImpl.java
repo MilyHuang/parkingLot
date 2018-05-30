@@ -238,8 +238,27 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		parkingBillEntity.setCardNum(entity.getCardNum());
 
 		Calendar ca = Calendar.getInstance();
+		Integer year = ca.get(Calendar.YEAR);   
+        Integer month = ca.get(Calendar.MONTH)+1;
+		switch(month) {
+		case 1: ;
+		case 2: ;
+		case 3: ca.set(year,4,31);break;
+		case 4: ;
+		case 5: ;
+		case 6: ca.set(year,7,30);break;
+		case 7: ;
+		case 8: ;
+		case 9: ca.set(year,10,30);break;
+		case 10: ;
+		case 11: ;
+		case 12: ca.set(year,13,31);break;
+		}
+		
+		
+		
+		
 		ca.setTime(new Date());
-		ca.add(Calendar.MONTH, +2);
 		parkingBillEntity.setFirstDate(new Date());
 		parkingBillEntity.setStatementDate(ca.getTime());
 
