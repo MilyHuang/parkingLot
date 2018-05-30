@@ -32,7 +32,7 @@
             width="110">
           </el-table-column>
           <el-table-column
-            prop="parkingNum"
+            prop="parkingName"
             label="停车场"
             width="115">
           </el-table-column>
@@ -114,7 +114,7 @@
     },
     methods:{
       initBillList(){
-        this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": `12345678902`})
+        this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": sessionStorage.getItem("phone")})
           .then(res => {
             // sessionStorage.getItem("phone")
             console.log(res);
