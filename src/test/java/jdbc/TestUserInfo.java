@@ -37,8 +37,8 @@ public class TestUserInfo {
 	@Test
 	public void test1() {
 		UsersInfoEntity entity = new UsersInfoEntity();
-		entity.setUsername("aaa");
-		entity.setPhone("13012341235");
+		entity.setUsername("123456");
+		entity.setPhone("12345678902");
 		entity.setPassword("123456");
 		UsersInfoEntity user = userService.selectUserInfoByPhone(entity.getPhone());
 		if(user != null) {

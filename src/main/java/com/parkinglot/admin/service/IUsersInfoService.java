@@ -35,4 +35,9 @@ public interface IUsersInfoService {
 	 * @return
 	 */
 	UsersInfoEntity selectUserInfoByLogin(UsersInfoEntity entity);
+	
+	/**
+	 * 通过id查询用户
+	 */
+	UsersInfoEntity selectUserInfoById(Integer id);
 }

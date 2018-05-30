@@ -84,6 +84,21 @@ alter table parking_record add constraint flag_check check(flag in(0,1));
 insert into parking_record(phone,parking_num,card_num,checkin_time,flag) values('12','123','123',now(),0);
 
 
-
+/**账单表*/
+DROP TABLE IF EXISTS parking_bill;
+CREATE TABLE parking_bill(
+	id int(8) auto_increment comment 'systemId',
+	bill_num int(8) not null , /**账单号*/
+	parking_num varchar(10) not null, /**停车场编号*/
+	parking_name nvarchar(50) not null, /*停车场名字*/
+	card_num varchar(20) not null, /**停车卡号*/
+	price double not null,            /*停车场每个月的价格*/
+	account double not null,        /*总价格*/
+    firstDate datetime,          /*开始计费时间*/
+	statementDate datetime ,/*出账时间*/
+	flag int(2) , /* 0 未缴费，1 已缴费 2未出账*/
+	tis nvarchar(50), /*是否缴费提示*/
+	primary key (id)
+);
 
 

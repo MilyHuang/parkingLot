@@ -38,7 +38,7 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		if (parkingCardService.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(),
 				entity.getParkingNum()) == null) {
-			jsonResult = new JsonResult(new ServiceException("该停车卡不存在"));
+			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
 		} else if (parkingCardService
 				.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(), entity.getParkingNum()).getFlag() == 0) {
@@ -79,16 +79,13 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		if (parkingCardService.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(),
 				entity.getParkingNum()) == null) {
-			jsonResult = new JsonResult(new ServiceException("该停车卡不存在"));
+			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
 		} else if (parkingCardService
 				.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(), entity.getParkingNum()).getFlag() == 1) {
 			jsonResult = new JsonResult(new ServiceException("您已停放辆车，不能停放其他车辆"));
 			return jsonResult;
-		} else if (parkingLotEntity.getInuse() == parkingLotEntity.getTotal()) {
-			jsonResult = new JsonResult(new ServiceException("停车场已满"));
-			return jsonResult;
-		}  else {
+		} else {
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);

@@ -36,7 +36,12 @@
 		WHERE phone=#{phone,jdbcType=VARCHAR} AND password=#{password,jdbcType=VARCHAR}
 	</select>
 
-
+<!-- 通过id查询用户信息 -->
+	<select id="selectUserInfoById" resultMap="BaseResultMap">
+		SELECT id,username,phone
+		FROM users_info
+		WHERE id=#{id,jdbcType=INTEGER} 
+	</select>
 
 
 

@@ -52,6 +52,11 @@ public class UsersInfoServiceImpl implements IUsersInfoService{
 		user = userDao.selectUserInfoByLogin(entity);
 		return user;
 	}
+
+	@Override
+	public UsersInfoEntity selectUserInfoById(Integer id) {
+		return userDao.selectUserInfoById(id);
+	}
 	
 	
 
