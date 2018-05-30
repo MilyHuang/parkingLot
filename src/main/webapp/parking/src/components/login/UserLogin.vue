@@ -44,6 +44,8 @@ export default {
                 type: 'success'
               });
               this.$router.push({ path: '/UserIndex' });
+              //暂存电话号码
+              sessionStorage.setItem("phone",data.phone);
             }
             else{
               this.$notify({

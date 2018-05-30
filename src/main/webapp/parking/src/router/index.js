@@ -116,7 +116,7 @@ export default new Router({
         },
         {
           //账单详情
-          path: '/UserIndex/UserBillDetail',
+          path: '/UserIndex/UserBillDetail/:billNum',
           name: 'UserBillDetail',
           component: UserBillDetail
         },
