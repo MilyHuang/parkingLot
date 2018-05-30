@@ -14,14 +14,18 @@
             label="序号"
             width="150">
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             label="卡号"
             width="150"
             class="card-active">
             <template slot-scope="scope">
-            	<!-- 停车卡跳转用户账单 -->
             	<router-link :to="{ name:'UserBill', params: {cardNum: scope.row.cardNum}}" class="card-active">{{ scope.row.cardNum }}</router-link>
             </template>
+          </el-table-column> -->
+          <el-table-column
+            prop="cardNum"
+            label="卡号"
+            width="200">
           </el-table-column>
           <el-table-column
             prop="createTime"
@@ -60,6 +64,7 @@
 		mounted: function() {
 	    this.$nextTick(function () {
 	    	this.initCardList();
+	    	
 	    })
 	  },
 		methods:{
