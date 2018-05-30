@@ -11,9 +11,9 @@
             class="card-active">
             <template slot-scope="scope">
               <!-- 未出帐禁用点击 -->
-              <span v-if="scope.row.state == 2">{{ scope.row.billNum }}</span>
+              <!-- <span v-if="scope.row.flag == 2">{{ scope.row.billNum }}</span> -->
               <!-- 查看帐单 -->
-              <router-link :to="{ name:'UserBillDetail', params: {billNum: scope.row.billNum} }" class="card-active" v-else>{{ scope.row.billNum }} </router-link> 
+              <router-link :to="{ name:'UserBillDetail', params: {billNum: scope.row.billNum} }" class="card-active">{{ scope.row.billNum }} </router-link> 
             </template>
           </el-table-column>
           <el-table-column
@@ -22,32 +22,34 @@
             width="125">
           </el-table-column>
           <el-table-column
-            prop="singlePrice"
+            prop="price"
             label="单价（元/月）"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="totalPrice"
+            prop="account"
             label="总费用（元）"
             width="110">
           </el-table-column>
           <el-table-column
-            prop="lotName"
+            prop="parkingNum"
             label="停车场"
             width="115">
           </el-table-column>
           <el-table-column
-            prop="outBillTime"
             label="出账日期"
             width="115">
+             <template slot-scope="scope">
+              <span>{{secondToDate(scope.row.statementDate)}}</span>
+             </template>
           </el-table-column>
           <el-table-column
             label="状态">
             <template slot-scope="scope">
               <!-- 显示状态 -->
-              <span :class="{unpaid:scope.row.state == 0}">{{ payArr[scope.row.state] }}</span>
+              <span :class="{unpaid:scope.row.flag == 0}">{{ payArr[scope.row.flag] }}</span>
               <!-- 显示提示信息 -->
-              <span v-if="scope.row.state == 0"  class="tip">{{ '（' + scope.row.tip + '）'}}</span>
+              <span v-if="scope.row.flag == 0"  class="tip">{{ '（' + scope.row.tis + '）'}}</span>
             </template>
           </el-table-column>
            <!-- <el-table-column>
@@ -67,39 +69,39 @@
 		data(){
 			return{
 				billData:[
-				  {
-				   	billNum: 201805,
-				   	cardNum: 88888888,
-						singlePrice: 100,
-						totalPrice: 300,
-						lotName:`A停车场`,
-						outBillTime:`2018-6-30`,
-            //0为未缴费
-						state: 0,
-            tip: `请在2018/12/30前缴费`
-				  },
-				  {
-				   	billNum: 201804,
-				   	cardNum: 22222222,
-						singlePrice: 100,
-						totalPrice: 100,
-						lotName:`A停车场`,
-						outBillTime:`2017-6-30`,
-            //1为已缴费
-						state: 1,
-            tip: ``
-				  },
-				  {
-				   	billNum: 201806,
-				   	cardNum: 11111111,
-						singlePrice: 100,
-						totalPrice: 300,
-						lotName:`B停车场`,
-						outBillTime:`2018-9-30`,
-            //2为未出账
-						state: 2,
-            tip: ``
-				  }
+				  // {
+				  //  	billNum: 201805,
+				  //  	cardNum: 88888888,
+						// singlePrice: 100,
+						// totalPrice: 300,
+						// lotName:`A停车场`,
+						// outBillTime:`2018-6-30`,
+      //       //0为未缴费
+						// state: 0,
+      //       tip: `请在2018/12/30前缴费`
+				  // },
+				  // {
+				  //  	billNum: 201804,
+				  //  	cardNum: 22222222,
+						// singlePrice: 100,
+						// totalPrice: 100,
+						// lotName:`A停车场`,
+						// outBillTime:`2017-6-30`,
+      //       //1为已缴费
+						// state: 1,
+      //       tip: ``
+				  // },
+				  // {
+				  //  	billNum: 201806,
+				  //  	cardNum: 11111111,
+						// singlePrice: 100,
+						// totalPrice: 300,
+						// lotName:`B停车场`,
+						// outBillTime:`2018-9-30`,
+      //       //2为未出账
+						// state: 2,
+      //       tip: ``
+				  // }
 				],
         //缴费样式数组
         payArr:[`未缴费`,`已缴费`,`未出账`],
@@ -112,15 +114,23 @@
     },
     methods:{
       initBillList(){
-        this.axios.post('', { "cardNum": this.$route.params.cardNum})
+        this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": `12345678902`})
           .then(res => {
+            // sessionStorage.getItem("phone")
             console.log(res);
+            this.billData = res.data.data;
           })
           .catch(err => {
             console.log(err)
           })
       },
-    }
+      //时间转换函数
+      secondToDate(date){
+          let res = new Date(date).toLocaleString();
+          return res.slice(0,res.indexOf(' '));
+      }
+    },
+    
 	}
 </script>
 

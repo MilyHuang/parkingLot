@@ -64,6 +64,7 @@
 		mounted: function() {
 	    this.$nextTick(function () {
 	    	this.initCardList();
+	    	
 	    })
 	  },
 		methods:{
