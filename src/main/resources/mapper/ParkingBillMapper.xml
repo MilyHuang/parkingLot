@@ -48,4 +48,22 @@
 		#{flag,jdbcType=INTEGER}
 		);
 	</insert>
+	
+	
+	
+	
+	
+	
+	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap"
+		parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+		select * from parking_bill where
+		parking_num=#{parkingNum,jdbcType=VARCHAR} and 
+		card_num=#{cardNum,jdbcType=VARCHAR}
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

@@ -25,4 +25,10 @@ public interface IParkingBillDao {
 	 * 生成賬單
 	 */
 	int insertParkingBill(ParkingBillEntity entity);
+	
+	
+	/**
+	 * 查找每张停车卡的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity  entity);
 }

@@ -25,6 +25,7 @@ import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
+import com.parkinglot.common.util.GenerateBill;
 import com.parkinglot.common.util.JsonResult;
 import com.sun.tools.doclint.Entity;
 
@@ -54,6 +55,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	@Autowired
 	private IParkingBillService parkingBillService;
 
+	GenerateBill gen = new GenerateBill();
 	/**
 	 * 新用户办理停车卡
 	 */
@@ -102,7 +104,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				cardEntity.setUserId(userEntity.getId());
 				// 添加停车卡
 				cardService.insertParkingCard(cardEntity);
-				generateBill(entity);
+				gen.generateBill(entity);
 				return jsonResult;
 			}
 		}
@@ -160,7 +162,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			upEntity.setCardNum(cardEntity.getCardNum());
 			upEntity.setParkingNum(cardEntity.getParkingNum());
 			upEntity.setPhone(userService.selectUserInfoById(cardEntity.getUserId()).getPhone());
-			generateBill(upEntity);
+			gen.generateBill(upEntity);
 			// 添加停车卡
 			cardService.insertParkingCard(cardEntity);
 			return jsonResult;
@@ -223,49 +225,5 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		return flag;
 	}
 
-	/**
-	 * 生成賬單
-	 */
-	private void generateBill(UserAndCardEntity entity) {
-		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
-
-		int rand = new Random().nextInt(100000);
-		parkingBillEntity.setBillNum(String.valueOf(rand));
-
-		parkingBillEntity.setAccount(parkingService.selectParkingLotByNum(entity.getParkingNum()).getPrice() * 3);
-		parkingBillEntity.setPrice(parkingService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
-
-		parkingBillEntity.setCardNum(entity.getCardNum());
-
-		Calendar ca = Calendar.getInstance();
-		Integer year = ca.get(Calendar.YEAR);   
-        Integer month = ca.get(Calendar.MONTH)+1;
-		switch(month) {
-		case 1: ;
-		case 2: ;
-		case 3: ca.set(year,4,31);break;
-		case 4: ;
-		case 5: ;
-		case 6: ca.set(year,7,30);break;
-		case 7: ;
-		case 8: ;
-		case 9: ca.set(year,10,30);break;
-		case 10: ;
-		case 11: ;
-		case 12: ca.set(year,13,31);break;
-		}
-		
-		
-		
-		
-		ca.setTime(new Date());
-		parkingBillEntity.setFirstDate(new Date());
-		parkingBillEntity.setStatementDate(ca.getTime());
-
-		parkingBillEntity.setFlag(2);
-		parkingBillEntity.setParkingNum(entity.getParkingNum());
-		parkingBillEntity.setParkingName(parkingService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
-		parkingBillEntity.setPhone(entity.getPhone());
-		parkingBillService.insertParkingBill(parkingBillEntity);
-	}
+	
 }

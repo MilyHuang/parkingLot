@@ -65,7 +65,6 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity en = selectParkingLotByNum(entity.getParkingNum());
 		en.setPrice(entity.getPrice());
-		en.setInuse(entity.getInuse() + 1);
 		int rows = parkingLotDao.updateParkingLotPrice(en);
 		if (rows <= 0) {
 			jsonResult = new JsonResult(new ServiceException("更新停车场失败"));

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.parkinglot.admin.dao.IParkingBillDao;
 import com.parkinglot.admin.dao.IParkingLotDao;
 import com.parkinglot.admin.entity.ParkingBillEntity;
+import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 
@@ -38,6 +39,11 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 		entity.setAccount(parkingLotEntity.getPrice()*3);
 		entity.setFirstDate(new Date());
 		return parkingBillDao.insertParkingBill(entity);
+	}
+
+	@Override
+	public List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity entity) {
+		return parkingBillDao.selectAllParkingBillEntityByCard(entity);
 	}
 
 }

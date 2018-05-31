@@ -45,7 +45,7 @@ CREATE TABLE parking_card(
 	parking_num varchar(10) not null, /**停车场编号*/
 	card_num varchar(20) not null,  /*停车卡号*/
 	createdTime datetime not null, /*办卡时间*/
-	state int(2) not null, /*状态：0 可用 ，1 不可用*/
+	state int(2) not null default 0, /*状态：0 可用 ，1 不可用*/
 	flag int(2) not null default 0,/*0为未停车，1为已停车*/
 	primary key(id)
 );
