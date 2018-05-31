@@ -3,7 +3,7 @@
     <parking-top></parking-top>
     <div class="clearfix">
       <div class="parking-nav">
-        <router-link to="/UserIndex/UserInfo">个人信息</router-link>
+        <!-- <router-link to="/UserIndex/UserInfo">个人信息</router-link> -->
         <router-link to="/UserIndex/UserBill">个人账单</router-link>
         <router-link to="/UserIndex/ParkingManage">停车场停车服务</router-link>
       </div>

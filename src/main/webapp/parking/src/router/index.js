@@ -15,6 +15,7 @@ import SellManage from '@/components/manager/SellManage'
 import OperatorIndex from '@/components/operator/OperatorIndex'
 import CreateCard from '@/components/operator/CreateCard'
 import SearchCard from '@/components/operator/SearchCard'
+import SearchBill from '@/components/operator/SearchBill'
 //User
 import UserIndex from '@/components/user/UserIndex'
 import UserInfo from '@/components/user/UserInfo'
@@ -87,18 +88,24 @@ export default new Router({
           name: 'CreateCard',
           component: CreateCard
         },
-        //停车卡查询
+        //操作员查询用户停车卡
         {
           path: '/OperatorIndex/SearchCard',
           name: 'SearchCard',
           component: SearchCard
         },
+        //操作员查询用户账单
+        {
+          path: '/OperatorIndex/SearchBill',
+          name: 'SearchBill',
+          component: SearchBill
+        }
       ]
     },
     {
       // 用户页面
       path: '/UserIndex',
-      redirect: '/UserIndex/UserInfo',
+      redirect: '/UserIndex/UserBill',
       name: 'UserIndex',
       component: UserIndex,
       children: [{
