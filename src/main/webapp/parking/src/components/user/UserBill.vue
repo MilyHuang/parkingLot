@@ -13,7 +13,7 @@
               <!-- 未出帐禁用点击 -->
               <!-- <span v-if="scope.row.flag == 2">{{ scope.row.billNum }}</span> -->
               <!-- 查看帐单 -->
-              <router-link :to="{ name:'UserBillDetail', params: {billNum: scope.row.billNum} }" class="card-active">{{ scope.row.billNum }} </router-link> 
+              <router-link :to="{ name:'UserBillDetail', params: {billNum: scope.row.billNum}}" class="card-active">{{ scope.row.billNum }} </router-link> 
             </template>
           </el-table-column>
           <el-table-column

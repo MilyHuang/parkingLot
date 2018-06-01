@@ -16,6 +16,7 @@ import OperatorIndex from '@/components/operator/OperatorIndex'
 import CreateCard from '@/components/operator/CreateCard'
 import SearchCard from '@/components/operator/SearchCard'
 import SearchBill from '@/components/operator/SearchBill'
+import SearchBillDetail from '@/components/operator/SearchBillDetail'
 //User
 import UserIndex from '@/components/user/UserIndex'
 import UserInfo from '@/components/user/UserInfo'
@@ -99,6 +100,12 @@ export default new Router({
           path: '/OperatorIndex/SearchBill',
           name: 'SearchBill',
           component: SearchBill
+        },
+        //操作员查询用户账单详情
+        {
+          path: '/OperatorIndex/SearchBillDetail/:billNum',
+          name: 'SearchBillDetail',
+          component: SearchBillDetail
         }
       ]
     },

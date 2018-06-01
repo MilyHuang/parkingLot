@@ -1,15 +1,16 @@
-<!-- <template>
+<template>
 	<div class="search-card">
 		<el-input v-model="searchNumber" placeholder="请输入手机号"></el-input>
-		<el-button type="primary">查找</el-button>
+		<el-button type="primary" @click="SearchUserBill()">查找</el-button>
 		<el-table
-      :data="UserBillTable"
+      :data="UserBillData"
       style="width: 100%">
       <el-table-column
-        prop="billNum"
         label="帐单编号"
         width="200">
-        <router-link :to="{ name:'UserBillDetail', params: {billNum: scope.row.billNum} }" class="card-active" v-else>{{ scope.row.billNum }} </router-link> 
+          <template slot-scope="scope">
+            <router-link :to="{ name:'SearchBillDetail', params: {billNum: scope.row.billNum}}" class="card-active">{{ scope.row.billNum }}</router-link> 
+          </template>
       </el-table-column>
       <el-table-column
         prop="cardNum"
@@ -42,7 +43,7 @@
 		data(){
 			return{
 				searchNumber: ``,
-				UserBillTable:[{
+				UserBillData:[{
 					billNum:`89757001001`,
 					cardNum:`01011`,
 					lotName:`A停车场`,
@@ -67,6 +68,17 @@
 					state:`未出账`
 				}]
 			}
+		},
+		methods:{
+			SearchUserBill(){
+				this.axios.post(this.baseURI + '', { "phone": this.searchNumber})
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err)
+          })
+			}
 		}
 	}
 </script>
@@ -80,4 +92,4 @@
 		width: 270px;
 		margin-bottom: 30px;
 	}
-</style> -->
+</style>
