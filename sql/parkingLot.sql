@@ -94,6 +94,7 @@ CREATE TABLE parking_bill(
 	account double not null,        /*总价格*/
     firstDate datetime,          /*开始计费时间*/
 	statementDate datetime ,/*出账时间*/
+    phone varchar(20) not null,
 	flag int(2) , /* 0 未缴费，1 已缴费 2未出账*/
 	tis nvarchar(50), /*是否缴费提示*/
 	primary key (id)

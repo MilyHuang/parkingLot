@@ -48,7 +48,7 @@ public interface IParkingCardService {
 	 * 查找某用户在某停车场中卡的总数
 	 * @return
 	 */
-	List<ParkingCardEntity> selectUserCards(@Param("parkingNum") String parkingNum,@Param("userId") Integer userId);
+	List<ParkingCardEntity> selectUserCards(@Param("userId") Integer userId);
 	
 	
 	/**

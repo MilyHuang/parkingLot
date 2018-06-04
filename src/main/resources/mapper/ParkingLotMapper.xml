@@ -41,7 +41,7 @@
 		id,parking_num,parking_name,address,total,inuse,price,rent
 		FROM
 		parking_lot
-		WHERE parking_num=#{parkingNum,jdbcType=INTEGER}
+		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 更新停车场价格 -->

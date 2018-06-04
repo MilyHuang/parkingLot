@@ -62,8 +62,8 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
-	public List<ParkingCardEntity> selectUserCards(String parkingNum, Integer userId) {
-		return cardDao.selectUserCards(parkingNum, userId);
+	public List<ParkingCardEntity> selectUserCards(Integer userId) {
+		return cardDao.selectUserCards( userId);
 	}
 
 	@Override

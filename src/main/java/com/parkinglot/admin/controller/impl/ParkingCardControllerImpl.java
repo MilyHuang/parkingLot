@@ -61,6 +61,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	@ResponseBody
 	@Override
 	public JsonResult createNewParkingCard(@RequestBody UserAndCardEntity entity) {
+	System.out.println(entity);
 		UsersInfoEntity userEntity = new UsersInfoEntity();
 		userEntity.setPhone(entity.getPhone());
 		userEntity.setUsername(entity.getUsername());
@@ -74,38 +75,40 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
 			return jsonResult;
 		}
-		// 判断输入的信息是否为null
-		if (userEntity == null || cardEntity == null) {
-			jsonResult = new JsonResult(new ServiceException("输入的信息不能为空"));
-			return jsonResult;
-		} else {
+		else {
 			// 查询该用户是否存在，如果存在则反显用户信息
 			UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
 			// 查询停车卡号是否存在
 			List<ParkingCardEntity> card = cardService.selectAllCards();
 			System.out.println("card" + card);
 			// 如果该用户存在
+			System.out.println("boolean" +isHasParkingLot(cardEntity.getParkingNum()));
+			
 			if (user != null) {
 				jsonResult = new JsonResult(user);
 				return jsonResult;
-			} else if (card != null) {
+			}
+            if (card != null) {
 				for (int i = 0; i < card.size(); i++) {
 					if (card.get(i).getCardNum() == entity.getCardNum()) {
 						jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
-						break;
 					}
 				}
 				return jsonResult;
-			} else if (isHasParkingLot(cardEntity.getParkingNum())) {
-				System.out.println(cardEntity.getParkingNum());
+			} 
+            if (isHasParkingLot(cardEntity.getParkingNum())) {
+				System.out.println("cardEntity.getParkingNum()");
 				jsonResult = new JsonResult(new ServiceException("该编号停车场不存在"));
 				System.out.println(jsonResult);
 				return jsonResult;
-			} else {
+			} 
+            else {
+				System.out.println("userEntity"+userEntity);
 				// 注册新用户
 				userService.insertUserInfo(userEntity);
 				cardEntity.setUserId(userEntity.getId());
 				// 添加停车卡
+				System.out.println(cardEntity);
 				cardService.insertParkingCard(cardEntity);
 				generateBill(entity);
 				return jsonResult;
@@ -136,7 +139,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		// 判断用户是否负费
 		UsersInfoEntity user = userService.selectUserInfoById(cardEntity.getUserId());
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(user.getPhone());
-		List<ParkingCardEntity> list1 = cardService.selectUserCards(cardEntity.getParkingNum(), cardEntity.getUserId());
+		List<ParkingCardEntity> list1 = cardService.selectUserCards( cardEntity.getUserId());
 		for (int i = 0; i < list1.size(); i++) {
 			System.out.println(i + "  " + list1.get(i).getState());
 			if (list1.get(i).getState() == 1) {
@@ -213,9 +216,10 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		// 如果为Null,则不存在该编号的停车场
 		if (parking == null) {
 			flag = true;
+			System.out.println("isHasParkingLot");
 			return flag;
 		}
-		System.out.println(parking.getParkingNum());
+		System.out.println("isHasParkingLot "+parking.getParkingNum());
 		return flag;
 	}
 

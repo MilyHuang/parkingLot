@@ -57,8 +57,6 @@
 		id,users_id,parking_num,card_num,createdTime,state
 		FROM parking_card
 		where
-		parking_num=#{parkingNum,jdbcType=VARCHAR}
-		and
 		users_id=#{userId,jdbcType=INTEGER}
 	</select>
 
