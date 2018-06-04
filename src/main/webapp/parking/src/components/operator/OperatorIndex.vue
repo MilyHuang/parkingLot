@@ -19,8 +19,7 @@ import ParkingTop from '../base/ParkingTop'
 export default {
   components: {
      ParkingTop
-  },
-  
+  }, 
 }
 </script>
 
