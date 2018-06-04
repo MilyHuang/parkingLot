@@ -25,4 +25,11 @@ public interface IParkingRecordService {
 	 * @return
 	 */
 	JsonResult insertParkingRecord(ParkingRecordEntity entity);
+	
+	
+	/**
+	 * 通过停车场num获取停车信息
+	 * @return
+	 */
+	ParkingRecordEntity selectParkingRecord(String cardNum);
 }

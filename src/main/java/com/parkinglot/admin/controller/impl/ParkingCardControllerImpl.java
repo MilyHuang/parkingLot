@@ -243,9 +243,11 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	 */
 	public void generateBill(UserAndCardEntity entity) {
 		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
+		ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(entity.getParkingNum());
+		ParkingCardEntity parkingCardEntity = cardService.selectParkingCardByCardNum(entity.getCardNum());
 		int rand = new Random().nextInt(100000);
 		parkingBillEntity.setBillNum(String.valueOf(rand));
-		parkingBillEntity.setCardNum(entity.getCardNum());
+		parkingBillEntity.setCardId(parkingCardEntity.getId());
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(new Date());
 		int nowDate = ca.get(Calendar.DAY_OF_MONTH);
@@ -296,7 +298,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		System.out.println(price);
 		parkingBillEntity.setAccount(price);
 		parkingBillEntity.setPrice(parkingService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
-		parkingBillEntity.setParkingNum(entity.getParkingNum());
+		parkingBillEntity.setParkingId(parkingLotEntity.getId());
 		parkingBillEntity.setParkingName(parkingService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
 		parkingBillEntity.setPhone(entity.getPhone());
 		System.out.println(parkingBillEntity);

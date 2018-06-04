@@ -9,7 +9,6 @@
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
 		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
 		<result column="state" property="state" jdbcType="INTEGER" />
-		<result column="flag" property="flag" jdbcType="INTEGER" />
 	</resultMap>
 
 
@@ -29,13 +28,11 @@
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state,flag
+		id,users_id,parking_num,card_num,createdTime,state
 		FROM
 		parking_card
 		WHERE
 		card_num=#{cardNum,jdbcType=VARCHAR}
-		AND
-		parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->
@@ -50,18 +47,14 @@
 		state=0
 	</select>
 
-	<!-- 更新停车卡信息 -->
-	<update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
-		update parking_card
-		set flag=#{flag,jdbcType=INTEGER} where parking_num=#{parkingNum,jdbcType=VARCHAR} and
-		card_num=#{cardNum,jdbcType=VARCHAR}
-	</update>
+	<!-- <update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity"> 
+		update parking_card set flag=#{flag,jdbcType=INTEGER} where parking_num=#{parkingNum,jdbcType=VARCHAR} 
+		and card_num=#{cardNum,jdbcType=VARCHAR} </update> -->
 
 	<!--查找某用户在某停车场中卡的总数 -->
-	<select id="selectUserCards"
-		resultType="com.parkinglot.admin.entity.ParkingCardEntity">
+	<select id="selectUserCards" resultType="com.parkinglot.admin.entity.ParkingCardEntity">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state,flag
+		id,users_id,parking_num,card_num,createdTime,state
 		FROM parking_card
 		where
 		parking_num=#{parkingNum,jdbcType=VARCHAR}
@@ -69,8 +62,19 @@
 		users_id=#{userId,jdbcType=INTEGER}
 	</select>
 
-<select id="selectAllCards" resultMap="BaseResultMap">
-  select * from parking_card;
-</select>
+	<select id="selectAllCards" resultMap="BaseResultMap">
+		select * from parking_card;
+	</select>
+
+
+<!-- 查询卡信息 -->
+	<select id="selectCardByCardId" resultMap="BaseResultMap">
+		SELECT
+		id,users_id,parking_num,card_num,createdTime,state
+		FROM
+		parking_card
+		WHERE
+		id=#{cardId,jdbcType=VARCHAR}
+	</select>
 
 </mapper>

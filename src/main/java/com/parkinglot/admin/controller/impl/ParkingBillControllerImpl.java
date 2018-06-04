@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IParkingBillController;
 import com.parkinglot.admin.entity.ParkingBillEntity;
+import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
@@ -42,17 +43,15 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && parkingCardService
-					.selectParkingCardByCardNumAndParkingNum(list.get(i).getCardNum(), list.get(i).getParkingNum())
-					.getState() == 0) {
+			if (list.get(i).getStatementDate().compareTo(new Date()) == -1
+					&& parkingCardService.selectCardByCardId(list.get(i).getCardId()).getState() == 0) {
 				Calendar ca = Calendar.getInstance();
 				ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
 				String last = format.format(ca.getTime());
 				list.get(i).setTis("請在" + last + "前繳費");
 			}
-			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && parkingCardService
-					.selectParkingCardByCardNumAndParkingNum(list.get(i).getCardNum(), list.get(i).getParkingNum())
-					.getState() == 1) {
+			if (list.get(i).getStatementDate().compareTo(new Date()) == -1
+					&& parkingCardService.selectCardByCardId(list.get(i).getCardId()).getState() == 1) {
 				list.get(i).setTis("请缴费恢复停车服务");
 			}
 		}

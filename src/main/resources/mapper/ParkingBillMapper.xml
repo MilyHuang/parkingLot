@@ -5,9 +5,9 @@
 	<resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingBillEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="bill_num" property="billNum" jdbcType="VARCHAR" />
-		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
 		<result column="parking_name" property="parkingName" jdbcType="NVARCHAR" />
-		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="card_id" property="cardId" jdbcType="INTEGER" />
 		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 		<result column="price" property="price" jdbcType="DOUBLE" />
 		<result column="account" property="account" jdbcType="DOUBLE" />
@@ -33,12 +33,12 @@
 
 	<insert id="insertParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		insert into
-		parking_bill(bill_num,parking_num,parking_name,card_num,tis,price,account,firstDate,statementDate,phone,flag)
+		parking_bill(bill_num,parking_id,parking_name,card_id,tis,price,account,firstDate,statementDate,phone,flag)
 		values(
 		#{billNum,jdbcType=VARCHAR},
-		#{parkingNum,jdbcType=VARCHAR},
+		#{parkingId,jdbcType=INTEGER},
 		#{parkingName,jdbcType=VARCHAR},
-		#{cardNum,jdbcType=VARCHAR},
+		#{cardId,jdbcType=INTEGER},
 		#{tis,jdbcType=NVARCHAR},
 		#{price,jdbcType=DOUBLE},
 		#{account,jdbcType=DOUBLE},
@@ -57,8 +57,8 @@
 	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap"
 		parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
 		select * from parking_bill where
-		parking_num=#{parkingNum,jdbcType=VARCHAR} and 
-		card_num=#{cardNum,jdbcType=VARCHAR}
+		parking_id=#{parkingId,jdbcType=VARCHAR} and 
+		card_id=#{cardId,jdbcType=VARCHAR}
 	</select>
 	
 	

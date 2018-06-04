@@ -8,9 +8,9 @@ public class ParkingBillEntity {
 	/* 账单编号Id */
 	private String billNum;
 	/* 停车场编号 */
-	private String parkingNum;
+	private Integer parkingId;
 	/* 停车卡编号 */
-	private String cardNum;
+	private Integer cardId;
 	/* 停车场价格 */
 	private Double price;
 	/* 账单纵总价 */
@@ -29,49 +29,12 @@ public class ParkingBillEntity {
 	/* 賬單電話 */
 	private String phone;
 
-	public String getParkingName() {
-		return parkingName;
-	}
-
-	public void setParkingName(String parkingName) {
-		this.parkingName = parkingName;
-	}
-
-	public ParkingBillEntity() {
-	}
-
-	@Override
-	public String toString() {
-		return "ParkingBillEntity [id=" + id + ", billNum=" + billNum + ", parkingNum=" + parkingNum + ", cardNum="
-				+ cardNum + ", price=" + price + ", account=" + account + ", firstDate=" + firstDate
-				+ ", statementDate=" + statementDate + ", flag=" + flag + ", tis=" + tis + ", parkingName="
-				+ parkingName + ", phone=" + phone + "]";
-	}
-
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public ParkingBillEntity(Integer id, String billNum, String parkingNum, String cardNum, Double price,
-			Double account, Date firstDate, Date statementDate, Integer flag, String tis, String parkingName,
-			String phone) {
-		super();
-		this.id = id;
-		this.billNum = billNum;
-		this.parkingNum = parkingNum;
-		this.cardNum = cardNum;
-		this.price = price;
-		this.account = account;
-		this.firstDate = firstDate;
-		this.statementDate = statementDate;
-		this.flag = flag;
-		this.tis = tis;
-		this.parkingName = parkingName;
-		this.phone = phone;
 	}
 
 	public String getBillNum() {
@@ -82,28 +45,20 @@ public class ParkingBillEntity {
 		this.billNum = billNum;
 	}
 
-	public String getPhone() {
-		return phone;
+	public Integer getParkingId() {
+		return parkingId;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setParkingId(Integer parkingId) {
+		this.parkingId = parkingId;
 	}
 
-	public String getParkingNum() {
-		return parkingNum;
+	public Integer getCardId() {
+		return cardId;
 	}
 
-	public void setParkingNum(String parkingNum) {
-		this.parkingNum = parkingNum;
-	}
-
-	public String getCardNum() {
-		return cardNum;
-	}
-
-	public void setCardNum(String cardNum) {
-		this.cardNum = cardNum;
+	public void setCardId(Integer cardId) {
+		this.cardId = cardId;
 	}
 
 	public Double getPrice() {
@@ -153,5 +108,54 @@ public class ParkingBillEntity {
 	public void setTis(String tis) {
 		this.tis = tis;
 	}
+
+	public String getParkingName() {
+		return parkingName;
+	}
+
+	public void setParkingName(String parkingName) {
+		this.parkingName = parkingName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@Override
+	public String toString() {
+		return "ParkingBillEntity [id=" + id + ", billNum=" + billNum + ", parkingId=" + parkingId + ", cardId="
+				+ cardId + ", price=" + price + ", account=" + account + ", firstDate=" + firstDate + ", statementDate="
+				+ statementDate + ", flag=" + flag + ", tis=" + tis + ", parkingName=" + parkingName + ", phone="
+				+ phone + "]";
+	}
+
+	public ParkingBillEntity(Integer id, String billNum, Integer parkingId, Integer cardId, Double price,
+			Double account, Date firstDate, Date statementDate, Integer flag, String tis, String parkingName,
+			String phone) {
+		super();
+		this.id = id;
+		this.billNum = billNum;
+		this.parkingId = parkingId;
+		this.cardId = cardId;
+		this.price = price;
+		this.account = account;
+		this.firstDate = firstDate;
+		this.statementDate = statementDate;
+		this.flag = flag;
+		this.tis = tis;
+		this.parkingName = parkingName;
+		this.phone = phone;
+	}
+
+	public ParkingBillEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	
 
 }

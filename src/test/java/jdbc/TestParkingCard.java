@@ -36,18 +36,18 @@ public class TestParkingCard {
 	/**
 	 * 测试添加新用户
 	 */
-	@Test
-	public void test1() {
-		ParkingCardEntity entity = new ParkingCardEntity();
-		entity.setParkingNum("001");
-		entity.setUserId(1);
-		entity.setCardNum("2018052205");
-		ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(),entity.getParkingNum());
-		System.err.println(card);
-		cardService.insertParkingCard(entity);
-		System.err.println("添加成功");
-	}
-	
+//	@Test
+//	public void test1() {
+//		ParkingCardEntity entity = new ParkingCardEntity();
+//		entity.setParkingNum("001");
+//		entity.setUserId(1);
+//		entity.setCardNum("2018052205");
+//		ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(),entity.getParkingNum());
+//		System.err.println(card);
+//		cardService.insertParkingCard(entity);
+//		System.err.println("添加成功");
+//	}
+//	
 	
 	@Test
 	public void test() {

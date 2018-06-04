@@ -24,4 +24,10 @@ public interface IParkingRecordDao {
 	 * @return
 	 */
 	int insertParkingRecord(ParkingRecordEntity entity);
+	
+	/**
+	 * 通过停车场编号获取停车信息
+	 * @return
+	 */
+	ParkingRecordEntity selectParkingRecord(Integer cardId);
 }

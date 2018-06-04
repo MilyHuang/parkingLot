@@ -4,7 +4,7 @@
 	<resultMap id="BaseResultMap"
 		type="com.parkinglot.admin.entity.ParkingPriceReportEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="parkingNum" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
 		<result column="price" property="price" jdbcType="DOUBLE" />
 		<result column="datetime" property="datetime" jdbcType="TIMESTAMP" />
 	</resultMap>
@@ -13,9 +13,9 @@
 	<insert id="insertParkingPriceReport"
 		parameterType="com.parkinglot.admin.entity.ParkingPriceReportEntity">
 		INSERT INTO
-		parkingPrice_report(parkingNum,price,datetime)
+		parkingPrice_report(parking_id,price,datetime)
 		VALUES(
-		#{parkingNum,jdbcType=VARCHAR},
+		#{parkingId,jdbcType=INTEGER},
 		#{price,jdbcType=DOUBLE},
 		#{datetime,jdbcType=TIMESTAMP}
 		)

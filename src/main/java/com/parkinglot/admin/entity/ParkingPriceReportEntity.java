@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class ParkingPriceReportEntity {
 	private Integer id;
-	private String parkingNum;
+	private Integer parkingId;
 	private Double price;
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date datetime;
@@ -19,13 +19,6 @@ public class ParkingPriceReportEntity {
 		this.id = id;
 	}
 
-	public String getParkingNum() {
-		return parkingNum;
-	}
-
-	public void setParkingNum(String parkingNum) {
-		this.parkingNum = parkingNum;
-	}
 
 	public Double getPrice() {
 		return price;
@@ -44,17 +37,27 @@ public class ParkingPriceReportEntity {
 		this.datetime = datetime;
 	}
 
+
+	public ParkingPriceReportEntity(Integer id, Integer parkingId, Double price, Date datetime) {
+		super();
+		this.id = id;
+		this.parkingId = parkingId;
+		this.price = price;
+		this.datetime = datetime;
+	}
+
 	@Override
 	public String toString() {
-		return "ParkingPriceReportEntity [id=" + id + ", parkingNum=" + parkingNum + ", price=" + price + ", datetime="
+		return "ParkingPriceReportEntity [id=" + id + ", parkingId=" + parkingId + ", price=" + price + ", datetime="
 				+ datetime + "]";
 	}
 
-	public ParkingPriceReportEntity(Integer id, String parkingNum, Double price, Date datetime) {
-		this.id = id;
-		this.parkingNum = parkingNum;
-		this.price = price;
-		this.datetime = datetime;
+	public Integer getParkingId() {
+		return parkingId;
+	}
+
+	public void setParkingId(Integer parkingId) {
+		this.parkingId = parkingId;
 	}
 
 	public ParkingPriceReportEntity() {

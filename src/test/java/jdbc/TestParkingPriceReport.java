@@ -29,12 +29,12 @@ public class TestParkingPriceReport {
 	/**
 	 * 添加
 	 */
-	@Test
-	public void test() {
-		ParkingPriceReportEntity entity = new ParkingPriceReportEntity();
-		entity.setDatetime(new Date());
-		entity.setParkingNum("001");
-		entity.setPrice(800.0);
-		ps.insertParkingPriceReport(entity);
-	}
+//	@Test
+//	public void test() {
+//		ParkingPriceReportEntity entity = new ParkingPriceReportEntity();
+//		entity.setDatetime(new Date());
+//		entity.setParkingNum("001");
+//		entity.setPrice(800.0);
+//		ps.insertParkingPriceReport(entity);
+//	}
 }

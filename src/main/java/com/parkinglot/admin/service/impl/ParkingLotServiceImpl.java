@@ -72,7 +72,7 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		}
 
 		ParkingPriceReportEntity parkingPriceReportEntity = new ParkingPriceReportEntity();
-		parkingPriceReportEntity.setParkingNum(entity.getParkingNum());
+		parkingPriceReportEntity.setParkingId(entity.getId());
 		parkingPriceReportEntity.setPrice(entity.getPrice());
 		parkingPriceReportEntity.setDatetime(new Date());
 		parkingPriceReportService.insertParkingPriceReport(parkingPriceReportEntity);
@@ -83,11 +83,11 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 	public JsonResult updateParkingLotInuse(ParkingLotEntity entity) {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity parkingLot = parkingLotDao.selectParkingLotByNum(entity.getParkingNum());
-			int rows = parkingLotDao.updateParkingLotInuse(entity);
-			if (rows <= 0) {
-				jsonResult = new JsonResult(new ServiceException("更新使用情况失败"));
-				return jsonResult;
-			}
+		int rows = parkingLotDao.updateParkingLotInuse(entity);
+		if (rows <= 0) {
+			jsonResult = new JsonResult(new ServiceException("更新使用情况失败"));
 			return jsonResult;
+		}
+		return jsonResult;
 	}
 }

@@ -29,7 +29,7 @@ public interface IParkingCardService {
 	 * @param parkingNum 停车场编号
 	 * @return
 	 */
-	ParkingCardEntity selectParkingCardByCardNumAndParkingNum(String cardNum,String parkingNum);
+	ParkingCardEntity selectParkingCardByCardNum(String cardNum);
 	
 	/**
 	 * 查找停车场中能用的卡的总数
@@ -56,4 +56,12 @@ public interface IParkingCardService {
 	 * @return
 	 */
 	List<ParkingCardEntity> selectAllCards();
+	
+	/**
+	 * 通过停车卡id查询卡信息
+	 * @param cardNum
+	 * @return
+	 */
+	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
+
 }

@@ -41,8 +41,8 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
-	public ParkingCardEntity selectParkingCardByCardNumAndParkingNum(String cardNum,String parkingNum) {
-		return cardDao.selectCardByCardNum(cardNum,parkingNum);
+	public ParkingCardEntity selectParkingCardByCardNum(String cardNum) {
+		return cardDao.selectCardByCardNum(cardNum);
 	}
 
 	@Override
@@ -69,6 +69,11 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	@Override
 	public List<ParkingCardEntity> selectAllCards() {
 		return cardDao.selectAllCards();
+	}
+
+	@Override
+	public ParkingCardEntity selectCardByCardId(Integer cardId) {
+		return cardDao.selectCardByCardId(cardId);
 	}
 
 }

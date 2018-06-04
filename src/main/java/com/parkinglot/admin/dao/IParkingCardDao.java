@@ -24,11 +24,11 @@ public interface IParkingCardDao {
 	int insertParkingCard(ParkingCardEntity entity);
 	
 	/**
-	 * 通过停车卡查询卡信息
+	 * 通过停车卡num查询卡信息
 	 * @param cardNum
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("parkingNum") String parkingNum);
+	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum);
 	
 	/**
 	 * 查找停车场中能用的卡的总数
@@ -55,4 +55,13 @@ public interface IParkingCardDao {
 	 * @return
 	 */
 	List<ParkingCardEntity> selectAllCards();
+	
+	
+	/**
+	 * 通过停车卡id查询卡信息
+	 * @param cardNum
+	 * @return
+	 */
+	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
+	
 }

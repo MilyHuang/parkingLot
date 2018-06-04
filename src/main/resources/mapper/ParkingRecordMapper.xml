@@ -6,8 +6,8 @@
 		type="com.parkinglot.admin.entity.ParkingRecordEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<!-- <result column="phone" property="phone" jdbcType="VARCHAR" /> -->
-		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
-		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
+		<result column="card_id" property="cardId" jdbcType="VARCHAR" />
 		<result column="checkin_time" property="checkinTime" jdbcType="TIMESTAMP" />
 		<result column="checkout_time" property="checkoutTime"
 			jdbcType="TIMESTAMP" />
@@ -21,10 +21,7 @@
 		parking_record SET
 		checkout_time=#{checkoutTime,jdbcType=TIMESTAMP},flag=#{flag,jdbcType=INTEGER}
 		WHERE
-		card_num=#{cardNum,jdbcType=VARCHAR}
-		AND
-		parking_num =
-		#{parkingNum,jdbcType=VARCHAR}
+		card_id=#{cardId,jdbcType=INTEGER}
 		AND
 		flag=1
 	</update>
@@ -32,15 +29,18 @@
 	<!--停车 -->
 	<insert id="insertParkingRecord" parameterType="com.parkinglot.admin.entity.ParkingRecordEntity">
 		insert into
-		parking_record (parking_num,card_num,checkin_time,flag)
+		parking_record (parking_id,card_id,checkin_time,flag)
 		values(
-		#{parkingNum,jdbcType=VARCHAR},
-		#{cardNum,jdbcType=VARCHAR},
+		#{parkingId,jdbcType=INTEGER},
+		#{cardId,jdbcType=INTEGER},
 		#{checkinTime,jdbcType=TIMESTAMP},
 		#{flag,jdbcType=INTEGER}
 		)
 	</insert>
 
-
+	<select id="selectParkingRecord" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from parking_record where card_id = #{cardId,jdbcType=INTEGER} and flag = 1
+	</select>
 
 </mapper>
