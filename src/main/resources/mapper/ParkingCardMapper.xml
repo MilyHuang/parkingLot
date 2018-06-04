@@ -5,74 +5,83 @@
 	<resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingCardEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="users_id" property="userId" jdbcType="INTEGER" />
-		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
 		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
 		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="flag" property="flag" jdbcType="INTEGER" />
 	</resultMap>
 
 
 	<!-- 办理停车卡 -->
 	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
 		INSERT INTO
-		parking_card(users_id,parking_num,card_num,createdTime,state)
+		parking_card(users_id,parking_id,card_num,createdTime,state)
 		VALUES(
 		#{userId,jdbcType=INTEGER},
-		#{parkingNum,jdbcType=VARCHAR},
+		#{parkingId,jdbcType=INTEGER},
 		#{cardNum,jdbcType=VARCHAR},
 		now(),
 		#{state,jdbcType=INTEGER}
 		)
 	</insert>
 
-	<!-- 查询卡信息 -->
+	<!-- 查询停车信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
+		 	id,users_id,parking_id,card_num,createdTime,state,flag
 		FROM
-		parking_card
+			parking_card
 		WHERE
-		card_num=#{cardNum,jdbcType=VARCHAR}
+			card_num=#{cardNum,jdbcType=VARCHAR}
+		AND 
+			parking_id=#{parkingId,jdbcType=INTEGER}
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->
-	<select id="selectCards" parameterType="java.lang.String"
+	<select id="selectCards" parameterType="java.lang.Integer"
 		resultType="java.lang.Integer">
 		SELECT
 		count(*)
 		FROM parking_card
 		where
-		parking_num=#{parkingNum,jdbcType=VARCHAR}
+		parking_id=#{parkingId,jdbcType=INTEGER}
 		and
 		state=0
 	</select>
 
-	<!-- <update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity"> 
-		update parking_card set flag=#{flag,jdbcType=INTEGER} where parking_num=#{parkingNum,jdbcType=VARCHAR} 
-		and card_num=#{cardNum,jdbcType=VARCHAR} </update> -->
+	<!-- 更新停车卡信息 -->
+	<update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+		update parking_card
+		set flag=#{flag,jdbcType=INTEGER} 
+		where 
+		card_num=#{cardNum,jdbcType=VARCHAR}
+	</update>
 
 	<!--查找某用户在某停车场中卡的总数 -->
-	<select id="selectUserCards" resultType="com.parkinglot.admin.entity.ParkingCardEntity">
+	<select id="selectUserCards"
+		resultType="com.parkinglot.admin.entity.ParkingCardEntity">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
+		id,users_id,parking_id,card_num,createdTime,state,flag
 		FROM parking_card
 		where
+		parking_id=#{parkingId,jdbcType=VARCHAR}
+		and
 		users_id=#{userId,jdbcType=INTEGER}
 	</select>
 
-	<select id="selectAllCards" resultMap="BaseResultMap">
-		select * from parking_card;
-	</select>
-
-
-<!-- 查询卡信息 -->
-	<select id="selectCardByCardId" resultMap="BaseResultMap">
+<select id="selectAllCards" resultMap="BaseResultMap">
+  select * from parking_card;
+</select>
+	<!-- 查询卡号是否存在 -->
+	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
-		FROM
-		parking_card
-		WHERE
-		id=#{cardId,jdbcType=VARCHAR}
+			 	id,users_id,parking_id,card_num,createdTime,state,flag
+			FROM
+				parking_card
+			WHERE
+				card_num=#{cardNum,jdbcType=VARCHAR}
 	</select>
+
 
 </mapper>

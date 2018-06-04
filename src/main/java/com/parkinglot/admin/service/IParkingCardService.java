@@ -10,7 +10,6 @@ package com.parkinglot.admin.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.common.util.JsonResult;
@@ -29,13 +28,13 @@ public interface IParkingCardService {
 	 * @param parkingNum 停车场编号
 	 * @return
 	 */
-	ParkingCardEntity selectParkingCardByCardNum(String cardNum);
+	ParkingCardEntity selectParkingCardByCardNumAndParkingNum(String cardNum,Integer parkingId);
 	
 	/**
 	 * 查找停车场中能用的卡的总数
 	 * @return
 	 */
-	int selectCards(@Param("parkingNum") String parkingNum);
+	int selectCards(Integer parkingId);
 	
 	/**
 	 * 停车后更新停车卡信息
@@ -48,7 +47,7 @@ public interface IParkingCardService {
 	 * 查找某用户在某停车场中卡的总数
 	 * @return
 	 */
-	List<ParkingCardEntity> selectUserCards(@Param("userId") Integer userId);
+	List<ParkingCardEntity> selectUserCards(Integer parkingId, Integer userId);
 	
 	
 	/**
@@ -58,10 +57,9 @@ public interface IParkingCardService {
 	List<ParkingCardEntity> selectAllCards();
 	
 	/**
-	 * 通过停车卡id查询卡信息
+	 * 查询卡号是否
 	 * @param cardNum
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
-
+	ParkingCardEntity selectCardByCardNum(String cardNum);
 }

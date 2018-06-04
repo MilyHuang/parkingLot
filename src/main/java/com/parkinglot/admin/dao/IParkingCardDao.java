@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingCardEntity;
-import com.parkinglot.common.util.JsonResult;
 
 /**
 @Description: 添加停车卡（办理停车卡）
@@ -24,17 +23,18 @@ public interface IParkingCardDao {
 	int insertParkingCard(ParkingCardEntity entity);
 	
 	/**
-	 * 通过停车卡num查询卡信息
-	 * @param cardNum
+	 * 通过停车卡查询卡信息
+	 * @param cardNum  停车卡号
+	 * @param parkingId 停车场Id
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum);
+	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("parkingId") Integer parkingId);
 	
 	/**
 	 * 查找停车场中能用的卡的总数
 	 * @return
 	 */
-	int selectCards(@Param("parkingNum") String parkingNum);
+	int selectCards(@Param("parkingId") Integer parkingId);
 	
 	/**
 	 * 停车后更新停车卡信息
@@ -48,7 +48,7 @@ public interface IParkingCardDao {
 	 * 查找某用户在某停车场中卡的总数
 	 * @return
 	 */
-	List<ParkingCardEntity> selectUserCards(@Param("userId") Integer userId);
+	List<ParkingCardEntity> selectUserCards(@Param("parkingId") Integer parkingId,@Param("userId") Integer userId);
 	
 	/**
 	 * 查找停车场中卡的总数
@@ -56,12 +56,13 @@ public interface IParkingCardDao {
 	 */
 	List<ParkingCardEntity> selectAllCards();
 	
-	
 	/**
-	 * 通过停车卡id查询卡信息
-	 * @param cardNum
+	 * 查询卡号是否存在
+	 * @param cardNum  卡号
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
+	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum);
+	
+	
 	
 }
