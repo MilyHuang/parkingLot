@@ -34,10 +34,10 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 
 	@Override
 	public int insertParkingBill(ParkingBillEntity entity) {
-		ParkingLotEntity parkingLotEntity = parkingDao.selectParkingLotByNum(entity.getParkingNum());
-		entity.setPrice(parkingLotEntity.getPrice());
-		entity.setAccount(parkingLotEntity.getPrice()*3);
-		entity.setFirstDate(new Date());
+//		ParkingLotEntity parkingLotEntity = parkingDao.selectParkingLotByNum(entity.getParkingNum());
+//		entity.setPrice(parkingLotEntity.getPrice());
+//		entity.setAccount(parkingLotEntity.get);
+//		entity.setFirstDate(new Date());
 		return parkingBillDao.insertParkingBill(entity);
 	}
 

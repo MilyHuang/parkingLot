@@ -1,5 +1,7 @@
 package com.parkinglot.admin.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,16 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 			return jsonResult;
 		}
 		return jsonResult;
+	}
+
+	@Override
+	public List<ParkingCardEntity> selectUserCards(String parkingNum, Integer userId) {
+		return cardDao.selectUserCards(parkingNum, userId);
+	}
+
+	@Override
+	public List<ParkingCardEntity> selectAllCards() {
+		return cardDao.selectAllCards();
 	}
 
 }

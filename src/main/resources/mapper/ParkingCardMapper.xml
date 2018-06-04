@@ -57,6 +57,20 @@
 		card_num=#{cardNum,jdbcType=VARCHAR}
 	</update>
 
+	<!--查找某用户在某停车场中卡的总数 -->
+	<select id="selectUserCards"
+		resultType="com.parkinglot.admin.entity.ParkingCardEntity">
+		SELECT
+		id,users_id,parking_num,card_num,createdTime,state,flag
+		FROM parking_card
+		where
+		parking_num=#{parkingNum,jdbcType=VARCHAR}
+		and
+		users_id=#{userId,jdbcType=INTEGER}
+	</select>
 
+<select id="selectAllCards" resultMap="BaseResultMap">
+  select * from parking_card;
+</select>
 
 </mapper>

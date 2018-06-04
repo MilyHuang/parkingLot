@@ -44,5 +44,15 @@ public interface IParkingCardDao {
 	int updateParkingCard(ParkingCardEntity entity);
 	
 	
+	/**
+	 * 查找某用户在某停车场中卡的总数
+	 * @return
+	 */
+	List<ParkingCardEntity> selectUserCards(@Param("parkingNum") String parkingNum,@Param("userId") Integer userId);
 	
+	/**
+	 * 查找停车场中卡的总数
+	 * @return
+	 */
+	List<ParkingCardEntity> selectAllCards();
 }

@@ -1,7 +1,9 @@
 package com.parkinglot.admin.controller.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,6 @@ import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IParkingRecordService;
 import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
-import com.parkinglot.common.util.GenerateBill;
 import com.parkinglot.common.util.JsonResult;
 
 @Controller
@@ -42,8 +43,6 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 
 	@Autowired
 	private IUsersInfoService userService;
-
-	GenerateBill gen = new GenerateBill();
 
 	@RequestMapping("/updateParkingRecord")
 	@ResponseBody
@@ -100,6 +99,9 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 				.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(), entity.getParkingNum()).getFlag() == 1) {
 			jsonResult = new JsonResult(new ServiceException("您已停放辆车，不能停放其他车辆"));
 			return jsonResult;
+		}else if(parkingCardService.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(), entity.getParkingNum()).getState()==1) {
+			jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
+			return jsonResult;
 		} else {
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
@@ -120,8 +122,8 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			parkingRecordEntity.setFlag(1);
 			parkingRecordService.insertParkingRecord(parkingRecordEntity);
 			parkingRecordEntity.setFlag(0);
+			System.out.println(parkingRecordEntity);
 			checkParkingRecord(parkingRecordEntity);
-
 			return jsonResult;
 		}
 	}
@@ -130,19 +132,83 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 	 * 判断停车季度，生成新的账单
 	 */
 	private void checkParkingRecord(ParkingRecordEntity entity) {
+		System.out.println(entity);
 		ParkingCardEntity parkingCardEntity = parkingCardService
 				.selectParkingCardByCardNumAndParkingNum(entity.getCardNum(), entity.getParkingNum());
+		System.out.println(parkingCardEntity);
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntityByCard(parkingCardEntity);
+		Date maxDate=list.get(0).getFirstDate();
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(new Date()) == -1) {
-				UserAndCardEntity en = new UserAndCardEntity();
-				en.setCardNum(entity.getCardNum());
-				en.setParkingNum(entity.getParkingNum());
-				en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-				gen.generateBill(en);
+			if(list.get(i).getStatementDate().compareTo(maxDate)==1) {
+				maxDate=list.get(i).getStatementDate();
 			}
 		}
+		System.out.println(maxDate);
+		if(maxDate.compareTo(new Date())==-1) {
+			UserAndCardEntity en = new UserAndCardEntity();
+			en.setCardNum(entity.getCardNum());
+			en.setParkingNum(entity.getParkingNum());
+			en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
+			System.out.println(en);
+			generateBill(en);
+		}
 
+	}
+
+	/**
+	 * 生成新账单
+	 * @param entity
+	 */
+	public void generateBill(UserAndCardEntity entity) {
+		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
+		int rand = new Random().nextInt(100000);
+		parkingBillEntity.setBillNum(String.valueOf(rand));
+		parkingBillEntity.setAccount(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice() * 3);
+		parkingBillEntity.setPrice(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
+		parkingBillEntity.setCardNum(entity.getCardNum());
+		Calendar ca = Calendar.getInstance();
+		ca.setTime(new Date());
+		Integer year = ca.get(Calendar.YEAR);
+		Integer month = ca.get(Calendar.MONTH) + 1;
+		switch (month) {
+		case 1:
+			;
+		case 2:
+			;
+		case 3:
+			ca.set(year, 2, 31);
+			break;
+		case 4:
+			;
+		case 5:
+			;
+		case 6:
+			ca.set(year, 5, 30);
+			break;
+		case 7:
+			;
+		case 8:
+			;
+		case 9:
+			ca.set(year, 8, 30);
+			break;
+		case 10:
+			;
+		case 11:
+			;
+		case 12:
+			ca.set(year, 11, 31);
+			break;
+		}
+		System.out.println(ca.getTime());
+		parkingBillEntity.setFirstDate(new Date());
+		parkingBillEntity.setStatementDate(ca.getTime());
+		parkingBillEntity.setFlag(2);
+		parkingBillEntity.setParkingNum(entity.getParkingNum());
+		parkingBillEntity
+				.setParkingName(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
+		parkingBillEntity.setPhone(entity.getPhone());
+		parkingBillService.insertParkingBill(parkingBillEntity);
 	}
 
 }

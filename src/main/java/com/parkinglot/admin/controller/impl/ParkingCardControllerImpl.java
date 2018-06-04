@@ -25,7 +25,6 @@ import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
-import com.parkinglot.common.util.GenerateBill;
 import com.parkinglot.common.util.JsonResult;
 import com.sun.tools.doclint.Entity;
 
@@ -55,7 +54,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	@Autowired
 	private IParkingBillService parkingBillService;
 
-	GenerateBill gen = new GenerateBill();
 	/**
 	 * 新用户办理停车卡
 	 */
@@ -84,14 +82,19 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			// 查询该用户是否存在，如果存在则反显用户信息
 			UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
 			// 查询停车卡号是否存在
-			ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(cardEntity.getCardNum(),
-					cardEntity.getParkingNum());
+			List<ParkingCardEntity> card = cardService.selectAllCards();
+			System.out.println("card" + card);
 			// 如果该用户存在
 			if (user != null) {
 				jsonResult = new JsonResult(user);
 				return jsonResult;
 			} else if (card != null) {
-				jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
+				for (int i = 0; i < card.size(); i++) {
+					if (card.get(i).getCardNum() == entity.getCardNum()) {
+						jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
+						break;
+					}
+				}
 				return jsonResult;
 			} else if (isHasParkingLot(cardEntity.getParkingNum())) {
 				System.out.println(cardEntity.getParkingNum());
@@ -104,7 +107,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				cardEntity.setUserId(userEntity.getId());
 				// 添加停车卡
 				cardService.insertParkingCard(cardEntity);
-				gen.generateBill(entity);
+				generateBill(entity);
 				return jsonResult;
 			}
 		}
@@ -118,6 +121,8 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	@Override
 	public JsonResult createNewParkingCardByOldUser(@RequestBody ParkingCardEntity cardEntity) {
 		JsonResult jsonResult = new JsonResult();
+		List<ParkingCardEntity> card = cardService.selectAllCards();
+		System.out.println("card" + card);
 		// 判断当前是否是出账日，出账日不能办理新卡
 		if (isLastDay()) {
 			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
@@ -131,38 +136,43 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		// 判断用户是否负费
 		UsersInfoEntity user = userService.selectUserInfoById(cardEntity.getUserId());
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(user.getPhone());
-		Calendar ca = Calendar.getInstance();
-		for (int i = 0; i < list.size(); i++) {
-			ca.setTime(list.get(i).getStatementDate());
-			ca.add(Calendar.MONTH, +1);
-			Calendar cc = Calendar.getInstance();
-			cc.setTime(new Date());
-			if (cc.compareTo(ca) == 1) {
+		List<ParkingCardEntity> list1 = cardService.selectUserCards(cardEntity.getParkingNum(), cardEntity.getUserId());
+		for (int i = 0; i < list1.size(); i++) {
+			System.out.println(i + "  " + list1.get(i).getState());
+			if (list1.get(i).getState() == 1) {
 				jsonResult = new JsonResult(new ServiceException("账号负费不能创建新卡"));
 				return jsonResult;
 			}
 		}
-
+		
+		System.out.println(cardEntity.getParkingNum());
+		System.out.println(isHasParkingLot(cardEntity.getParkingNum()));
 		// 查询停车卡号是否存在
-		ParkingCardEntity card = cardService.selectParkingCardByCardNumAndParkingNum(cardEntity.getCardNum(),
-				cardEntity.getParkingNum());
 		if (card != null) {
-			jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
+			for (int i = 0; i < card.size(); i++) {
+				if (card.get(i).getCardNum().equals(cardEntity.getCardNum())) {
+					System.out.println("card.get(i).getCardNum()"+card.get(i).getCardNum());
+					System.out.println( cardEntity.getCardNum());
+					jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
+					break;
+				}
+			}
 			return jsonResult;
 		} else if (isHasParkingLot(cardEntity.getParkingNum())) {
+			System.out.println("1111");
 			jsonResult = new JsonResult(new ServiceException("该停车场编号不存在"));
 			return jsonResult;
+			//return new JsonResult(new ServiceException("该停车场编号不存在"));
 		} else if (cardService.selectCards(cardEntity.getParkingNum()) >= parkingService
 				.selectParkingLotByNum(cardEntity.getParkingNum()).getTotal()) {
 			jsonResult = new JsonResult(new ServiceException("该停车场已满"));
 			return jsonResult;
 		} else {
-
 			UserAndCardEntity upEntity = new UserAndCardEntity();
 			upEntity.setCardNum(cardEntity.getCardNum());
 			upEntity.setParkingNum(cardEntity.getParkingNum());
 			upEntity.setPhone(userService.selectUserInfoById(cardEntity.getUserId()).getPhone());
-			gen.generateBill(upEntity);
+			generateBill(upEntity);
 			// 添加停车卡
 			cardService.insertParkingCard(cardEntity);
 			return jsonResult;
@@ -205,6 +215,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			flag = true;
 			return flag;
 		}
+		System.out.println(parking.getParkingNum());
 		return flag;
 	}
 
@@ -225,5 +236,70 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		return flag;
 	}
 
-	
+	/**
+	 * 生成新账单
+	 * 
+	 * @param entity
+	 */
+	public void generateBill(UserAndCardEntity entity) {
+		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
+		int rand = new Random().nextInt(100000);
+		parkingBillEntity.setBillNum(String.valueOf(rand));
+		parkingBillEntity.setCardNum(entity.getCardNum());
+		Calendar ca = Calendar.getInstance();
+		ca.setTime(new Date());
+		int nowDate = ca.get(Calendar.DAY_OF_MONTH);
+		Integer year = ca.get(Calendar.YEAR);
+		Integer month = ca.get(Calendar.MONTH) + 1;
+		switch (month) {
+		case 1:
+			;
+		case 2:
+			;
+		case 3:
+			ca.set(year, 2, 31);
+			break;
+		case 4:
+			;
+		case 5:
+			;
+		case 6:
+			ca.set(year, 5, 30);
+			break;
+		case 7:
+			;
+		case 8:
+			;
+		case 9:
+			ca.set(year, 8, 30);
+			break;
+		case 10:
+			;
+		case 11:
+			;
+		case 12:
+			ca.set(year, 11, 31);
+			break;
+		}
+		System.out.println(ca.getTime());
+		parkingBillEntity.setFirstDate(new Date());
+		parkingBillEntity.setStatementDate(ca.getTime());
+		parkingBillEntity.setFlag(2);
+		// 获取当前月天数
+		System.out.println(nowDate);
+		ca.set(Calendar.DATE, 1);// 把日期设置为当月第一天
+		ca.roll(Calendar.DATE, -1);// 日期回滚一天，也就是最后一天
+		int maxDate = ca.get(Calendar.DATE);
+		System.out.println(maxDate);
+		double price = parkingService.selectParkingLotByNum(entity.getParkingNum()).getPrice() * (maxDate - nowDate + 1)
+				/ maxDate;
+		System.out.println(price);
+		parkingBillEntity.setAccount(price);
+		parkingBillEntity.setPrice(parkingService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
+		parkingBillEntity.setParkingNum(entity.getParkingNum());
+		parkingBillEntity.setParkingName(parkingService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
+		parkingBillEntity.setPhone(entity.getPhone());
+		System.out.println(parkingBillEntity);
+		parkingBillService.insertParkingBill(parkingBillEntity);
+	}
 }
