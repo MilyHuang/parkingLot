@@ -5,7 +5,7 @@
 	<resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.ParkingCardEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="users_id" property="userId" jdbcType="INTEGER" />
-		<result column="parking_num" property="parkingNum" jdbcType="VARCHAR" />
+		<result column="parking_id" property="parkingId" jdbcType="VARCHAR" />
 		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
 		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
 		<result column="state" property="state" jdbcType="INTEGER" />
@@ -15,10 +15,10 @@
 	<!-- 办理停车卡 -->
 	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
 		INSERT INTO
-		parking_card(users_id,parking_num,card_num,createdTime,state)
+		parking_card(users_id,parking_id,card_num,createdTime,state)
 		VALUES(
 		#{userId,jdbcType=INTEGER},
-		#{parkingNum,jdbcType=VARCHAR},
+		#{parkingId,jdbcType=INTEGER},
 		#{cardNum,jdbcType=VARCHAR},
 		now(),
 		#{state,jdbcType=INTEGER}
@@ -28,7 +28,7 @@
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
+		id,users_id,parking_id,card_num,createdTime,state
 		FROM
 		parking_card
 		WHERE
@@ -36,13 +36,13 @@
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->
-	<select id="selectCards" parameterType="java.lang.String"
+	<select id="selectCards" parameterType="java.lang.Integer"
 		resultType="java.lang.Integer">
 		SELECT
 		count(*)
 		FROM parking_card
 		where
-		parking_num=#{parkingNum,jdbcType=VARCHAR}
+		parking_id=#{parkingId,jdbcType=VARCHAR}
 		and
 		state=0
 	</select>
@@ -54,7 +54,7 @@
 	<!--查找某用户在某停车场中卡的总数 -->
 	<select id="selectUserCards" resultType="com.parkinglot.admin.entity.ParkingCardEntity">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
+		id,users_id,parking_id,card_num,createdTime,state
 		FROM parking_card
 		where
 		users_id=#{userId,jdbcType=INTEGER}
@@ -68,11 +68,11 @@
 <!-- 查询卡信息 -->
 	<select id="selectCardByCardId" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_num,card_num,createdTime,state
+		id,users_id,parking_id,card_num,createdTime,state
 		FROM
 		parking_card
 		WHERE
-		id=#{cardId,jdbcType=VARCHAR}
+		id=#{cardId,jdbcType=INTEGER}
 	</select>
 
 </mapper>

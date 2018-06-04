@@ -58,5 +58,12 @@
 		WHERE parking_num=#{parkingNum,jdbcType=VARCHAR}
 	</update>
 
-
+<!-- 查询停车场是否存在 -->
+	<select id="selectParkingLotById" resultMap="BaseResultMap">
+		SELECT
+		id,parking_num,parking_name,address,total,inuse,price,rent
+		FROM
+		parking_lot
+		WHERE id=#{parkingId,jdbcType=INTEGER}
+	</select>
 </mapper>

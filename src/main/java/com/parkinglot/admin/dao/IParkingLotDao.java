@@ -49,4 +49,12 @@ public interface IParkingLotDao {
     * @return
     */
     int updateParkingLotInuse(ParkingLotEntity entity);
+    
+    
+    /**
+	 * 通过停车场id查询停车场是否存在
+	 * @param parkingNum
+	 * @return
+	 */
+	ParkingLotEntity selectParkingLotById(@Param("parkingId") Integer parkingId);
 }

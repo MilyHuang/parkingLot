@@ -72,7 +72,7 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		}
 
 		ParkingPriceReportEntity parkingPriceReportEntity = new ParkingPriceReportEntity();
-		parkingPriceReportEntity.setParkingId(entity.getId());
+		parkingPriceReportEntity.setParkingId(en.getId());
 		parkingPriceReportEntity.setPrice(entity.getPrice());
 		parkingPriceReportEntity.setDatetime(new Date());
 		parkingPriceReportService.insertParkingPriceReport(parkingPriceReportEntity);
@@ -89,5 +89,10 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 			return jsonResult;
 		}
 		return jsonResult;
+	}
+
+	@Override
+	public ParkingLotEntity selectParkingLotById(Integer parkingId) {
+		return parkingLotDao.selectParkingLotById(parkingId);
 	}
 }

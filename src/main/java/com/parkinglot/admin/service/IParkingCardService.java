@@ -35,7 +35,7 @@ public interface IParkingCardService {
 	 * 查找停车场中能用的卡的总数
 	 * @return
 	 */
-	int selectCards(@Param("parkingNum") String parkingNum);
+	int selectCards(@Param("parkingId") Integer parkingId);
 	
 	/**
 	 * 停车后更新停车卡信息

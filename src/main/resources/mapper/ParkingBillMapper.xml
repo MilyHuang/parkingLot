@@ -6,7 +6,6 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="bill_num" property="billNum" jdbcType="VARCHAR" />
 		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
-		<result column="parking_name" property="parkingName" jdbcType="NVARCHAR" />
 		<result column="card_id" property="cardId" jdbcType="INTEGER" />
 		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 		<result column="price" property="price" jdbcType="DOUBLE" />
@@ -33,11 +32,10 @@
 
 	<insert id="insertParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		insert into
-		parking_bill(bill_num,parking_id,parking_name,card_id,tis,price,account,firstDate,statementDate,phone,flag)
+		parking_bill(bill_num,parking_id,card_id,tis,price,account,firstDate,statementDate,phone,flag)
 		values(
 		#{billNum,jdbcType=VARCHAR},
 		#{parkingId,jdbcType=INTEGER},
-		#{parkingName,jdbcType=VARCHAR},
 		#{cardId,jdbcType=INTEGER},
 		#{tis,jdbcType=NVARCHAR},
 		#{price,jdbcType=DOUBLE},

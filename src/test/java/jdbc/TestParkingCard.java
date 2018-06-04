@@ -49,9 +49,9 @@ public class TestParkingCard {
 //	}
 //	
 	
-	@Test
-	public void test() {
-		ParkingCardEntity entity = new ParkingCardEntity();
-		System.err.println( cardService.selectCards("002"));
-	}
+//	@Test
+//	public void test() {
+//		ParkingCardEntity entity = new ParkingCardEntity();
+//		System.err.println( cardService.selectCards("002"));
+//	}
 }

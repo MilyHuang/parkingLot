@@ -27,7 +27,7 @@ public interface IParkingCardController {
 	 * @param cardEntity  停车卡信息
 	 * @return
 	 */
-	JsonResult createNewParkingCardByOldUser(ParkingCardEntity cardEntity);
+	JsonResult createNewParkingCardByOldUser(UserAndCardEntity cardEntity);
 	
 	/**
 	 * 通过手机号码查询用户信息
