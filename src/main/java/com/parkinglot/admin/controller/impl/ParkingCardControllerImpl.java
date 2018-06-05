@@ -63,8 +63,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	public JsonResult createNewParkingCard(@RequestBody UserAndCardEntity entity) {
 		System.out.println(entity);
 		UsersInfoEntity userEntity = new UsersInfoEntity();
-		ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(entity.getParkingNum());
-		System.out.println(parkingLotEntity);
 		userEntity.setPhone(entity.getPhone());
 		userEntity.setUsername(entity.getUsername());
 		userEntity.setPassword(entity.getPassword());
@@ -76,6 +74,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
 			return jsonResult;
 		} else {
+			
 			// 查询该用户是否存在，如果存在则反显用户信息
 			UsersInfoEntity user = userService.selectUserInfoByPhone(userEntity.getPhone());
 			System.out.println("user" + user);
@@ -83,8 +82,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			List<ParkingCardEntity> card = cardService.selectAllCards();
 			System.out.println("card" + card);
 			// 如果该用户存在
-			System.out.println("boolean" + isHasParkingLot(parkingLotEntity.getParkingNum()));
-
+			ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(entity.getParkingNum());
 			if (user != null) {
 				jsonResult = new JsonResult(user);
 				return jsonResult;
@@ -98,7 +96,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				}
 
 			}
-			if (isHasParkingLot(parkingLotEntity.getParkingNum())) {
+			if (parkingService.selectParkingLotByNum(entity.getParkingNum())==null) {
 				System.out.println("cardEntity.getParkingNum()");
 				jsonResult = new JsonResult(new ServiceException("该编号停车场不存在"));
 				System.out.println(jsonResult);
@@ -154,7 +152,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			}
 		}
 
-		System.out.println(isHasParkingLot(parkingLotEntity.getParkingNum()));
 		// 查询停车卡号是否存在
 		if (card != null) {
 			for (int i = 0; i < card.size(); i++) {
