@@ -182,8 +182,9 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			billEntity.setCardId(cardEntity.getId());
 			billEntity.setPhone(phone);
 			generateBill(billEntity);
-			
-			return jsonResult;
+			//查询卡总数
+			int count = cardService.countCardsForUser(entity.getUserId());
+			return new JsonResult(count);
 		}
 
 	}
