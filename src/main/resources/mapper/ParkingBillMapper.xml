@@ -6,13 +6,14 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="bill_num" property="billNum" jdbcType="VARCHAR" />
 		<result column="parking_id" property="parkingId" jdbcType="INTEGER" />
-		<result column="parking_name" property="parkingName" jdbcType="VARCHAR"/>
+		<result column="parking_name" property="parkingName" jdbcType="VARCHAR" />
 		<result column="card_id" property="cardId" jdbcType="INTEGER" />
 		<result column="phone" property="phone" jdbcType="VARCHAR" />
 		<result column="price" property="price" jdbcType="DOUBLE" />
 		<result column="account" property="account" jdbcType="DOUBLE" />
 		<result column="firstDate" property="firstDate" jdbcType="TIMESTAMP" />
-		<result column="statementDate" property="statementDate" jdbcType="TIMESTAMP" />
+		<result column="statementDate" property="statementDate"
+			jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
 		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 	</resultMap>
@@ -47,31 +48,29 @@
 		#{tis,jdbcType=NVARCHAR}
 		);
 	</insert>
-	
-	
-	
-	
-	
-	
-	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap"
-		parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+
+
+
+
+
+
+	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap">
 		select * from parking_bill where
-		parking_id=#{parkingId,jdbcType=VARCHAR} and 
-		card_id=#{cardId,jdbcType=VARCHAR}
+		card_id=#{cardId,jdbcType=INTEGER}
 	</select>
-	
+
 	<!-- 通过手机号和缴费状态查询用户的账单 -->
 	<select id="selectBillsByPhoneAndFlag" resultMap="BaseResultMap">
 		SELECT
-		 	id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
-		 FROM 
-		 	parking_bill
-		 WHERE 
-		 	phone=#{phone,jdbcType=VARCHAR}
-		 AND
-		 	flag=#{flag,jdbcType=INTEGER}
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		FROM
+		parking_bill
+		WHERE
+		phone=#{phone,jdbcType=VARCHAR}
+		AND
+		flag=#{flag,jdbcType=INTEGER}
 	</select>
-	
-	
-	
+
+
+
 </mapper>

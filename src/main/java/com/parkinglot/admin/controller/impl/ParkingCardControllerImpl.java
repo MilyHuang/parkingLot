@@ -161,6 +161,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				.selectParkingLotById(parkingLot.getId()).getTotal()) {
 			jsonResult = new JsonResult(new ServiceException("该停车场已满"));
 			return jsonResult;
+
 		}
 		
 		// 查询停车卡号是否存在
@@ -175,6 +176,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		if(!bills.isEmpty()){
 			return new JsonResult(new ServiceException("该用户有账单未缴清"));
 		}else {
+
 			
 			// 添加停车卡
 			ParkingCardEntity cardEntity = new ParkingCardEntity();
