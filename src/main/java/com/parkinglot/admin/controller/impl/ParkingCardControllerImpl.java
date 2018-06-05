@@ -131,39 +131,23 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(cardEntity.getParkingNum());
 		System.out.println(cardEntity);
 		System.out.println("card" + card);
+		System.out.println("parkingLotEntity:"+parkingLotEntity);
 		// 判断当前是否是出账日，出账日不能办理新卡
 		if (isLastDay()) {
 			jsonResult = new JsonResult(new ServiceException("今天是出账日，暂停办理业务"));
 			return jsonResult;
 		}
 
-		// 判断用户是否负费
-		ParkingCardEntity parkingCardEntity = cardService.selectParkingCardByCardNum(cardEntity.getCardNum());
-		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
-		System.out.println("user" + user);
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(cardEntity.getPhone());
-		List<ParkingCardEntity> list1 = cardService.selectUserCards(user.getId());
-		System.out.println("list1:" + list1);
-		for (int i = 0; i < list1.size(); i++) {
-			System.out.println(i + "  " + list1.get(i).getState());
-			if (list1.get(i).getState() == 1) {
-				jsonResult = new JsonResult(new ServiceException("账号负费不能创建新卡"));
-				return jsonResult;
-			}
-		}
-
 		// 查询停车卡号是否存在
 		if (card != null) {
 			for (int i = 0; i < card.size(); i++) {
 				if (card.get(i).getCardNum().equals(cardEntity.getCardNum())) {
-					System.out.println("card.get(i).getCardNum()" + card.get(i).getCardNum());
-					System.out.println(cardEntity.getCardNum());
 					jsonResult = new JsonResult(new ServiceException("该卡号已存在"));
-					break;
+					return jsonResult;
 				}
 			}
-			return jsonResult;
-		} else if (isHasParkingLot(parkingLotEntity.getParkingNum())) {
+		} 
+		if (parkingLotEntity==null) {
 			System.out.println("1111");
 			jsonResult = new JsonResult(new ServiceException("该停车场编号不存在"));
 			return jsonResult;
@@ -173,6 +157,21 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			jsonResult = new JsonResult(new ServiceException("该停车场已满"));
 			return jsonResult;
 		} else {
+			// 判断用户是否负费
+			ParkingCardEntity parkingCardEntity = cardService.selectParkingCardByCardNum(cardEntity.getCardNum());
+			UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
+			System.out.println("user" + user);
+			List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(cardEntity.getPhone());
+			List<ParkingCardEntity> list1 = cardService.selectUserCards(user.getId());
+			System.out.println("list1:" + list1);
+			for (int i = 0; i < list1.size(); i++) {
+				System.out.println(i + "  " + list1.get(i).getState());
+				if (list1.get(i).getState() == 1) {
+					jsonResult = new JsonResult(new ServiceException("账号负费不能创建新卡"));
+					return jsonResult;
+				}
+			}
+			
 			UserAndCardEntity upEntity = new UserAndCardEntity();
 			upEntity.setCardNum(cardEntity.getCardNum());
 			upEntity.setParkingNum(cardEntity.getParkingNum());
