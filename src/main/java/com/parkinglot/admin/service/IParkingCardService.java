@@ -63,5 +63,12 @@ public interface IParkingCardService {
 	 * @return
 	 */
 	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
+	
+	/**
+	 * 用户办理卡的总数
+	 * @param userId
+	 * @return
+	 */
+	int countCardsForUser(Integer userId);
 
 }

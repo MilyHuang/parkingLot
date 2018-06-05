@@ -64,4 +64,10 @@ public interface IParkingCardDao {
 	 */
 	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
 	
+	/**
+	 * 查询某个用户办理停车卡的总数
+	 * @return
+	 */
+	int countCardsForUser(@Param("userId") Integer userId);
+	
 }

@@ -29,7 +29,6 @@ public class ParkingCardEntity implements Serializable{
 	private Date createdTime;
 	/**卡的状态 0可用，1不可用*/
 	private Integer state ;
-	/**0为未停车，1为已停车*/
 	public Integer getId() {
 		return id;
 	}

@@ -13,7 +13,7 @@
 
 
 	<!-- 办理停车卡 -->
-	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 		parking_card(users_id,parking_id,card_num,createdTime,state)
 		VALUES(
@@ -74,5 +74,12 @@
 		WHERE
 		id=#{cardId,jdbcType=INTEGER}
 	</select>
+
+	<!-- 查询用户办理的停车卡的总数 -->
+	<select id="countCardsForUser" resultType="int">
+		SELECT count(1) FROM parking_card
+		WHERE users_id=#{userId,jdbcType=INTEGER}
+	</select>
+
 
 </mapper>

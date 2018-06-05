@@ -76,4 +76,9 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		return cardDao.selectCardByCardId(cardId);
 	}
 
+	@Override
+	public int countCardsForUser(Integer userId) {
+		return cardDao.countCardsForUser(userId);
+	}
+
 }
