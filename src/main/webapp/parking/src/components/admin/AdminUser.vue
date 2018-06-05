@@ -30,9 +30,9 @@
     </el-dialog>
     <!-- 添加用户弾框 -->
     <el-dialog class="dialog-width" title="添加用户" :visible.sync="addUserVisible" width="30%">
-      用户名<el-input v-model="adduser.username" type="text" /> 
-      密码<el-input v-model="adduser.password" type="password" />
-      <el-radio-group v-model="radio" @change="userTypeChoose">
+      用户名<el-input v-model.trim="adduser.username" type="text" /> 
+      密码<el-input v-model.trim="adduser.password" type="password" />
+      <el-radio-group v-model.trim="radio" @change="userTypeChoose">
         <el-radio :label="1">运营商</el-radio>
         <el-radio :label="2">操作员</el-radio>
       </el-radio-group>
@@ -44,9 +44,9 @@
     <!-- 修改用户密码弾框 -->
     <el-dialog title="修改用户密码" :visible.sync="updateCodeVisible" width="30%">
       <form method="post">
-        用户名<el-input v-model="updateCode.username" type="text" disabled/>
-        重置密码<el-input v-model="updateCode.code" type="password" /> 
-        确认密码<el-input v-model="updateCode.surecode" type="password" />
+        用户名<el-input v-model.trim="updateCode.username" type="text" disabled/>
+        重置密码<el-input v-model.trim="updateCode.code" type="password" /> 
+        确认密码<el-input v-model.trim="updateCode.surecode" type="password" />
       </form>
       <div class="dialog-footer">
         <el-button @click="updateCodeVisible = false">取 消</el-button>
