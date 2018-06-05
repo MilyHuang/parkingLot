@@ -133,7 +133,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		List<ParkingCardEntity> card = cardService.selectAllCards();
 		
 		ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(cardEntity.getParkingNum());
-		
+		System.out.println(cardEntity);
 		System.out.println("card" + card);
 		// 判断当前是否是出账日，出账日不能办理新卡
 		if (isLastDay()) {
@@ -142,9 +142,12 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		}
 		
 		// 判断用户是否负费
-		UsersInfoEntity user = userService.selectUserInfoByPhone(cardEntity.getPhone());
+		ParkingCardEntity parkingCardEntity=cardService.selectParkingCardByCardNum(cardEntity.getCardNum());
+		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
+		System.out.println("user"+user);
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(cardEntity.getPhone());
-		List<ParkingCardEntity> list1 = cardService.selectUserCards( user.getId());
+		List<ParkingCardEntity> list1 = cardService.selectUserCards(user.getId());
+		System.out.println("list1:"+list1);
 		for (int i = 0; i < list1.size(); i++) {
 			System.out.println(i + "  " + list1.get(i).getState());
 			if (list1.get(i).getState() == 1) {
@@ -181,13 +184,13 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			upEntity.setPhone(cardEntity.getPhone());
 			generateBill(upEntity);
 			// 添加停车卡
-			ParkingCardEntity parkingCardEntity = new ParkingCardEntity();
-			parkingCardEntity.setCardNum(cardEntity.getCardNum());
-			parkingCardEntity.setCreatedTime(new Date());
-			parkingCardEntity.setParkingId(parkingLotEntity.getId());
-			parkingCardEntity.setState(0);
-			parkingCardEntity.setUserId(user.getId());
-			cardService.insertParkingCard(parkingCardEntity);
+			ParkingCardEntity CardEntity = new ParkingCardEntity();
+			CardEntity.setCardNum(cardEntity.getCardNum());
+			CardEntity.setCreatedTime(new Date());
+			CardEntity.setParkingId(parkingLotEntity.getId());
+			CardEntity.setState(0);
+			CardEntity.setUserId(user.getId());
+			cardService.insertParkingCard(CardEntity);
 			return jsonResult;
 		}
 
