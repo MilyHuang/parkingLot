@@ -229,7 +229,7 @@ export default {
           .then(res => {
             console.log(res);
             //判断为老用户
-            if(res.data.data.user.id){
+            if(res.data.data){
                this.oldInfo = res.data.data.user;
                this.cardCount = res.data.data.count;
                //显示老用户界面
@@ -251,7 +251,6 @@ export default {
                     message: '新用户注册成功',
                     type: 'success'
               });
-
             }
            this.isPass=false;
           })
