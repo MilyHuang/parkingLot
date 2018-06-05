@@ -49,6 +49,7 @@
           <span>卡号</span>
           <el-input v-model="oldInfo.cardAccount"></el-input>
         </el-form-item>
+        <div class="cardCount">该用户已办卡数：{{cardCount}}</div>
         <el-form-item>
           <a href="#" @click="changeFlag = true">为其他用户办理新卡</a>
           <el-button class="deal-button" type="primary" @click="createOldCard()">老用户办理</el-button>
@@ -77,6 +78,8 @@ export default {
       },
       //搜索信息
       searchNumber: ``,
+      //老用户卡数
+      cardCount: ``,
       cardInfo: {
         name: ``,
         phoneNumber: ``,
@@ -171,7 +174,8 @@ export default {
             console.log(res.data);
             var data = res.data;
             if (data.state == 1) {
-              this.oldInfo = data.data;
+              this.oldInfo = data.data.user;
+              this.cardCount = data.data.count;
               this.changeFlag = false;
             }
             else{
@@ -194,12 +198,15 @@ export default {
       if(this.isPass)
       this.axios.post(this.baseURI +'/parkingCard/createNewParkingByOldUser', { "userId": this.oldInfo.id,"parkingNum": this.oldInfo.lotNumber,"cardNum": this.oldInfo.cardAccount})
         .then(res => {
+          console.log(res);
           if(res.data.message == `OK`){
               this.$notify({
                     title: '提示',
                     message: '老用户办卡成功',
                     type: 'success'
               });
+              //更新卡数
+              this.cardCount = res.data.data;
               this.isPass=false;
           }else if(res.data.state == 0){
             this.$notify({
@@ -222,8 +229,9 @@ export default {
           .then(res => {
             console.log(res);
             //判断为老用户
-            if(res.data.data){
-               this.oldInfo = res.data.data;
+            if(res.data.data.user.id){
+               this.oldInfo = res.data.data.user;
+               this.cardCount = res.data.data.count;
                //显示老用户界面
                this.changeFlag = false;
                //加载老用户信息
@@ -287,6 +295,11 @@ export default {
 
 .user-radio{
   margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.cardCount{
+  color: red;
   margin-bottom: 30px;
 }
 </style>
