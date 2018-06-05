@@ -32,6 +32,64 @@ public class ParkingRecordEntity implements Serializable {
 	/** 停车取车标志 0停车，1取车 */
 	private Integer flag;
 
+	private Integer parkingId;
+	
+	private Integer cardId;
+	
+	public String getPhone() {
+		return phone;
+	}
+
+
+
+
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+
+
+
+
+	public Integer getParkingId() {
+		return parkingId;
+	}
+
+
+
+
+
+
+	public void setParkingId(Integer parkingId) {
+		this.parkingId = parkingId;
+	}
+
+
+
+
+
+
+	public Integer getCardId() {
+		return cardId;
+	}
+
+
+
+
+
+
+	public void setCardId(Integer cardId) {
+		this.cardId = cardId;
+	}
+
+
+
+
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -79,8 +137,9 @@ public class ParkingRecordEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ParkingRecordEntity [id=" + id + ", parkingNum=" + parkingNum + ", cardNum=" + cardNum
-				+ ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
+		return "ParkingRecordEntity [id=" + id + ", phone=" + phone + ", parkingNum=" + parkingNum + ", cardNum="
+				+ cardNum + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag
+				+ ", parkingId=" + parkingId + ", cardId=" + cardId + "]";
 	}
 
 

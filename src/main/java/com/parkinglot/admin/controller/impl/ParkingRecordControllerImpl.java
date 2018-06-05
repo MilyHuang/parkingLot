@@ -82,14 +82,14 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		ParkingRecordEntity parkingRecordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
+		ParkingRecordEntity recordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
 		System.out.println(parkingLotEntity);
 		System.out.println(parkingCardEntity);
-		System.out.println(parkingRecordEntity);
+		System.out.println(recordEntity);
 		if (parkingCardEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
-		} else if (parkingRecordEntity != null) {
+		} else if (recordEntity != null) {
 			jsonResult = new JsonResult(new ServiceException("您已停放辆车，不能停放其他车辆"));
 			return jsonResult;
 		} else if (parkingCardEntity.getState() == 1) {
@@ -99,7 +99,7 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
-
+			ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
 			/** 记录停车的记录 */
 			parkingRecordEntity.setCardNum(entity.getCardNum());
 			parkingRecordEntity.setCheckinTime(new Date());
