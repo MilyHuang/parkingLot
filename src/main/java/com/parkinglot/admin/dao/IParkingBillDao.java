@@ -2,6 +2,8 @@ package com.parkinglot.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 
@@ -31,4 +33,12 @@ public interface IParkingBillDao {
 	 * 查找每张停车卡的账单
 	 */
 	List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity  entity);
+	
+	/**
+	 * 通过手机号和缴费状态查询用户的账单
+	 * @param phone 电话
+	 * @param flag  缴费状态
+	 * @return
+	 */
+	List<ParkingBillEntity> selectBillsByPhoneAndFlag(@Param("phone") String phone,@Param("flag") Integer flag);
 }

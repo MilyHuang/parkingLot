@@ -18,6 +18,8 @@ public class UserAndCardEntity {
 	private String parkingNum;
 	/**停车卡号*/
 	private String cardNum;
+	/**用户ID*/
+	private Integer userId;
 	public String getUsername() {
 		return username;
 	}
@@ -48,10 +50,18 @@ public class UserAndCardEntity {
 	public void setCardNum(String cardNum) {
 		this.cardNum = cardNum;
 	}
+	
+	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 	@Override
 	public String toString() {
 		return "UserAndCardEntity [username=" + username + ", phone=" + phone + ", password=" + password
-				+ ", parkingNum=" + parkingNum + ", cardNum=" + cardNum + "]";
+				+ ", parkingNum=" + parkingNum + ", cardNum=" + cardNum + ", userId=" + userId + "]";
 	}
 	
 	

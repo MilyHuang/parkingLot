@@ -30,4 +30,12 @@ public interface IParkingBillService {
 	 */
 	List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity  entity);
 	
+	/**
+	 * 通过手机号和缴费状态查询账单信息
+	 * @param phone
+	 * @param flag
+	 * @return
+	 */
+	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
+	
 }
