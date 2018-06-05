@@ -34,12 +34,12 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 
 	@Autowired
 	private IParkingLotService parkingLotService;
-	
+
 	@Autowired
 	private IParkingPriceReportService parkingPriceReportService;
 
 	private ParkingPriceReportEntity pentity = new ParkingPriceReportEntity();
-	
+
 	private static Logger logger = Logger.getLogger(ParkingLotControllerImpl.class);
 
 	@RequestMapping("/selectParkinglot")
@@ -57,18 +57,16 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 	public JsonResult insertParkingLot(@RequestBody ParkingLotEntity entity) {
 		System.out.println(entity);
 		JsonResult jsonResult = new JsonResult();
-		if (entity == null) {
-			jsonResult = new JsonResult(new ServiceException("输入的停车场信息不能为空"));
+
+		ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
+
+		if (parkingLot != null) {
+			System.out.println(parkingLot);
+			jsonResult = new JsonResult(new ServiceException("该停车场编号已存在"));
 			return jsonResult;
-		} else {
-			ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-			if (parkingLot != null) {
-				jsonResult = new JsonResult(new ServiceException("该停车场编号已存在"));
-				return jsonResult;
-			}
+		} 
 			jsonResult = parkingLotService.insertParkingLot(entity);
 			return jsonResult;
-		}
 	}
 
 	@RequestMapping(value = "/updateParkingLotPrice", method = RequestMethod.POST)

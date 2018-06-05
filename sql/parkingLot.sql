@@ -91,7 +91,7 @@ CREATE TABLE parking_bill(
 	parking_num varchar(10) not null, /**停车场编号*/
 	parking_name nvarchar(50) not null, /*停车场名字*/
 	card_num varchar(20) not null, /**停车卡号*/
-	price double not null,            /*停车场每个月的价格*/
+	price double(6,2) not null,            /*停车场每个月的价格*/
 	account double not null,        /*总价格*/
     firstDate datetime,          /*开始计费时间*/
 	statementDate datetime ,/*出账时间*/

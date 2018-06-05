@@ -159,6 +159,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		} else {
 			// 判断用户是否负费
 			ParkingCardEntity parkingCardEntity = cardService.selectParkingCardByCardNum(cardEntity.getCardNum());
+			System.out.println(parkingCardEntity);
 			UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
 			System.out.println("user" + user);
 			List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntity(cardEntity.getPhone());

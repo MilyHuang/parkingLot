@@ -19,8 +19,8 @@ public class ParkingRecordEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/** 系统id */
 	private Integer id;
-	// /**用户手机号*/
-	// private String phone;
+	 /**用户手机号*/
+	 private String phone;
 	/** 停车场编号 */
 	private String parkingNum;
 	/** 停车卡编号 */
@@ -36,38 +36,57 @@ public class ParkingRecordEntity implements Serializable {
 		return id;
 	}
 
-	public ParkingRecordEntity(Integer id, String parkingNum, String cardNum, Date checkinTime, Date checkoutTime,
-			Integer flag) {
-		super();
-		this.id = id;
-		this.parkingNum = parkingNum;
-		this.cardNum = cardNum;
-		this.checkinTime = checkinTime;
-		this.checkoutTime = checkoutTime;
-		this.flag = flag;
-	}
 
-	@Override
-	public String toString() {
-		return "ParkingRecordEntity [id=" + id + ", parkingNum=" + parkingNum + ", cardNum=" + cardNum + ", checkinTime="
-				+ checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
-	}
+
+	
+
 
 	public String getParkingNum() {
 		return parkingNum;
 	}
 
+
+
+
+
+
 	public void setParkingNum(String parkingNum) {
 		this.parkingNum = parkingNum;
 	}
+
+
+
+
+
 
 	public String getCardNum() {
 		return cardNum;
 	}
 
-	public void setCardNum(String carNum) {
-		this.cardNum = carNum;
+
+
+
+
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
 	}
+
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "ParkingRecordEntity [id=" + id + ", parkingNum=" + parkingNum + ", cardNum=" + cardNum
+				+ ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", flag=" + flag + "]";
+	}
+
+
+
+
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -77,12 +96,6 @@ public class ParkingRecordEntity implements Serializable {
 		this.id = id;
 	}
 
-	// public String getPhone() {
-	// return phone;
-	// }
-	// public void setPhone(String phone) {
-	// this.phone = phone;
-	// }
 	public Date getCheckinTime() {
 		return checkinTime;
 	}
