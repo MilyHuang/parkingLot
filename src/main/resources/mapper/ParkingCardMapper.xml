@@ -72,7 +72,7 @@
 		FROM
 		parking_card
 		WHERE
-		id=#{id,jdbcType=INTEGER}
+		id=#{cardId,jdbcType=INTEGER}
 	</select>
 
 	<!-- 查询用户办理的停车卡的总数 -->
