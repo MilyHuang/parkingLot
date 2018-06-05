@@ -17,6 +17,7 @@ import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
 import com.parkinglot.admin.entity.UserAndCardEntity;
+import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
@@ -50,10 +51,13 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 	public JsonResult updateParkingRecord(@RequestBody ParkingRecordEntity entity) {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-		if (parkingCardService.selectParkingCardByCardNum(entity.getCardNum()) == null) {
+		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
+		ParkingRecordEntity parkingRecordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
+		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
+		if (parkingCardEntity== null) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
-		} else if (parkingRecordService.selectParkingRecord(entity.getCardNum()) == null) {
+		} else if (parkingRecordEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("您未在此停車場停放辆车"));
 			return jsonResult;
 		} else if (parkingLotEntity.getInuse() == 0) {
@@ -65,8 +69,6 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
 
 			/** 记录停车的记录 */
-			ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
-			parkingRecordEntity.setCardNum(entity.getCardNum());
 			parkingRecordEntity.setCheckoutTime(new Date());
 			parkingRecordEntity.setFlag(0);
 			parkingRecordService.updateParkingRecord(parkingRecordEntity);
@@ -83,6 +85,7 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
 		ParkingRecordEntity recordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
+		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
 		System.out.println(parkingLotEntity);
 		System.out.println(parkingCardEntity);
 		System.out.println(recordEntity);
@@ -99,14 +102,19 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
-			ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
+			
 			/** 记录停车的记录 */
+			ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
+			parkingRecordEntity.setCardId(parkingCardEntity.getId());
+			parkingRecordEntity.setParkingId(parkingLotEntity.getId());
+			parkingRecordEntity.setParkingNum(entity.getParkingNum());
 			parkingRecordEntity.setCardNum(entity.getCardNum());
 			parkingRecordEntity.setCheckinTime(new Date());
 			parkingRecordEntity.setFlag(1);
+			parkingRecordEntity.setPhone(user.getPhone());
 			parkingRecordService.insertParkingRecord(parkingRecordEntity);
 			parkingRecordEntity.setFlag(0);
-			System.out.println(parkingRecordEntity);
+			System.out.println("ppp:"+parkingRecordEntity);
 			checkParkingRecord(parkingRecordEntity);
 			return jsonResult;
 		}
@@ -120,22 +128,24 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
 		System.out.println(parkingCardEntity);
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntityByCard(parkingCardEntity);
-		Date maxDate = list.get(0).getFirstDate();
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(maxDate) == 1) {
-				maxDate = list.get(i).getStatementDate();
+		if(list!=null) {
+			Date maxDate = list.get(0).getFirstDate();
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getStatementDate().compareTo(maxDate) == 1) {
+					maxDate = list.get(i).getStatementDate();
+				}
 			}
+			System.out.println(maxDate);
+			if (maxDate.compareTo(new Date()) == -1) {
+				UserAndCardEntity en = new UserAndCardEntity();
+				en.setCardNum(entity.getCardNum());
+				en.setParkingNum(entity.getParkingNum());
+				en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
+				System.out.println(en);
+				generateBill(en);
+			}
+			
 		}
-		System.out.println(maxDate);
-		if (maxDate.compareTo(new Date()) == -1) {
-			UserAndCardEntity en = new UserAndCardEntity();
-			en.setCardNum(entity.getCardNum());
-			en.setParkingNum(entity.getParkingNum());
-			en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-			System.out.println(en);
-			generateBill(en);
-		}
-
 	}
 
 	/**
