@@ -1,5 +1,6 @@
 package com.parkinglot.admin.dao;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -41,4 +42,23 @@ public interface IParkingBillDao {
 	 * @return
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(@Param("phone") String phone,@Param("flag") Integer flag);
+	
+	
+	/**
+	 * 查找停车卡的最新账单时间
+	 */
+	ParkingBillEntity selectAllParkingBillEntityByCardId(@Param("cardId")Integer cardId);
+	
+	
+	/**
+	 * 查找所有的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntitys();
+	
+	
+	/**
+	 * 更新账单
+	 */
+	int updateParkingBill(ParkingBillEntity entity);
+	
 }

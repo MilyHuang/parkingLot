@@ -1,9 +1,11 @@
 package com.parkinglot.admin.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingBillService {
 	/**
@@ -38,4 +40,19 @@ public interface IParkingBillService {
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
 	
+	/**
+	 * 查找停车卡的最新账单时间
+	 */
+	ParkingBillEntity selectAllParkingBillEntityByCardId(Integer cardId);
+	
+	
+	/**
+	 * 查找所有的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntitys();
+	
+	/**
+	 * 更新账单
+	 */
+	int updateParkingBill(ParkingBillEntity entity);
 }
