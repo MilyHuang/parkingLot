@@ -32,4 +32,10 @@ public interface IParkingRecordService {
 	 * @return
 	 */
 	ParkingRecordEntity selectParkingRecord(String cardNum);
+	
+	/**
+	 * 查询停车场内是否有车
+	 * @return
+	 */
+	ParkingRecordEntity isHasCarInTheParking(int id);
 }

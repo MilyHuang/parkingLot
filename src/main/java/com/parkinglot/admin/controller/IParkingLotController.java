@@ -32,4 +32,11 @@ public interface IParkingLotController {
 	 * @return
 	 */
 	JsonResult updateParkingLotPrice(ParkingLotEntity entity);	
+	
+	/**
+	 * 删除停车场
+	 * @param id
+	 * @return
+	 */
+	JsonResult deleteParkingLotById(int id);
 }

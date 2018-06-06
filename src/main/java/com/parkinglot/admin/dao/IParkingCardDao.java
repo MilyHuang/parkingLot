@@ -70,4 +70,10 @@ public interface IParkingCardDao {
 	 */
 	int countCardsForUser(@Param("userId") Integer userId);
 	
+	/**
+	 * 禁用某停车场的所有卡
+	 * @return
+	 */
+	int updateCardsUseLimit(int id);
+	
 }

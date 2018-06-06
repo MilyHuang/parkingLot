@@ -56,4 +56,12 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 		return recordDao.selectParkingRecord(entity.getId());
 	}
 
+	@Override
+	public ParkingRecordEntity isHasCarInTheParking(int id) {
+		System.out.println("step in isHasCarInTheParking service");
+		ParkingRecordEntity entity = recordDao.isHasCarInTheParking(id);
+	//	System.out.println("step in isHasCarInTheParking service result"+entity.toString());
+		return entity;
+	}
+
 }

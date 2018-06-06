@@ -28,7 +28,6 @@ import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
-import com.sun.tools.doclint.Entity;
 
 /**
  * @Description:
@@ -180,8 +179,9 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			billEntity.setCardId(cardEntity.getId());
 			billEntity.setPhone(phone);
 			generateBill(billEntity);
-			
-			return jsonResult;
+			//查询卡总数
+			int count = cardService.countCardsForUser(entity.getUserId());
+			return new JsonResult(count);
 		}
 
 	}

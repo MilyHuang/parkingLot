@@ -81,4 +81,10 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		return cardDao.countCardsForUser(userId);
 	}
 
+	@Override
+	public int updateCardsUseLimit(int id) {
+		int rows = cardDao.updateCardsUseLimit(id);
+		return rows;
+	}
+
 }

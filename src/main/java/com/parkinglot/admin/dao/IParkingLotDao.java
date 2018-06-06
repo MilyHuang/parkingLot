@@ -57,4 +57,11 @@ public interface IParkingLotDao {
 	 * @return
 	 */
 	ParkingLotEntity selectParkingLotById(@Param("parkingId") Integer parkingId);
+	
+	/**
+	 * 删除停车场
+	 * @param id
+	 * @return
+	 */
+	int deleteParkingLotById(int id);
 }

@@ -62,4 +62,13 @@ public interface IParkingLotService {
 	 * @return
 	 */
 	ParkingLotEntity selectParkingLotById(@Param("parkingId") Integer parkingId);
+	
+	/**
+	 * 删除停车场
+	 * 
+	 * @param id
+	 * @return
+	 */
+	JsonResult deleteParkingLotById(int id);
+
 }
