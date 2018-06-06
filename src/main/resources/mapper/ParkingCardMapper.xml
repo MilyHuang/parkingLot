@@ -52,7 +52,7 @@
 		and card_num=#{cardNum,jdbcType=VARCHAR} </update> -->
 
 	<!--查找某用户在某停车场中卡的总数 -->
-	<select id="selectUserCards" resultType="com.parkinglot.admin.entity.ParkingCardEntity">
+	<select id="selectUserCards" resultMap="BaseResultMap">
 		SELECT
 		id,users_id,parking_id,card_num,createdTime,state
 		FROM parking_card
@@ -81,5 +81,12 @@
 		WHERE users_id=#{userId,jdbcType=INTEGER}
 	</select>
 
+	<!-- 更新停车卡状态 -->
+	<update id="updateCardState" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+		UPDATE parking_card
+		SET
+			state=#{state,jdbcType=INTEGER}
+		WHERE id=#{id,jdbcType=INTEGER}
+	</update>
 
 </mapper>

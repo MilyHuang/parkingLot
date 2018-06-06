@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingBillService {
 	/**
@@ -37,5 +38,12 @@ public interface IParkingBillService {
 	 * @return
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
+	
+	/**
+	 * 用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult updateBillInfo(ParkingBillEntity billEntity);
 	
 }

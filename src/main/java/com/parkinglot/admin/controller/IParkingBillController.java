@@ -1,7 +1,5 @@
 package com.parkinglot.admin.controller;
 
-import java.util.List;
-
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.common.util.JsonResult;
@@ -20,4 +18,12 @@ public interface IParkingBillController {
 	 * @return
 	 */
 	JsonResult selectParkingBillByBillNum(ParkingBillEntity entity);
+	
+	
+	/**
+	 * 缴费
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult payBill(ParkingBillEntity billEntity);
 }

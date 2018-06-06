@@ -28,6 +28,7 @@ import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
+import com.parkinglot.common.util.BillUtils;
 import com.parkinglot.common.util.JsonResult;
 import com.sun.tools.doclint.Entity;
 
@@ -125,7 +126,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			billEntity.setCardId(cardEntity.getId());
 			billEntity.setPhone(userEntity.getPhone());
 			generateBill(billEntity);
-			
 			return jsonResult;
 
 		}
@@ -171,10 +171,10 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				} 
 		//判断用户账单是否缴清
 		String phone = userService.selectUserInfoById(entity.getUserId()).getPhone();
-		Integer flag = 0;
+		Integer flag = 0;  //账单状态为未缴费
 		List<ParkingBillEntity> bills = parkingBillService.selectBillsByPhoneAndFlag(phone, flag);
 		if(!bills.isEmpty()){
-			return new JsonResult(new ServiceException("该用户有账单未缴清"));
+			return new JsonResult(new ServiceException("该用户有账单未缴清，请缴清再办理新卡"));
 		}else {
 
 			
@@ -223,6 +223,27 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		}
 	}
 
+	@RequestMapping(value="/selectUserCardsForList" , method=RequestMethod.POST)
+	@ResponseBody
+	@Override
+	public JsonResult selectUserCardsList(@RequestBody UsersInfoEntity entity) {
+		JsonResult jsonResult = new JsonResult();
+		if(entity == null) {
+			return new JsonResult(new ServiceException("输入的电话号码不能为空"));
+		}
+		System.out.println(entity);
+		//用户的ID
+		Integer userId = userService.selectUserInfoByPhone(entity.getPhone()).getId();
+		System.out.println("userId:"+userId);
+		//用户卡信息
+		List<ParkingCardEntity> cards = cardService.selectUserCards(userId);
+		System.out.println(cards);
+		if(cards.size() == 0) {
+			return new JsonResult("该用户没有办理停车卡");
+		}
+		return new JsonResult(cards);
+	}
+	
 	/***
 	 * 判断该停车场是否存在
 	 * 
@@ -317,4 +338,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
 		parkingBillService.insertParkingBill(billEntity);
 	}
+
+	
 }

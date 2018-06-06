@@ -15,7 +15,6 @@
 		<result column="statementDate" property="statementDate"
 			jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
-		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 	</resultMap>
 
 	<select id="selectAllParkingBillEntity" resultMap="BaseResultMap"
@@ -33,7 +32,7 @@
 
 	<insert id="insertParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		insert into
-		parking_bill(bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis)
+		parking_bill(bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag)
 		values(
 		#{billNum,jdbcType=VARCHAR},
 		#{parkingId,jdbcType=INTEGER},
@@ -44,8 +43,7 @@
 		#{account,jdbcType=DOUBLE},
 		#{firstDate,jdbcType=TIMESTAMP},
 		#{statementDate,jdbcType=TIMESTAMP},
-		#{flag,jdbcType=INTEGER},
-		#{tis,jdbcType=NVARCHAR}
+		#{flag,jdbcType=INTEGER}
 		);
 	</insert>
 
@@ -62,7 +60,7 @@
 	<!-- 通过手机号和缴费状态查询用户的账单 -->
 	<select id="selectBillsByPhoneAndFlag" resultMap="BaseResultMap">
 		SELECT
-		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag
 		FROM
 		parking_bill
 		WHERE
@@ -72,5 +70,13 @@
 	</select>
 
 
-
+	<!-- 用户缴费 -->
+	<update id="updateBillInfo" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
+		UPDATE parking_bill
+		SET
+			flag=#{flag,jdbcType=INTEGER}
+		WHERE id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	
 </mapper>

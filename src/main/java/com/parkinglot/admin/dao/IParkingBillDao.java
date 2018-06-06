@@ -41,4 +41,11 @@ public interface IParkingBillDao {
 	 * @return
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(@Param("phone") String phone,@Param("flag") Integer flag);
+	
+	/**
+	 * 用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	int updateBillInfo(ParkingBillEntity billEntity);
 }

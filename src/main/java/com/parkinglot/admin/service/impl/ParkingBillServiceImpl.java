@@ -1,26 +1,22 @@
 package com.parkinglot.admin.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.parkinglot.admin.dao.IParkingBillDao;
-import com.parkinglot.admin.dao.IParkingLotDao;
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
-import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.service.IParkingBillService;
+import com.parkinglot.common.service.ServiceException;
+import com.parkinglot.common.util.JsonResult;
 
 @Service("com.parkinglot.admin.service.impl.ParkingBillServiceImpl")
 public class ParkingBillServiceImpl implements IParkingBillService {
 
 	@Autowired
 	private IParkingBillDao parkingBillDao;
-
-	@Autowired
-	private IParkingLotDao parkingDao;
 
 	@Override
 	public List<ParkingBillEntity> selectAllParkingBillEntity(String phone) {
@@ -49,6 +45,16 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 	@Override
 	public List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone, Integer flag) {
 		return parkingBillDao.selectBillsByPhoneAndFlag(phone, flag);
+	}
+
+	@Override
+	public JsonResult updateBillInfo(ParkingBillEntity billEntity) {
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingBillDao.updateBillInfo(billEntity);
+		if(rows <=0) {
+			return new JsonResult(new ServiceException("缴费失败"));
+		}
+		return jsonResult;
 	}
 
 }
