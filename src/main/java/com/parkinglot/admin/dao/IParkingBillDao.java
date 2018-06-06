@@ -61,4 +61,10 @@ public interface IParkingBillDao {
 	 */
 	int updateParkingBill(ParkingBillEntity entity);
 	
+	/**
+	 * 用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	int updateBillInfo(ParkingBillEntity billEntity);
 }

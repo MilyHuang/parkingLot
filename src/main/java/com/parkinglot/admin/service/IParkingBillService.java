@@ -55,4 +55,10 @@ public interface IParkingBillService {
 	 * 更新账单
 	 */
 	int updateParkingBill(ParkingBillEntity entity);
+	/** 用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult updateBillInfo(ParkingBillEntity billEntity);
+	
 }

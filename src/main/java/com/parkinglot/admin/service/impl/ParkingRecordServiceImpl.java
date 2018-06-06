@@ -65,23 +65,29 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 		return recordDao.selectParkingRecord(entity.getId());
 	}
 
-	/**
-	 * 卡自动过期
-	 */
+	@Override
 	public JsonResult checkCard(ParkingRecordEntity entity) {
-
-		ParkingCardEntity parkingCardEntity = parkingCardDao.selectCardByCardNum(entity.getCardNum());
-		ParkingBillEntity parkingBillEntity = parkingBillDao
-				.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-		JsonResult jsonResult = new JsonResult();
-		if (parkingBillEntity != null) {
-			if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1 && parkingBillEntity.getFlag() == 0) {
-				parkingCardEntity.setState(1);
-				parkingCardDao.updateParkingCard(parkingCardEntity);
-				jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
-			}
-		}
-		return jsonResult;
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+//	/**
+//	 * 卡自动过期
+//	 */
+//	public JsonResult checkCard(ParkingRecordEntity entity) {
+//
+//		ParkingCardEntity parkingCardEntity = parkingCardDao.selectCardByCardNum(entity.getCardNum());
+//		ParkingBillEntity parkingBillEntity = parkingBillDao
+//				.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
+//		JsonResult jsonResult = new JsonResult();
+//		if (parkingBillEntity != null) {
+//			if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1 && parkingBillEntity.getFlag() == 0) {
+//				parkingCardEntity.setState(1);
+//				parkingCardDao.updateParkingCard(parkingCardEntity);
+//				jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
+//			}
+//		}
+//		return jsonResult;
+//	}
 
 }

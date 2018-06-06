@@ -70,4 +70,11 @@ public interface IParkingCardDao {
 	 */
 	int countCardsForUser(@Param("userId") Integer userId);
 	
+	/**
+	 * 更新停车卡的状态
+	 * @param cardEntity
+	 * @return
+	 */
+	int updateCardState(ParkingCardEntity cardEntity);
+	
 }
