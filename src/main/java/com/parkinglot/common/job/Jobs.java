@@ -48,6 +48,7 @@ public class Jobs {
 			list.get(i).setFlag(0);
 			parkingBillService.updateParkingBill(list.get(i));
 		}
+		System.out.println("季末，已出账单");
 	}
 
 	/**
@@ -63,7 +64,9 @@ public class Jobs {
 			parkingCardEntity.setState(1);
 			parkingCardService.updateCardState(parkingCardEntity);
 			parkingBillService.updateParkingBill(list.get(i));
+			createOverdueBill(list.get(i));
 		}
+		System.out.println("已更新账单");
 	}
 
 	/**
@@ -83,6 +86,7 @@ public class Jobs {
 				billUtils.generateBill(parkingBillEntity);
 			}
 		}
+		System.out.println("已生成新季度账单");
 	}
 
 	
