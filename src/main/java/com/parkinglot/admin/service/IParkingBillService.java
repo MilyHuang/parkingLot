@@ -49,7 +49,7 @@ public interface IParkingBillService {
 	/**
 	 * 查找所有的账单
 	 */
-	List<ParkingBillEntity> selectAllParkingBillEntitys();
+	List<ParkingBillEntity> selectAllParkingBillEntitys(Integer flag);
 	
 	/**
 	 * 更新账单

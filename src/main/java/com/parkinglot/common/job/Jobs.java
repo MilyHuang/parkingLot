@@ -1,6 +1,8 @@
 package com.parkinglot.common.job;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,18 +41,16 @@ public class Jobs {
 	 */
 	public void createBill() {
 
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
+		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys(2);/* 0 未缴费，1 已缴费 2未出账  3 逾期欠费*/
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(new Date()) == 0 && list.get(i).getFlag() == 2) {
 				Calendar ca = Calendar.getInstance();
 				ca.add(ca.MONTH, 1);
 				ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
 				String last = format.format(ca.getTime());
 				list.get(i).setTis("請在" + last + "前繳費");
-				list.get(i).setFlag(1);
+				list.get(i).setFlag(0);
 				parkingBillService.updateParkingBill(list.get(i));
-			}
 		}
 	}
 
@@ -59,10 +59,9 @@ public class Jobs {
 	 */
 	public void updateBill() {
 
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
+		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys(0);/* 0 未缴费，1 已缴费 2未出账  3 逾期欠费*/
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && list.get(i).getFlag() == 2) {
 				Calendar ca = Calendar.getInstance();
 				list.get(i).setTis("请缴费激活停车服务");
 				list.get(i).setFlag(3);
@@ -70,7 +69,6 @@ public class Jobs {
 				parkingCardEntity.setState(1);
 				parkingCardService.updateCardState(parkingCardEntity);
 				parkingBillService.updateParkingBill(list.get(i));
-			}
 		}
 	}
 
@@ -79,10 +77,14 @@ public class Jobs {
 	 */
 	public void createNewBill() {
 		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
+		List<ParkingBillEntity> list0 = parkingBillService.selectAllParkingBillEntitys(0);
+		List<ParkingBillEntity> list1 = parkingBillService.selectAllParkingBillEntitys(1);
+		List<ParkingBillEntity> list2=new ArrayList<ParkingBillEntity>();
+		list2.addAll(list0);
+		list2.addAll(list1);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		for (int i = 0; i < list.size(); i++) {
-			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list.get(i).getCardId());
+		for (int i = 0; i < list2.size(); i++) {
+			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list2.get(i).getCardId());
 			ParkingLotEntity parkingLotEntity = parkingLotService
 					.selectParkingLotById(parkingCardEntity.getParkingId());
 			if (parkingCardEntity.getState() == 0) {
@@ -90,7 +92,6 @@ public class Jobs {
 				en.setCardNum(parkingCardEntity.getCardNum());
 				en.setParkingNum(parkingLotEntity.getParkingNum());
 				en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-				generateBill(en);
 			}
 		}
 	}
@@ -100,17 +101,12 @@ public class Jobs {
 	 * 
 	 * @param entity
 	 */
-	public void generateBill(UserAndCardEntity entity) {
-		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		ParkingLotEntity parkinglotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
+	public void generateBill(ParkingBillEntity billEntity) {
 		int rand = new Random().nextInt(100000);
-		parkingBillEntity.setBillNum(String.valueOf(rand));
-		parkingBillEntity.setAccount(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice() * 3);
-		parkingBillEntity.setPrice(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
-		parkingBillEntity.setCardId(parkingCardEntity.getId());
+		billEntity.setBillNum(String.valueOf(rand));  //设置账单编号
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(new Date());
+		int nowDate = ca.get(Calendar.DAY_OF_MONTH);
 		Integer year = ca.get(Calendar.YEAR);
 		Integer month = ca.get(Calendar.MONTH) + 1;
 		switch (month) {
@@ -143,15 +139,19 @@ public class Jobs {
 			ca.set(year, 11, 31);
 			break;
 		}
-		System.out.println(ca.getTime());
-		parkingBillEntity.setFirstDate(new Date());
-		parkingBillEntity.setStatementDate(ca.getTime());
-		parkingBillEntity.setFlag(2);
-		parkingBillEntity.setParkingId(parkinglotEntity.getId());
-		parkingBillEntity
-				.setParkingName(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
-		parkingBillEntity.setPhone(entity.getPhone());
-		parkingBillService.insertParkingBill(parkingBillEntity);
+		billEntity.setFirstDate(new Date());
+		billEntity.setStatementDate(ca.getTime());  //设置时间
+		billEntity.setFlag(2);   //设置账单状态
+		// 获取当前月天数
+		ca.set(Calendar.DATE, 1);// 把日期设置为当月第一天
+		ca.roll(Calendar.DATE, -1);// 日期回滚一天，也就是最后一天
+		int maxDate = ca.get(Calendar.DATE);
+		double account = parkingLotService.selectParkingLotById(billEntity.getParkingId()).getPrice() * (maxDate - nowDate + 1)
+				/ maxDate;
+		DecimalFormat df = new DecimalFormat("#.00");
+		billEntity.setAccount(Double.parseDouble(df.format(account)));
+		billEntity.setPrice(parkingLotService.selectParkingLotById(billEntity.getParkingId()).getPrice());
+		parkingBillService.insertParkingBill(billEntity);
 	}
 
 }
