@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingLotEntity;
+import com.parkinglot.common.util.JsonResult;
 
 /**
 @Description:停车场管理
@@ -57,4 +58,19 @@ public interface IParkingLotDao {
 	 * @return
 	 */
 	ParkingLotEntity selectParkingLotById(@Param("parkingId") Integer parkingId);
+	
+	/**
+	 * 删除停车场
+	 * @param id
+	 * @return
+	 */
+	int deleteParkingLotById(int id);
+	
+	/**
+	 * 查询停车场停有多少车
+	 * 
+	 * @param id
+	 * @return
+	 */
+	int selectInUseParkingLot(int id);
 }

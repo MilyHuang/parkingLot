@@ -95,4 +95,24 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 	public ParkingLotEntity selectParkingLotById(Integer parkingId) {
 		return parkingLotDao.selectParkingLotById(parkingId);
 	}
+
+	@Override
+	public JsonResult deleteParkingLotById(int id) {
+		//删除停车场
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingLotDao.deleteParkingLotById(id);
+		if(rows <= 0) {
+			jsonResult = new JsonResult(new ServiceException("删除停车场失败！"));
+		}
+		else {
+			jsonResult = new JsonResult(new ServiceException("删除停车场成功！"));
+		}
+		return jsonResult;
+	}
+
+	@Override
+	public int selectInUseParkingLot(int id) {
+		 
+		return parkingLotDao.selectInUseParkingLot(id);
+	}
 }

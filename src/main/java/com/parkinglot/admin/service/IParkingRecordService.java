@@ -34,7 +34,11 @@ public interface IParkingRecordService {
 	ParkingRecordEntity selectParkingRecord(String cardNum);
 	
 	/**
-	 * 自动禁卡
+	 * 查询停车场内是否有车
+	 * @return
+	 */
+	ParkingRecordEntity isHasCarInTheParking(int id);
+	 /* 自动禁卡
 	 * @param entity
 	 * @return
 	 */

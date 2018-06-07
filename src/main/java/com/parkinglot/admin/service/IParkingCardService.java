@@ -70,6 +70,13 @@ public interface IParkingCardService {
 	 * @return
 	 */
 	int countCardsForUser(Integer userId);
+	
+	/**
+	 * 禁用某停车场内所有卡
+	 * @param id
+	 * @return
+	 */
+	int updateCardsUseLimit(int id);
 
 	/**
 	 * 更新停车卡的状态
