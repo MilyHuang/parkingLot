@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IParkingLotController;
 import com.parkinglot.admin.entity.ParkingBillEntity;
+import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.entity.ParkingPriceReportEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
@@ -112,6 +113,7 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		JsonResult jsonResult = new JsonResult();
 		int inuse = parkingLotService.selectInUseParkingLot(id);
 		ParkingBillEntity  unPayBill = parkingBillService.selectUnPayBill(id);
+		ParkingCardEntity activeCard = parkingCardService.selectActiveCard(id);
 		//场内不能有车
 		if(inuse != 0) {
 			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
@@ -120,42 +122,16 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		else if(unPayBill != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
 		}
-		//设置卡为禁用，并删除停车场
+		//该停车场所有卡已被禁用
+		else if(activeCard != null) {
+			jsonResult = new JsonResult(new ServiceException("该停车场存在可用停车卡，无法删除"));
+		}
+		//删除停车场
 		else {
-			parkingCardService.updateCardsUseLimit(id);
 			 parkingLotService.deleteParkingLotById(id);
 		}
 		
 		return jsonResult;
 	}
-
-/*	@RequestMapping("/insertParkinglot")
-	@ResponseBody
-	@Override
-	public JsonResult insertParkingLot(ParkingLotEntity entity) {
-		//删除停车场
-		int id = 15;
-		System.out.println("deleteParkingLotById");
-		JsonResult jsonResult = new JsonResult();
-		int inuse = parkingLotService.selectInUseParkingLot(id);
-		ParkingBillEntity  unPayBill = parkingBillService.selectUnPayBill(id);
-		//场内不能有车
-		if(inuse != 0) {
-			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
-		}
-		//不能有未缴账单
-		else if(unPayBill != null) {
-			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
-		}
-		//设置卡为禁用，并删除停车场
-		else {
-			parkingCardService.updateCardsUseLimit(id);
-			jsonResult = parkingLotService.deleteParkingLotById(id);
-		}
-		
-		return jsonResult;
-	}
-*/
-	
 
 }

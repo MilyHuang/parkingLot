@@ -82,10 +82,10 @@
 		WHERE users_id=#{userId,jdbcType=INTEGER}
 	</select>
 	
-	<!-- 禁用某停车场内所有卡 -->
-	<update id="updateCardsUseLimit">
-		update parking_card set state = 1 where parking_id = #{id , jdbcType=INTEGER}
-	</update>
+	<!-- 查询Active状态的卡 -->
+	<select id="selectActiveCard" resultMap="BaseResultMap">
+		select * from parking_card where parking_id = #{id,jdbcType=INTEGER} and state = 0 limit 1
+	</select>
 
 	<!-- 更新停车卡状态 -->
 	<update id="updateCardState" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
