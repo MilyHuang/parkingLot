@@ -67,6 +67,14 @@
 		<property name="targetMethod" value="updateBill" />
 		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
 	</bean>
+	<bean id="job3"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<bean class="com.parkinglot.common.job.Jobs" />
+		</property>
+		<property name="targetMethod" value="createNewBill" />
+		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
+	</bean>
 <bean id="cronTrigger1"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job1" />
@@ -78,11 +86,18 @@
 		<property name="jobDetail" ref="job2" />
 		<property name="cronExpression" value="0 0 0 L 4,7,10,1 ?" />
 	</bean>
+	
+	<bean id="cronTrigger3"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="job3" />
+		<property name="cronExpression" value="0 0 0 1 4,7,10,1 ?" />
+	</bean>
 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="cronTrigger1" />
 				<ref bean="cronTrigger2" />
+				<ref bean="cronTrigger3" />
 			</list>
 		</property>
 	</bean>
