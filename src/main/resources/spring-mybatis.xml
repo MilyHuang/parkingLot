@@ -64,21 +64,19 @@
 		<property name="targetObject">
 			<bean class="com.parkinglot.common.job.Jobs" />
 		</property>
-		<property name="targetMethod" value="job2" />
+		<property name="targetMethod" value="updateBill" />
 		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
 	</bean>
 <bean id="cronTrigger1"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job1" />
 		<property name="cronExpression" value="0 0 0 L 3,6,9,12 ?" />
-		<!--每隔10秒运行一次 -->
 	</bean>
 	
 	<bean id="cronTrigger2"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job2" />
-		<property name="cronExpression" value="0/5 * * * * ?" />
-		<!--每隔10秒运行一次 -->
+		<property name="cronExpression" value="0 0 0 L 4,7,10,1 ?" />
 	</bean>
 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">

@@ -34,7 +34,6 @@ public class Jobs {
 	@Autowired
 	private IUsersInfoService userService;
 
-	
 	/**
 	 * 每个季度的最后一天出账单
 	 */
@@ -55,29 +54,45 @@ public class Jobs {
 		}
 	}
 
-	public void job2() {
-		System.out.println("job2 ..." + new Date());
+	/**
+	 * 每年4月30， 7月31， 10月30， 1月31更新账单
+	 */
+	public void updateBill() {
+
+		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && list.get(i).getFlag() == 2) {
+				Calendar ca = Calendar.getInstance();
+				list.get(i).setTis("请缴费激活停车服务");
+				list.get(i).setFlag(3);
+				ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list.get(i).getCardId());
+				parkingCardEntity.setState(1);
+				parkingCardService.updateCardState(parkingCardEntity);
+				parkingBillService.updateParkingBill(list.get(i));
+			}
+		}
 	}
 
 	/**
-	 * 判断停车季度，生成新的账单
+	 * 每年4月1， 7月1， 10月1， 1月1生成新季度账单
 	 */
-	private void checkParkingRecord(ParkingRecordEntity entity) {
-		System.out.println(entity);
-		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		System.out.println(parkingCardEntity);
-		ParkingBillEntity parkingBillEntity = parkingBillService
-				.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-		System.out.println(parkingBillEntity);
-		if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1) {
-			UserAndCardEntity en = new UserAndCardEntity();
-			en.setCardNum(entity.getCardNum());
-			en.setParkingNum(entity.getParkingNum());
-			en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-			System.out.println(en);
-			generateBill(en);
+	public void createNewBill() {
+		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
+		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		for (int i = 0; i < list.size(); i++) {
+			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list.get(i).getCardId());
+			ParkingLotEntity parkingLotEntity = parkingLotService
+					.selectParkingLotById(parkingCardEntity.getParkingId());
+			if (parkingCardEntity.getState() == 0) {
+				UserAndCardEntity en = new UserAndCardEntity();
+				en.setCardNum(parkingCardEntity.getCardNum());
+				en.setParkingNum(parkingLotEntity.getParkingNum());
+				en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
+				generateBill(en);
+			}
 		}
-
 	}
 
 	/**
