@@ -46,6 +46,7 @@ public class Jobs {
 			String last = format.format(ca.getTime());
 			list.get(i).setTis("請在" + last + "前繳費");
 			list.get(i).setFlag(0);
+			list.get(i).setStatementDate(new Date());/*用于测试*/
 			parkingBillService.updateParkingBill(list.get(i));
 		}
 		System.out.println("季末，已出账单");
@@ -64,7 +65,7 @@ public class Jobs {
 			parkingCardEntity.setState(1);
 			parkingCardService.updateCardState(parkingCardEntity);
 			parkingBillService.updateParkingBill(list.get(i));
-			createOverdueBill(list.get(i));
+			//createOverdueBill(list.get(i));
 		}
 		System.out.println("已更新账单");
 	}
@@ -94,8 +95,6 @@ public class Jobs {
 	 * 逾期不交费，生成新季度第一个月的账单
 	 */
 	public void createOverdueBill(ParkingBillEntity entity) {
-		int rand = new Random().nextInt(100000);
-		entity.setBillNum(String.valueOf(rand));  //设置账单编号
 		Calendar ca = Calendar.getInstance();
 		ca.setTime(new Date());
 		Integer year = ca.get(Calendar.YEAR);
