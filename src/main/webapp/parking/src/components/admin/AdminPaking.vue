@@ -3,6 +3,8 @@
     <el-table
     :data="adminPackingLotTable"
     tooltip-effect="dark"
+    highlight-current-row
+    @current-change="handleCurrentChange"
     style="width: 100%">
     <el-table-column
       label="停车场编号"
@@ -38,7 +40,7 @@
       <span>是否确定删除选择的停车场？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="deldialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="deldialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="deleteParkingLot()">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog title="添加停车场" :visible.sync="adddialogVisible" width="30%">
@@ -49,7 +51,7 @@
           租金<el-input v-model.trim.number="parkinglot.rent" type="text"/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="adddialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addPackingLot()">确 定</el-button>
+        <el-button type="primary" @click="addParkingLot()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -68,6 +70,8 @@ export default {
       },
       //停车场列表
       adminPackingLotTable: [],
+      //需求删除的停车场编号 
+      currentLotNum: ``,
       //删除停车场弹窗
       deldialogVisible: false,
       //增加停车场弹窗
@@ -77,11 +81,11 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       //初始化停车场列表
-      this.initPackingLot();
+      this.initParkingLot();
     })
   },
   methods: {
-    initPackingLot(){
+    initParkingLot(){
       this.axios.post(this.baseURI +'/parkinglot/selectParkinglot')
         .then(res => {
           this.adminPackingLotTable = [];
@@ -96,7 +100,7 @@ export default {
         })
     },
     //增加停车场
-    addPackingLot(){
+    addParkingLot(){
       if (this.parkinglot.parkingNum && this.parkinglot.parkingName && this.parkinglot.address && this.parkinglot.total&& this.parkinglot.rent) {
         if(this.checkForm())
         this.axios.post(this.baseURI + '/parkinglot/insertParkinglot', { "parkingNum": this.parkinglot.parkingNum, "parkingName": this.parkinglot.parkingName, "address": this.parkinglot.address,"total": this.parkinglot.total,"rent": this.parkinglot.rent})
@@ -111,7 +115,7 @@ export default {
               });
             }
             this.adddialogVisible = false;
-            this.initPackingLot();
+            this.initParkingLot();
           })
           .catch(err => {
             console.log(err)
@@ -122,8 +126,45 @@ export default {
           message: '请填写完整',
           type: 'error'
         });
-        return false
+        return false;
       }
+    },
+    //删除停车场
+    deleteParkingLot(){
+        this.axios.post(this.baseURI +  `/parkinglot/deleteParkinglot`,{id:this.currentLotNum})
+        .then( res => {
+          console.log(res);
+          if(res.data.state == 1){
+            this.$notify({ 
+              title: '提示信息',
+              message: `停车场删除成功！`,
+              type: 'success'
+            });
+          }
+          else{
+            this.$notify({ 
+              title: '提示信息',
+              message: res.data.message,
+              type: 'error'
+            });
+          }
+          this.initParkingLot();
+        })
+        .catch( err => {
+          
+        })
+        this.deldialogVisible = false;
+    },
+    //选择停车场 
+    handleCurrentChange(val){
+      setTimeout(() =>{
+        if(typeof(val.id) !== `undefined`)
+        {
+          this.currentLotNum = val.id;
+          console.log(this.currentLotNum);
+        }
+      }, 0);
+      
     },
     //表单检验
     checkForm(){
