@@ -124,89 +124,12 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 				parkingRecordService.insertParkingRecord(parkingRecordEntity);
 				parkingRecordEntity.setFlag(0);
 				System.out.println("ppp:" + parkingRecordEntity);
-				checkParkingRecord(parkingRecordEntity);
 				return jsonResult;
 			
 		}
 	}
 
-	/**
-	 * 判断停车季度，生成新的账单
-	 */
-	private void checkParkingRecord(ParkingRecordEntity entity) {
-		System.out.println(entity);
-		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		System.out.println(parkingCardEntity);
-		ParkingBillEntity parkingBillEntity = parkingBillService.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-		System.out.println(parkingBillEntity);
-		if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1) {
-			UserAndCardEntity en = new UserAndCardEntity();
-			en.setCardNum(entity.getCardNum());
-			en.setParkingNum(entity.getParkingNum());
-			en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-			System.out.println(en);
-			generateBill(en);
-		}
+	
 
-	}
-
-	/**
-	 * 生成新账单
-	 * 
-	 * @param entity
-	 */
-	public void generateBill(UserAndCardEntity entity) {
-		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		ParkingLotEntity parkinglotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-		ParkingBillEntity parkingBillEntity = new ParkingBillEntity();
-		int rand = new Random().nextInt(100000);
-		parkingBillEntity.setBillNum(String.valueOf(rand));
-		parkingBillEntity.setAccount(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice() * 3);
-		parkingBillEntity.setPrice(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getPrice());
-		parkingBillEntity.setCardId(parkingCardEntity.getId());
-		Calendar ca = Calendar.getInstance();
-		ca.setTime(new Date());
-		Integer year = ca.get(Calendar.YEAR);
-		Integer month = ca.get(Calendar.MONTH) + 1;
-		switch (month) {
-		case 1:
-			;
-		case 2:
-			;
-		case 3:
-			ca.set(year, 2, 31);
-			break;
-		case 4:
-			;
-		case 5:
-			;
-		case 6:
-			ca.set(year, 5, 30);
-			break;
-		case 7:
-			;
-		case 8:
-			;
-		case 9:
-			ca.set(year, 8, 30);
-			break;
-		case 10:
-			;
-		case 11:
-			;
-		case 12:
-			ca.set(year, 11, 31);
-			break;
-		}
-		System.out.println(ca.getTime());
-		parkingBillEntity.setFirstDate(new Date());
-		parkingBillEntity.setStatementDate(ca.getTime());
-		parkingBillEntity.setFlag(2);
-		parkingBillEntity.setParkingId(parkinglotEntity.getId());
-		parkingBillEntity
-				.setParkingName(parkingLotService.selectParkingLotByNum(entity.getParkingNum()).getParkingName());
-		parkingBillEntity.setPhone(entity.getPhone());
-		parkingBillService.insertParkingBill(parkingBillEntity);
-	}
-
+	
 }

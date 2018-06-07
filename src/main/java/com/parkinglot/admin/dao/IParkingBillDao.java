@@ -51,9 +51,9 @@ public interface IParkingBillDao {
 	
 	
 	/**
-	 * 查找所有的账单
+	 * 通过flag查找所有的账单
 	 */
-	List<ParkingBillEntity> selectAllParkingBillEntitys();
+	List<ParkingBillEntity> selectAllParkingBillEntitys(@Param("flag")Integer flag);
 	
 	
 	/**
