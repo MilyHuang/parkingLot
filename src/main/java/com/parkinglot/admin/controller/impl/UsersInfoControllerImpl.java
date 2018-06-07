@@ -32,7 +32,6 @@ public class UsersInfoControllerImpl implements IUsersInfoController{
 	@ResponseBody
 	@Override
 	public JsonResult selectUserInfoByLogin(@RequestBody UsersInfoEntity entity) {
-		System.out.println(entity);
 		JsonResult jsonResult = new JsonResult();
 		if(entity == null) {
 			jsonResult = new JsonResult(new ServiceException("输入的登录信息不能为空"));

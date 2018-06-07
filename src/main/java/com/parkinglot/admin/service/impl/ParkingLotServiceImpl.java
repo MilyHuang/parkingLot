@@ -109,4 +109,10 @@ public class ParkingLotServiceImpl implements IParkingLotService {
 		}
 		return jsonResult;
 	}
+
+	@Override
+	public int selectInUseParkingLot(int id) {
+		 
+		return parkingLotDao.selectInUseParkingLot(id);
+	}
 }

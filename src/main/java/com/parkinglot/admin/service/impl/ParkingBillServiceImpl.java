@@ -43,12 +43,19 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 
 	@Override
 	public List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity entity) {
-		return parkingBillDao.selectAllParkingBillEntityByCard(entity);
+		return parkingBillDao.selectAllParkingBillEntityByCard(entity.getId());
 	}
 
 	@Override
 	public List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone, Integer flag) {
 		return parkingBillDao.selectBillsByPhoneAndFlag(phone, flag);
+	}
+
+	@Override
+	public ParkingBillEntity selectUnPayBill(int id) {
+		System.out.println("selectUnPayBill" + id);
+		ParkingBillEntity unPayBill = parkingBillDao.selectUnPayBill(id);
+		return unPayBill;
 	}
 
 }

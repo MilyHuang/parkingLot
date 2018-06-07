@@ -43,6 +43,9 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		}
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < list.size(); i++) {
+			//获取cardNum 
+			String cardNum = parkingCardService.selectCardByCardId(list.get(i).getCardId()).getCardNum();
+			list.get(i).setCardNum(cardNum);
 			if (list.get(i).getStatementDate().compareTo(new Date()) == -1
 					&& parkingCardService.selectCardByCardId(list.get(i).getCardId()).getState() == 0) {
 				Calendar ca = Calendar.getInstance();
@@ -62,8 +65,11 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	@ResponseBody
 	@Override
 	public JsonResult selectParkingBillByBillNum(@RequestBody ParkingBillEntity entity) {
+		System.out.println(entity);
 		JsonResult jsonResult = new JsonResult();
 		ParkingBillEntity parkingBillEntity = parkingBillSerivce.selectParkingBillByBillNum(entity.getBillNum());
+		String cardNum = parkingCardService.selectCardByCardId(parkingBillEntity.getCardId()).getCardNum();
+		parkingBillEntity.setCardNum(cardNum);
 		if (parkingBillEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("沒有賬單信息！"));
 			return jsonResult;

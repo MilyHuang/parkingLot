@@ -32,7 +32,7 @@ public interface IParkingBillDao {
 	/**
 	 * 查找每张停车卡的账单
 	 */
-	List<ParkingBillEntity> selectAllParkingBillEntityByCard(ParkingCardEntity  entity);
+	List<ParkingBillEntity> selectAllParkingBillEntityByCard(Integer cardId);
 	
 	/**
 	 * 通过手机号和缴费状态查询用户的账单
@@ -41,4 +41,11 @@ public interface IParkingBillDao {
 	 * @return
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(@Param("phone") String phone,@Param("flag") Integer flag);
+	
+	/**
+	 * 查询某停车场的未缴账单
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectUnPayBill(int id);
 }

@@ -1,5 +1,6 @@
 package com.parkinglot.admin.controller.impl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,14 +93,21 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				return jsonResult;
 			}
 			
+			//停车场信息
+			ParkingLotEntity parkingLot = parkingService.selectParkingLotByNum(entity.getParkingNum());
+			//判断停车场是否已满
+			if (cardService.selectCards(parkingLot.getId()) >= parkingService
+					.selectParkingLotById(parkingLot.getId()).getTotal()) {
+				jsonResult = new JsonResult(new ServiceException("该停车场已满"));
+				return jsonResult;
+			}
+			
 			// 查询停车卡号是否存在
 			ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
 			if (card != null) {
 				return new JsonResult(new ServiceException("该卡号已存在"));
 			} 
 			
-			//停车场信息
-			ParkingLotEntity parkingLot = parkingService.selectParkingLotByNum(entity.getParkingNum());
 			ParkingCardEntity cardEntity = new ParkingCardEntity();
 			cardEntity.setParkingId(parkingLot.getId());
 			cardEntity.setCardNum(entity.getCardNum());
@@ -147,17 +155,19 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 			return jsonResult;
 		} 
 		
-		// 查询停车卡号是否存在
-		ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
-		if (card != null) {
-			return new JsonResult(new ServiceException("该卡号已存在"));
-		} 
 		//判断停车场是否已满
 		if (cardService.selectCards(parkingLot.getId()) >= parkingService
 				.selectParkingLotById(parkingLot.getId()).getTotal()) {
 			jsonResult = new JsonResult(new ServiceException("该停车场已满"));
 			return jsonResult;
+
 		}
+		
+		// 查询停车卡号是否存在
+				ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
+				if (card != null) {
+					return new JsonResult(new ServiceException("该卡号已存在"));
+				} 
 		//判断用户账单是否缴清
 		String phone = userService.selectUserInfoById(entity.getUserId()).getPhone();
 		Integer flag = 0;
@@ -165,6 +175,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		if(!bills.isEmpty()){
 			return new JsonResult(new ServiceException("该用户有账单未缴清"));
 		}else {
+
 			
 			// 添加停车卡
 			ParkingCardEntity cardEntity = new ParkingCardEntity();
@@ -300,7 +311,8 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		int maxDate = ca.get(Calendar.DATE);
 		double account = parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice() * (maxDate - nowDate + 1)
 				/ maxDate;
-		billEntity.setAccount(account);
+		DecimalFormat df = new DecimalFormat("#.00");
+		billEntity.setAccount(Double.parseDouble(df.format(account)));
 		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
 		parkingBillService.insertParkingBill(billEntity);
 	}

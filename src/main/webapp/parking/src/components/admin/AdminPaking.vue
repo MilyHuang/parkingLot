@@ -45,8 +45,8 @@
           停车场编号<el-input v-model="parkinglot.parkingNum" type="text"/>
           停车场名<el-input v-model="parkinglot.parkingName" type="text"/>
           地址<el-input v-model="parkinglot.address" type="text"/>
-          容量<el-input v-model="parkinglot.total" type="text"/>
-          租金<el-input v-model="parkinglot.rent" type="text"/>
+          容量<el-input v-model.trim.number="parkinglot.total" type="text"/>
+          租金<el-input v-model.trim.number="parkinglot.rent" type="text"/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="adddialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addPackingLot()">确 定</el-button>
@@ -98,9 +98,18 @@ export default {
     //增加停车场
     addPackingLot(){
       if (this.parkinglot.parkingNum && this.parkinglot.parkingName && this.parkinglot.address && this.parkinglot.total&& this.parkinglot.rent) {
-        this.axios.post(this.baseURI + '/parkinglot/insertParkinglot', { "parkingNum": this.parkinglot.parkingNum, "parkingName": this.parkinglot.parkingName, "address": this.parkinglot.address,"total": this.parkinglot.total,"rent": this.parkinglot.rent })
-          .then(res => { //插入成功执行
+        if(this.checkForm())
+        this.axios.post(this.baseURI + '/parkinglot/insertParkinglot', { "parkingNum": this.parkinglot.parkingNum, "parkingName": this.parkinglot.parkingName, "address": this.parkinglot.address,"total": this.parkinglot.total,"rent": this.parkinglot.rent})
+          .then(res => { 
+            //插入成功执行
             console.log(res);
+            if(res.data.message !== `OK`){
+              this.$notify({ 
+                title: '提示信息',
+                message: res.data.message,
+                type: 'error'
+              });
+            }
             this.adddialogVisible = false;
             this.initPackingLot();
           })
@@ -115,7 +124,22 @@ export default {
         });
         return false
       }
-    }
+    },
+    //表单检验
+    checkForm(){
+        //检验数字 
+        if(typeof(this.parkinglot.total) == `number` && typeof(this.parkinglot.rent) == `number`){
+          console.log(this.parkinglot.total + ` ` + typeof(this.parkinglot.rent));
+           //检验负数
+           if(this.parkinglot.total > 0 && this.parkinglot.rent > 0)return true;
+        }
+          this.$notify({ 
+            title: '提示信息',
+            message: '租金和容量只能为正数',
+            type: 'error'
+          });
+          return false;
+      }
   }
 }
 

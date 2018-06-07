@@ -29,6 +29,16 @@ public class ParkingBillEntity {
 	/* 賬單電話 */
 	private String phone;
 
+	/*卡号*/
+	private String cardNum;
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -130,7 +140,7 @@ public class ParkingBillEntity {
 		return "ParkingBillEntity [id=" + id + ", billNum=" + billNum + ", parkingId=" + parkingId + ", cardId="
 				+ cardId + ", price=" + price + ", account=" + account + ", firstDate=" + firstDate + ", statementDate="
 				+ statementDate + ", flag=" + flag + ", tis=" + tis + ", parkingName=" + parkingName + ", phone="
-				+ phone + "]";
+				+ phone + ", cardNum=" + cardNum + "]";
 	}
 
 	public ParkingBillEntity(Integer id, String billNum, Integer parkingId, Integer cardId, Double price,

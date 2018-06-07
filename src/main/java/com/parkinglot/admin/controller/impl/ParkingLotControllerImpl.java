@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IParkingLotController;
+import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.entity.ParkingPriceReportEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IParkingPriceReportService;
@@ -37,7 +39,7 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 
 	@Autowired
 	private IParkingLotService parkingLotService;
-	
+
 	@Autowired
 	private IParkingPriceReportService parkingPriceReportService;
 	
@@ -46,9 +48,12 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 	
 	@Autowired
 	private IParkingCardService parkingCardService;
+	
+	@Autowired
+	private IParkingBillService parkingBillService;
 
 	private ParkingPriceReportEntity pentity = new ParkingPriceReportEntity();
-	
+
 	private static Logger logger = Logger.getLogger(ParkingLotControllerImpl.class);
 
 	@RequestMapping("/selectParkinglot")
@@ -60,25 +65,27 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		return new JsonResult(parkings);
 	}
 
-	/*@RequestMapping("/insertParkinglot")
+	@RequestMapping("/insertParkinglot")
 	@ResponseBody
 	@Override
 	public JsonResult insertParkingLot(@RequestBody ParkingLotEntity entity) {
 		System.out.println(entity);
 		JsonResult jsonResult = new JsonResult();
-		if (entity == null) {
-			jsonResult = new JsonResult(new ServiceException("输入的停车场信息不能为空"));
+
+		ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
+
+		if (parkingLot != null) {
+			System.out.println(parkingLot);
+			jsonResult = new JsonResult(new ServiceException("该停车场编号已存在"));
 			return jsonResult;
-		} else {
-			ParkingLotEntity parkingLot = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
-			if (parkingLot != null) {
-				jsonResult = new JsonResult(new ServiceException("该停车场编号已存在"));
-				return jsonResult;
-			}
+		} 
 			jsonResult = parkingLotService.insertParkingLot(entity);
 			return jsonResult;
-		}
-	}*/
+
+}
+	
+
+
 
 	@RequestMapping(value = "/updateParkingLotPrice", method = RequestMethod.POST)
 	@ResponseBody
@@ -100,17 +107,19 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 	@Override
 	public JsonResult deleteParkingLotById(@RequestBody int id) {
 		//删除停车场
+		 id = 24;
 		System.out.println("deleteParkingLotById");
 		JsonResult jsonResult = new JsonResult();
-		ParkingRecordEntity hasCar = parkingRecordService.isHasCarInTheParking(id);
+		int inuse = parkingLotService.selectInUseParkingLot(id);
+		ParkingBillEntity  unPayBill = parkingBillService.selectUnPayBill(id);
 		//场内不能有车
-		if(hasCar != null) {
-			jsonResult = new JsonResult(new ServiceException("停车场内有车未移出，无法删除"));
+		if(inuse != 0) {
+			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
 		}
-	/*	//不能有未缴账单
-		else if() {
-			
-		}*/
+		//不能有未缴账单
+		else if(unPayBill != null) {
+			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
+		}
 		//设置卡为禁用，并删除停车场
 		else {
 			parkingCardService.updateCardsUseLimit(id);
@@ -118,32 +127,6 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		}
 		
 		return jsonResult;
-	}
-
-	@RequestMapping("/insertParkinglot")
-	@ResponseBody
-	@Override
-	public JsonResult insertParkingLot(ParkingLotEntity entity) {
-		//删除停车场
-				int id = 20;
-				System.out.println("deleteParkingLotById");
-				JsonResult jsonResult = new JsonResult();
-				ParkingRecordEntity hasCar = parkingRecordService.isHasCarInTheParking(id);
-				//场内不能有车
-				if(hasCar != null) {
-					jsonResult = new JsonResult(new ServiceException("停车场内有车未移出，无法删除"));
-				}
-			/*	//不能有未缴账单
-				else if() {
-					
-				}*/
-				//设置卡为禁用，并删除停车场
-				else {
-					parkingCardService.updateCardsUseLimit(id);
-					jsonResult = parkingLotService.deleteParkingLotById(id);
-				}
-				
-				return jsonResult;
 	}
 
 	

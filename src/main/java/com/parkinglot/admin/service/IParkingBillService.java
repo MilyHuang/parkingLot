@@ -38,4 +38,11 @@ public interface IParkingBillService {
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
 	
+	/**
+	 * 查询某停车场未缴，未出账，欠费账单
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectUnPayBill(int id);
+	
 }
