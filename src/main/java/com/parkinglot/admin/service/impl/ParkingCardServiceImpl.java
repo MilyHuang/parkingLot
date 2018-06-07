@@ -82,6 +82,9 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
+	public int updateCardsUseLimit(int id) {
+		int rows = cardDao.updateCardsUseLimit(id);
+		return rows;}
 	public JsonResult updateCardState(ParkingCardEntity cardEntity) {
 		JsonResult jsonResult = new JsonResult();
 		int rows = cardDao.updateCardState(cardEntity);

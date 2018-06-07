@@ -30,4 +30,10 @@ public interface IParkingRecordDao {
 	 * @return
 	 */
 	ParkingRecordEntity selectParkingRecord(Integer cardId);
+	
+	/**
+	 * 查询停车场内是否有车
+	 * @return
+	 */
+	ParkingRecordEntity isHasCarInTheParking(Integer id);
 }

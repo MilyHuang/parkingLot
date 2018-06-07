@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkinglot.admin.controller.IParkingLotController;
+import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.entity.ParkingPriceReportEntity;
+import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.service.IParkingBillService;
+import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
 import com.parkinglot.admin.service.IParkingPriceReportService;
+import com.parkinglot.admin.service.IParkingRecordService;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
 
@@ -37,6 +42,15 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 
 	@Autowired
 	private IParkingPriceReportService parkingPriceReportService;
+	
+	@Autowired
+	private IParkingRecordService parkingRecordService;
+	
+	@Autowired
+	private IParkingCardService parkingCardService;
+	
+	@Autowired
+	private IParkingBillService parkingBillService;
 
 	private ParkingPriceReportEntity pentity = new ParkingPriceReportEntity();
 
@@ -67,7 +81,11 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		} 
 			jsonResult = parkingLotService.insertParkingLot(entity);
 			return jsonResult;
-	}
+
+}
+	
+
+
 
 	@RequestMapping(value = "/updateParkingLotPrice", method = RequestMethod.POST)
 	@ResponseBody
@@ -83,5 +101,61 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		jsonResult = parkingLotService.updateParkingLotPrice(entity);
 		return jsonResult;
 	}
+
+	@RequestMapping(value = "/deleteParkinglot", method = RequestMethod.POST)
+	@ResponseBody
+	@Override
+	public JsonResult deleteParkingLot(@RequestBody ParkingLotEntity entity) {
+		//删除停车场
+		 int id = entity.getId();
+		System.out.println("deleteParkingLotById"+id);
+		JsonResult jsonResult = new JsonResult();
+		int inuse = parkingLotService.selectInUseParkingLot(id);
+		ParkingBillEntity  unPayBill = parkingBillService.selectUnPayBill(id);
+		//场内不能有车
+		if(inuse != 0) {
+			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
+		}
+		//不能有未缴账单
+		else if(unPayBill != null) {
+			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
+		}
+		//设置卡为禁用，并删除停车场
+		else {
+			parkingCardService.updateCardsUseLimit(id);
+			 parkingLotService.deleteParkingLotById(id);
+		}
+		
+		return jsonResult;
+	}
+
+/*	@RequestMapping("/insertParkinglot")
+	@ResponseBody
+	@Override
+	public JsonResult insertParkingLot(ParkingLotEntity entity) {
+		//删除停车场
+		int id = 15;
+		System.out.println("deleteParkingLotById");
+		JsonResult jsonResult = new JsonResult();
+		int inuse = parkingLotService.selectInUseParkingLot(id);
+		ParkingBillEntity  unPayBill = parkingBillService.selectUnPayBill(id);
+		//场内不能有车
+		if(inuse != 0) {
+			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
+		}
+		//不能有未缴账单
+		else if(unPayBill != null) {
+			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
+		}
+		//设置卡为禁用，并删除停车场
+		else {
+			parkingCardService.updateCardsUseLimit(id);
+			jsonResult = parkingLotService.deleteParkingLotById(id);
+		}
+		
+		return jsonResult;
+	}
+*/
+	
 
 }

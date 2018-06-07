@@ -66,6 +66,13 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 	}
 
 	@Override
+	public ParkingRecordEntity isHasCarInTheParking(int id) {
+		System.out.println("step in isHasCarInTheParking service");
+		ParkingRecordEntity entity = recordDao.isHasCarInTheParking(id);
+	//	System.out.println("step in isHasCarInTheParking service result"+entity.toString());
+		return entity;
+	}
+
 	public JsonResult checkCard(ParkingRecordEntity entity) {
 		// TODO Auto-generated method stub
 		return null;

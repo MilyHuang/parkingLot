@@ -81,6 +81,11 @@
 		SELECT count(1) FROM parking_card
 		WHERE users_id=#{userId,jdbcType=INTEGER}
 	</select>
+	
+	<!-- 禁用某停车场内所有卡 -->
+	<update id="updateCardsUseLimit">
+		update parking_card set state = 1 where parking_id = #{id , jdbcType=INTEGER}
+	</update>
 
 	<!-- 更新停车卡状态 -->
 	<update id="updateCardState" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">

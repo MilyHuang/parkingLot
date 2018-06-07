@@ -71,7 +71,11 @@ public interface IParkingCardDao {
 	int countCardsForUser(@Param("userId") Integer userId);
 	
 	/**
-	 * 更新停车卡的状态
+	 * 禁用某停车场的所有卡
+	 * @return
+	 */
+	int updateCardsUseLimit(int id);
+	 /* 更新停车卡的状态
 	 * @param cardEntity
 	 * @return
 	 */
