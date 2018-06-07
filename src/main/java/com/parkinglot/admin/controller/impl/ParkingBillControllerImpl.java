@@ -68,12 +68,17 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		if (bill.getFlag() == 0) { // 未缴费
 			billEntity.setFlag(1);
 			billEntity.setId(bill.getId());
+			billEntity.setTis("");
 			parkingBillSerivice.updateBillInfo(billEntity);
 			return jsonResult;
-		} else if (bill.getFlag() == 3) { // 逾期缴费
+		}else if(bill.getFlag() == 3) {  //逾期缴费
+			//缴费
 			billEntity.setFlag(1);
 			billEntity.setId(bill.getId());
 			// 更改用户停车卡的状态，重新启用
+			billEntity.setTis("");
+			parkingBillSerivice.updateBillInfo(billEntity);
+			//更改用户停车卡的状态，重新启用
 			ParkingCardEntity cardEntity = new ParkingCardEntity();
 			cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
 			cardEntity.setId(bill.getCardId()); // 停车卡id
@@ -86,6 +91,9 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 			billEntity2.setPhone(bill.getPhone());
 			// BillUtils.generateBill(billEntity2);
 		} else if (bill.getFlag() == 1) {
+		//	billUtils.generateBill(billEntity2);
+			return jsonResult;
+		}else if(bill.getFlag() == 1) {
 			return new JsonResult(new ServiceException("该账单已缴费"));
 		} else if (bill.getFlag() == 2) {
 			return new JsonResult(new ServiceException("该账单未出账"));

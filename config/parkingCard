@@ -1,4 +1,8 @@
-url:
+1.查询停车卡列表
 		url:http://10.65.35.170:8080/parkingLot/parkingCard/selectUserCardsForList
 		input:phone
 		output:id,userId,parkingId,cardNum,createdTime,state
+		
+2.缴费
+	url:http://10.65.35.170:8080/parkingLot/parkingBill/payBill
+	input:billNum
