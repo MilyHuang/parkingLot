@@ -16,7 +16,7 @@ import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.common.service.ServiceException;
-//import com.parkinglot.common.util.BillUtils;
+import com.parkinglot.common.util.BillUtils;
 import com.parkinglot.common.util.JsonResult;
 
 @Controller
@@ -29,6 +29,8 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	@Autowired
 	private IParkingCardService parkingCardService;
 
+	@Autowired
+	private BillUtils billUtils;
 
 	@RequestMapping(value = "/selectAllParkingBillEntity", method = RequestMethod.POST)
 	@ResponseBody
@@ -58,7 +60,6 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	@Override
 	public JsonResult payBill(@RequestBody ParkingBillEntity billEntity) {
 		JsonResult jsonResult = new JsonResult();
-		System.out.println(billEntity);
 		// 通过账单编号查询账单信息
 		ParkingBillEntity bill = parkingBillSerivice.selectParkingBillByBillNum(billEntity.getBillNum());
 		if (bill == null) {
@@ -71,14 +72,16 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 			billEntity.setTis("");
 			parkingBillSerivice.updateBillInfo(billEntity);
 			return jsonResult;
-		}else if(bill.getFlag() == 3) {  //逾期缴费
-			//缴费
+
+
+		} else if (bill.getFlag() == 3) { // 逾期缴费
 			billEntity.setFlag(1);
 			billEntity.setId(bill.getId());
 			// 更改用户停车卡的状态，重新启用
 			billEntity.setTis("");
 			parkingBillSerivice.updateBillInfo(billEntity);
 			//更改用户停车卡的状态，重新启用
+			// 更改用户停车卡的状态，重新启用
 			ParkingCardEntity cardEntity = new ParkingCardEntity();
 			cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
 			cardEntity.setId(bill.getCardId()); // 停车卡id
@@ -89,11 +92,7 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 			billEntity2.setParkingId(bill.getParkingId());
 			billEntity2.setParkingName(bill.getParkingName());
 			billEntity2.setPhone(bill.getPhone());
-			// BillUtils.generateBill(billEntity2);
-		} else if (bill.getFlag() == 1) {
-		//	billUtils.generateBill(billEntity2);
-			return jsonResult;
-		}else if(bill.getFlag() == 1) {
+		}else if (bill.getFlag() == 1) {
 			return new JsonResult(new ServiceException("该账单已缴费"));
 		} else if (bill.getFlag() == 2) {
 			return new JsonResult(new ServiceException("该账单未出账"));
