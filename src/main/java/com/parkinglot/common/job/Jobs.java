@@ -62,7 +62,7 @@ public class Jobs {
 		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntitys();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && list.get(i).getFlag() == 2) {
+			if (list.get(i).getStatementDate().compareTo(new Date()) == -1 && list.get(i).getFlag() == 0) {
 				Calendar ca = Calendar.getInstance();
 				list.get(i).setTis("请缴费激活停车服务");
 				list.get(i).setFlag(3);
