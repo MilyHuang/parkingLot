@@ -32,7 +32,6 @@ public class BillUtils {
 	private IParkingLotService parkingService;
 	
 	public  void generateBill(ParkingBillEntity billEntity) {
-		System.out.println("bill:"+billEntity);
 		int rand = new Random().nextInt(100000);
 		billEntity.setBillNum(String.valueOf(rand));  //设置账单编号
 		Calendar ca = Calendar.getInstance();
@@ -79,11 +78,9 @@ public class BillUtils {
 		int maxDate = ca.get(Calendar.DATE);
 		double account = parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice() * (maxDate - nowDate + 1)
 				/ maxDate;
-		System.out.println(account);
 		DecimalFormat df = new DecimalFormat("#.00");
 		billEntity.setAccount(Double.parseDouble(df.format(account)));
 		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
-		System.out.println(parkingService.selectParkingLotById(billEntity.getParkingId()));
 		parkingBillService.insertParkingBill(billEntity);
 	}
 }

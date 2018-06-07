@@ -12,9 +12,9 @@
 		<result column="price" property="price" jdbcType="DOUBLE" />
 		<result column="account" property="account" jdbcType="DOUBLE" />
 		<result column="firstDate" property="firstDate" jdbcType="TIMESTAMP" />
-		<result column="statementDate" property="statementDate"
-			jdbcType="TIMESTAMP" />
+		<result column="statementDate" property="statementDate"	jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
+		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 	</resultMap>
 
 	<select id="selectAllParkingBillEntity" resultMap="BaseResultMap"
@@ -53,9 +53,6 @@
 
 
 
-
-
-
 	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap">
 		select
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
@@ -66,7 +63,7 @@
 	<!-- 通过手机号和缴费状态查询用户的账单 -->
 	<select id="selectBillsByPhoneAndFlag" resultMap="BaseResultMap">
 		SELECT
-		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag
+		id,bill_num,pa.rking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
 		FROM
 		parking_bill
 		WHERE
