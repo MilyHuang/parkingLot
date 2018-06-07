@@ -38,5 +38,5 @@ public interface IParkingLotController {
 	 * @param id
 	 * @return
 	 */
-	JsonResult deleteParkingLotById(int id);
+	JsonResult deleteParkingLot(ParkingLotEntity entity);
 }

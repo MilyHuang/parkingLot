@@ -78,4 +78,11 @@ public interface IParkingCardService {
 	 */
 	int updateCardsUseLimit(int id);
 
+	/**
+	 * 更新停车卡的状态
+	 * @param cardEntity
+	 * @return
+	 */
+	JsonResult updateCardState(ParkingCardEntity cardEntity);
+	
 }

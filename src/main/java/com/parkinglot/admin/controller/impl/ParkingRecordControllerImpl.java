@@ -54,10 +54,10 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
 		ParkingRecordEntity parkingRecordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
 		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
-		if (parkingCardEntity == null||parkingLotEntity==null) {
+		if (parkingCardEntity == null || parkingLotEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
-		}else if(parkingCardEntity.getParkingId()!=parkingLotEntity.getId()) {
+		} else if (parkingCardEntity.getParkingId() != parkingLotEntity.getId()) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡不能在此取車"));
 			return jsonResult;
 		} else if (parkingLotEntity.getInuse() == 0) {
@@ -66,7 +66,9 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		} else if (parkingCardEntity.getState() == 1) {
 			jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
 			return jsonResult;
-		}else {
+		} else {
+			 /**自动停卡*/
+		    parkingRecordService.checkCard(entity);
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() - 1);
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
@@ -87,14 +89,13 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		JsonResult jsonResult = new JsonResult();
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
-		if (parkingCardEntity == null||parkingLotEntity==null) {
+		if (parkingCardEntity == null || parkingLotEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡或停车场不存在"));
 			return jsonResult;
-		}else if(parkingCardEntity.getParkingId()!=parkingLotEntity.getId()) {
+		} else if (parkingCardEntity.getParkingId() != parkingLotEntity.getId()) {
 			jsonResult = new JsonResult(new ServiceException("该停车卡不能在此停车"));
 			return jsonResult;
-		}
-		else if (parkingCardEntity.getState() == 1) {
+		} else if (parkingCardEntity.getState() == 1) {
 			jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
 			return jsonResult;
 		} else {
@@ -103,26 +104,29 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			if (recordEntity != null) {
 				jsonResult = new JsonResult(new ServiceException("您已停放辆车，不能停放其他车辆"));
 				return jsonResult;
-			} 
+			}
+			    /**自动停卡*/
+			    parkingRecordService.checkCard(entity);
+			    
+				/** 更新停车场正在使用的车位数量 */
+				parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
+				jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
+
+				/** 记录停车的记录 */
+				ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
+				parkingRecordEntity.setCardId(parkingCardEntity.getId());
+				parkingRecordEntity.setParkingId(parkingLotEntity.getId());
+				parkingRecordEntity.setParkingNum(entity.getParkingNum());
+				parkingRecordEntity.setCardNum(entity.getCardNum());
+				parkingRecordEntity.setCheckinTime(new Date());
+				parkingRecordEntity.setFlag(1);
+				parkingRecordEntity.setPhone(user.getPhone());
+				parkingRecordService.insertParkingRecord(parkingRecordEntity);
+				parkingRecordEntity.setFlag(0);
+				System.out.println("ppp:" + parkingRecordEntity);
+				checkParkingRecord(parkingRecordEntity);
+				return jsonResult;
 			
-			/** 更新停车场正在使用的车位数量 */
-			parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
-			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
-			
-			/** 记录停车的记录 */
-			ParkingRecordEntity parkingRecordEntity = new ParkingRecordEntity();
-			parkingRecordEntity.setCardId(parkingCardEntity.getId());
-			parkingRecordEntity.setParkingId(parkingLotEntity.getId());
-			parkingRecordEntity.setParkingNum(entity.getParkingNum());
-			parkingRecordEntity.setCardNum(entity.getCardNum());
-			parkingRecordEntity.setCheckinTime(new Date());
-			parkingRecordEntity.setFlag(1);
-			parkingRecordEntity.setPhone(user.getPhone());
-			parkingRecordService.insertParkingRecord(parkingRecordEntity);
-			parkingRecordEntity.setFlag(0);
-			System.out.println("ppp:"+parkingRecordEntity);
-			checkParkingRecord(parkingRecordEntity);
-			return jsonResult;
 		}
 	}
 
@@ -133,25 +137,17 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		System.out.println(entity);
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum());
 		System.out.println(parkingCardEntity);
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntityByCard(parkingCardEntity);
-		if(list!=null) {
-			Date maxDate = list.get(0).getFirstDate();
-			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).getStatementDate().compareTo(maxDate) == 1) {
-					maxDate = list.get(i).getStatementDate();
-				}
-			}
-			System.out.println(maxDate);
-			if (maxDate.compareTo(new Date()) == -1) {
-				UserAndCardEntity en = new UserAndCardEntity();
-				en.setCardNum(entity.getCardNum());
-				en.setParkingNum(entity.getParkingNum());
-				en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
-				System.out.println(en);
-				generateBill(en);
-			}
-			
+		ParkingBillEntity parkingBillEntity = parkingBillService.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
+		System.out.println(parkingBillEntity);
+		if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1) {
+			UserAndCardEntity en = new UserAndCardEntity();
+			en.setCardNum(entity.getCardNum());
+			en.setParkingNum(entity.getParkingNum());
+			en.setPhone(userService.selectUserInfoById(parkingCardEntity.getUserId()).getPhone());
+			System.out.println(en);
+			generateBill(en);
 		}
+
 	}
 
 	/**

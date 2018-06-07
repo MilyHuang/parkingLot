@@ -1,12 +1,18 @@
 package com.parkinglot.admin.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.parkinglot.admin.dao.IParkingBillDao;
 import com.parkinglot.admin.dao.IParkingCardDao;
 import com.parkinglot.admin.dao.IParkingRecordDao;
+import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.service.IParkingRecordService;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
@@ -27,6 +33,9 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 
 	@Autowired
 	private IParkingCardDao parkingCardDao;
+
+	@Autowired
+	private IParkingBillDao parkingBillDao;
 
 	@Override
 	public JsonResult updateParkingRecord(ParkingRecordEntity entity) {
@@ -63,5 +72,29 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 	//	System.out.println("step in isHasCarInTheParking service result"+entity.toString());
 		return entity;
 	}
+
+	public JsonResult checkCard(ParkingRecordEntity entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	/**
+//	 * 卡自动过期
+//	 */
+//	public JsonResult checkCard(ParkingRecordEntity entity) {
+//
+//		ParkingCardEntity parkingCardEntity = parkingCardDao.selectCardByCardNum(entity.getCardNum());
+//		ParkingBillEntity parkingBillEntity = parkingBillDao
+//				.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
+//		JsonResult jsonResult = new JsonResult();
+//		if (parkingBillEntity != null) {
+//			if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1 && parkingBillEntity.getFlag() == 0) {
+//				parkingCardEntity.setState(1);
+//				parkingCardDao.updateParkingCard(parkingCardEntity);
+//				jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
+//			}
+//		}
+//		return jsonResult;
+//	}
 
 }

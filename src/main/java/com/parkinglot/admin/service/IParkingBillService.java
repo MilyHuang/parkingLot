@@ -1,9 +1,11 @@
 package com.parkinglot.admin.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingBillService {
 	/**
@@ -39,10 +41,31 @@ public interface IParkingBillService {
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
 	
 	/**
+<<<<<<< HEAD
 	 * 查询某停车场未缴，未出账，欠费账单
 	 * @param id
 	 * @return
 	 */
 	ParkingBillEntity selectUnPayBill(int id);
+
+	/* 查找停车卡的最新账单时间
+	 */
+	ParkingBillEntity selectAllParkingBillEntityByCardId(Integer cardId);
+	
+	
+	/**
+	 * 查找所有的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntitys();
+	
+	/**
+	 * 更新账单
+	 */
+	int updateParkingBill(ParkingBillEntity entity);
+	/** 用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult updateBillInfo(ParkingBillEntity billEntity);
 	
 }

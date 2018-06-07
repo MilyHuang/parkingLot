@@ -15,25 +15,28 @@
 		<result column="statementDate" property="statementDate"
 			jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
-		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 	</resultMap>
 
 	<select id="selectAllParkingBillEntity" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
-		select * from parking_bill where
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill where
 		phone=#{phone,jdbcType=VARCHAR}
 	</select>
 
 
 	<select id="selectParkingBillByBillNum" resultMap="BaseResultMap"
 		parameterType="java.lang.String">
-		select * from parking_bill where
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill where
 		bill_num=#{billNum,jdbcType=VARCHAR}
 	</select>
 
 	<insert id="insertParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		insert into
-		parking_bill(bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis)
+		parking_bill(bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag)
 		values(
 		#{billNum,jdbcType=VARCHAR},
 		#{parkingId,jdbcType=INTEGER},
@@ -44,8 +47,7 @@
 		#{account,jdbcType=DOUBLE},
 		#{firstDate,jdbcType=TIMESTAMP},
 		#{statementDate,jdbcType=TIMESTAMP},
-		#{flag,jdbcType=INTEGER},
-		#{tis,jdbcType=NVARCHAR}
+		#{flag,jdbcType=INTEGER}
 		);
 	</insert>
 
@@ -55,14 +57,16 @@
 
 
 	<select id="selectAllParkingBillEntityByCard" resultMap="BaseResultMap">
-		select * from parking_bill where
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill where
 		card_id=#{cardId,jdbcType=INTEGER}
 	</select>
 
 	<!-- 通过手机号和缴费状态查询用户的账单 -->
 	<select id="selectBillsByPhoneAndFlag" resultMap="BaseResultMap">
 		SELECT
-		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag
 		FROM
 		parking_bill
 		WHERE
@@ -72,10 +76,46 @@
 	</select>
 	
 	 <!-- 查询未缴，未出账，欠费账单 -->
-	<select id="selectUnPayBill" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select * from parking_bill where parking_id = #{id,jdbcType=INTEGER} and flag != 1
+	<select id="selectUnPayBill" resultMap="BaseResultMap">
+		select 
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag 
+		from parking_bill where parking_id = #{id,jdbcType=INTEGER} and flag != 1 limit 1
 	</select> 
 	
 
+	<select id="selectAllParkingBillEntityByCardId" resultMap="BaseResultMap">
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill
+		where statementDate = (select max(statementDate) from
+		parking_bill where
+		card_id=#{cardId,jdbcType=INTEGER}
+		group by card_id)
+		and card_id = #{cardId,jdbcType=INTEGER}
+	</select>
 
+	<select id="selectAllParkingBillEntitys" resultMap="BaseResultMap">
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill
+	</select>
+
+	<update id="updateParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
+		update
+		parking_bill
+		set
+		flag= #{flag,jdbcType=INTEGER},
+		tis= #{tis,jdbcType=NVARCHAR}
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 用户缴费 -->
+	<update id="updateBillInfo" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
+		UPDATE parking_bill
+		SET
+			flag=#{flag,jdbcType=INTEGER}
+		WHERE id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	
 </mapper>

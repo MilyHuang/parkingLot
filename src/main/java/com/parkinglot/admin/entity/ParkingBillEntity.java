@@ -163,7 +163,6 @@ public class ParkingBillEntity {
 
 	public ParkingBillEntity() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	

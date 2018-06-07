@@ -76,7 +76,7 @@
 	</delete>
 	
 	<!-- 查询停车场停有多少车 -->
-	<select id="selectInUseParkingLot" resultMap="java.lang.Integer" parameterType = "java.lang.Integer" >
+	<select id="selectInUseParkingLot" resultType="java.lang.Integer" parameterType = "java.lang.Integer" >
 		select inuse from parking_lot where id = #{id,jdbcType=INTEGER}
 	</select>
 	

@@ -38,4 +38,10 @@ public interface IParkingRecordService {
 	 * @return
 	 */
 	ParkingRecordEntity isHasCarInTheParking(int id);
+	 /* 自动禁卡
+	 * @param entity
+	 * @return
+	 */
+	JsonResult checkCard(ParkingRecordEntity entity);
+	
 }

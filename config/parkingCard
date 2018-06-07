@@ -1,0 +1,4 @@
+url:
+		url:http://10.65.35.170:8080/parkingLot/parkingCard/selectUserCardsForList
+		input:phone
+		output:id,userId,parkingId,cardNum,createdTime,state

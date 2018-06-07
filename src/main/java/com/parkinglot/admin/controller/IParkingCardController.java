@@ -36,5 +36,11 @@ public interface IParkingCardController {
 	 */
 	JsonResult selectUserByPhone(UsersInfoEntity userEntity);
 	
+	/**
+	 * 查询用户的卡信息
+	 * @param entity  电话号码
+	 * @return
+	 */
+	JsonResult selectUserCardsList(UsersInfoEntity entity);
 	
 }
