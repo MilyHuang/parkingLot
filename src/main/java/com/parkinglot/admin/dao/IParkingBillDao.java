@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingBillDao {
       
@@ -81,5 +82,19 @@ public interface IParkingBillDao {
 	 * @return
 	 */
 	ParkingBillEntity selectBillByCardIdAndFlag(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
+	
+
+	/**
+	 * 停車場价格改变后，账单价格跟随改变；
+	 */
+	JsonResult updateOldBill(ParkingBillEntity billEntity);
+	
+	
+	
+	/**
+	 * 獲取某停車場的所有要修改价格的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
+	
 	
 }

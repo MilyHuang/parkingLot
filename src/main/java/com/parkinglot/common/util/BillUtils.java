@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -69,18 +67,20 @@ public class BillUtils {
 			ca.set(year, 11, 31);
 			break;
 		}
+		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
 		billEntity.setFirstDate(new Date());
 		billEntity.setStatementDate(ca.getTime());  //设置时间
 		billEntity.setFlag(2);   //设置账单状态
+		int endMonth=ca.getTime().getMonth()+1;
 		// 获取当前月天数
 		ca.set(Calendar.DATE, 1);// 把日期设置为当月第一天
 		ca.roll(Calendar.DATE, -1);// 日期回滚一天，也就是最后一天
 		int maxDate = ca.get(Calendar.DATE);
 		double account = parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice() * (maxDate - nowDate + 1)
-				/ maxDate;
+				/ maxDate + (endMonth - month) * billEntity.getPrice();
 		DecimalFormat df = new DecimalFormat("#.00");
 		billEntity.setAccount(Double.parseDouble(df.format(account)));
-		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
+		
 		parkingBillService.insertParkingBill(billEntity);
 	}
 }

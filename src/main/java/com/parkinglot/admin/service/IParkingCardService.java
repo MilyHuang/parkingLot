@@ -72,11 +72,11 @@ public interface IParkingCardService {
 	int countCardsForUser(Integer userId);
 	
 	/**
-	 * 禁用某停车场内所有卡
+	 * 查询未停用停车卡
 	 * @param id
 	 * @return
 	 */
-	int updateCardsUseLimit(int id);
+	ParkingCardEntity selectActiveCard(int id);
 
 	/**
 	 * 更新停车卡的状态
