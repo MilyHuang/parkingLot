@@ -26,9 +26,10 @@ public interface IParkingCardDao {
 	/**
 	 * 通过停车卡num查询卡信息
 	 * @param cardNum
+	 * @param state   0 可用，1停用
 	 * @return
 	 */
-	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum);
+	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("state") Integer state);
 	
 	/**
 	 * 查找停车场中能用的卡的总数
@@ -78,6 +79,11 @@ public interface IParkingCardDao {
 	ParkingCardEntity selectActiveCard(int id);
 	
 	 /* 更新停车卡的状态
+	  * 
+	  */
+	int updateCardsUseLimit(int id);
+	
+	 /**更新停车卡的状态
 	 * @param cardEntity
 	 * @return
 	 */

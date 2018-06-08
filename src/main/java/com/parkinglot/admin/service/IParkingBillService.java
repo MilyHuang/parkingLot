@@ -83,5 +83,12 @@ public interface IParkingBillService {
 	 */
 	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
 	
+	/**
+	 * 查询某张停车卡是否还有逾期缴费的账单
+	 * @param cardId
+	 * @param flag
+	 * @return
+	 */
+	ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId,Integer flag);
 	
 }

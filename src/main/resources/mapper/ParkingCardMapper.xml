@@ -28,11 +28,13 @@
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_id,card_num,createdTime,state
+			id,users_id,parking_id,card_num,createdTime,state
 		FROM
-		parking_card
+			parking_card
 		WHERE
-		card_num=#{cardNum,jdbcType=VARCHAR}
+			card_num=#{cardNum,jdbcType=VARCHAR}
+		AND 
+			state=#{state,jdbcType=INTEGER}
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->

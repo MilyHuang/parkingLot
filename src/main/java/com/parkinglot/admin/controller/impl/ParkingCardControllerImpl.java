@@ -106,8 +106,8 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 				return jsonResult;
 			}
 			
-			// 查询停车卡号是否存在
-			ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
+			// 查询可用的停车卡号是否存在
+			ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum(), 0); //state: 0 可用 ,1 停用
 			if (card != null) {
 				return new JsonResult(new ServiceException("该卡号已存在"));
 			} 
@@ -167,15 +167,16 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		}
 		
 		// 查询停车卡号是否存在
-				ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum());
-				if (card != null) {
-					return new JsonResult(new ServiceException("该卡号已存在"));
-				} 
+		ParkingCardEntity card = cardService.selectParkingCardByCardNum(entity.getCardNum(),0); //state: 0 可用,1 停用
+		if (card != null) {
+			return new JsonResult(new ServiceException("该卡号已存在"));
+		} 
 		//判断用户账单是否缴清
 		String phone = userService.selectUserInfoById(entity.getUserId()).getPhone();
 		Integer flag = 0;  //账单状态为未缴费
 		List<ParkingBillEntity> bills = parkingBillService.selectBillsByPhoneAndFlag(phone, flag);
-		if(!bills.isEmpty()){
+		List<ParkingBillEntity> bills2 = parkingBillService.selectBillsByPhoneAndFlag(phone, 3); //账单欠费
+		if(!bills.isEmpty() || !bills2.isEmpty()){
 			return new JsonResult(new ServiceException("该用户有账单未缴清，请缴清再办理新卡"));
 		}else {
 
@@ -236,10 +237,8 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		System.out.println(entity);
 		//用户的ID
 		Integer userId = userService.selectUserInfoByPhone(entity.getPhone()).getId();
-		System.out.println("userId:"+userId);
 		//用户卡信息
 		List<ParkingCardEntity> cards = cardService.selectUserCards(userId);
-		System.out.println(cards);
 		if(cards.size() == 0) {
 			return new JsonResult("该用户没有办理停车卡");
 		}

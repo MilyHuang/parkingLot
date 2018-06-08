@@ -26,10 +26,10 @@ public interface IParkingCardService {
 	/**
 	 * 查询停车卡是否存在
 	 * @param cardNum 停车卡号
-	 * @param parkingNum 停车场编号
+	 * @param state  0 可用，1停用
 	 * @return
 	 */
-	ParkingCardEntity selectParkingCardByCardNum(String cardNum);
+	ParkingCardEntity selectParkingCardByCardNum(String cardNum,Integer state);
 	
 	/**
 	 * 查找停车场中能用的卡的总数

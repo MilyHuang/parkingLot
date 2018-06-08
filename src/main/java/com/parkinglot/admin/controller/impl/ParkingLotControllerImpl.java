@@ -133,9 +133,8 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		// 该停车场所有卡已被禁用
 		else if (activeCard != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在可用停车卡，无法删除"));
-		}
 		// 删除停车场
-		else {
+		}else {
 			parkingLotService.deleteParkingLotById(id);
 		}
 

@@ -93,5 +93,10 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 	public List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId) {
 		return parkingBillDao.selectAllParkingBillEntityByParkingLot(parkingId);
 	}
+	
+	@Override
+	public ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId, Integer flag) {
+		return parkingBillDao.selectBillByCardIdAndFlag(cardId, flag);
+	}
 
 }

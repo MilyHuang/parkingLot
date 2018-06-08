@@ -24,6 +24,7 @@
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
 		from parking_bill where
 		phone=#{phone,jdbcType=VARCHAR}
+		ORDER BY statementDate DESC
 	</select>
 
 
@@ -98,6 +99,7 @@
 		select
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
 		from parking_bill where flag=#{flag,jdbcType=INTEGER}
+		
 	</select>
 
 	<update id="updateParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
@@ -137,5 +139,15 @@
 		flag=2
 	</select>
 
+	<!-- 查找某张停车卡是否有逾期未缴的账单 -->
+	<select id="selectBillByCardIdAndFlag" resultMap="BaseResultMap">
+		SELECT
+			id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		FROM parking_bill 
+		WHERE 
+			card_id=#{cardId,jdbcType=INTEGER}
+		AND
+			flag=#{flag,jdbcType=INTEGER}
+	</select>
 
 </mapper>
