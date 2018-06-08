@@ -120,18 +120,19 @@
 
 	<!-- 停車場价格改变后，账单价格跟随改变 -->
 	<update id="updateOldBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
-		UPDATE parking_bill
-		SET
-		price＝#{price,jdbcType=DOUBLE},
-		account＝#{account,jdbcType=DOUBLE}
-		where id=#{id,jdbcType=INTEGER}
+		update parking_bill
+		set
+		price = #{price,jdbcType=DOUBLE},
+		account = #{account,jdbcType=DOUBLE}
+		where
+		 id = #{id,jdbcType=INTEGER}
 	</update>
 
 
 	<select id="selectAllParkingBillEntityByParkingLot" resultMap="BaseResultMap">
 		select
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
-		from parking_bill
+		from parking_bill where
 		parking_id = #{parkingId,jdbcType=INTEGER} and
 		flag=2
 	</select>

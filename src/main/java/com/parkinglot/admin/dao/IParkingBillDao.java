@@ -80,7 +80,7 @@ public interface IParkingBillDao {
 	/**
 	 * 停車場价格改变后，账单价格跟随改变；
 	 */
-	JsonResult updateOldBill(ParkingBillEntity billEntity);
+	int updateOldBill(ParkingBillEntity billEntity);
 	
 	
 	

@@ -81,7 +81,12 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 
 	@Override
 	public JsonResult updateOldBill(ParkingBillEntity billEntity) {
-		return parkingBillDao.updateOldBill(billEntity);
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingBillDao.updateOldBill(billEntity);
+		if (rows <= 0) {
+			return new JsonResult(new ServiceException("修改失败"));
+		}
+		return jsonResult;
 	}
 
 	@Override
