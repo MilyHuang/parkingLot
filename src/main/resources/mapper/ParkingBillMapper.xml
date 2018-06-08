@@ -71,6 +71,14 @@
 		AND
 		flag=#{flag,jdbcType=INTEGER}
 	</select>
+	
+	 <!-- 查询未缴，未出账，欠费账单 -->
+	<select id="selectUnPayBill" resultMap="BaseResultMap">
+		select 
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag 
+		from parking_bill where parking_id = #{id,jdbcType=INTEGER} and flag != 1 limit 1
+	</select> 
+	
 
 	<select id="selectAllParkingBillEntityByCardId" resultMap="BaseResultMap">
 		select

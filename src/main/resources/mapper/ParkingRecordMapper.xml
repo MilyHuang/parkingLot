@@ -45,5 +45,10 @@
 		select * from parking_record where card_id =
 		#{cardId,jdbcType=INTEGER} and flag = 1
 	</select>
+	
+	<!-- 是否有车停在指定停车场 -->
+	<select id="isHasCarInTheParking" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select * from parking_record where parking_id = #{id,jdbcType=INTEGER} and flag = 1
+	</select>
 
 </mapper>

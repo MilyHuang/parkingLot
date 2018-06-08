@@ -70,6 +70,13 @@ public interface IParkingCardService {
 	 * @return
 	 */
 	int countCardsForUser(Integer userId);
+	
+	/**
+	 * 查询未停用停车卡
+	 * @param id
+	 * @return
+	 */
+	ParkingCardEntity selectActiveCard(int id);
 
 	/**
 	 * 更新停车卡的状态

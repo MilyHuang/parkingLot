@@ -41,7 +41,14 @@ public interface IParkingBillService {
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(String phone,Integer flag);
 	
 	/**
-	 * 查找停车卡的最新账单时间
+<<<<<<< HEAD
+	 * 查询某停车场未缴，未出账，欠费账单
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectUnPayBill(int id);
+
+	/* 查找停车卡的最新账单时间
 	 */
 	ParkingBillEntity selectAllParkingBillEntityByCardId(Integer cardId);
 	

@@ -66,4 +66,18 @@
 		parking_lot
 		WHERE id=#{parkingId,jdbcType=INTEGER}
 	</select>
+	
+	<!-- 删除停车场 -->
+	<delete id="deleteParkingLotById">
+		DELETE FROM
+		parking_lot
+		WHERE
+		id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- 查询停车场停有多少车 -->
+	<select id="selectInUseParkingLot" resultType="java.lang.Integer" parameterType = "java.lang.Integer" >
+		select inuse from parking_lot where id = #{id,jdbcType=INTEGER}
+	</select>
+	
 </mapper>

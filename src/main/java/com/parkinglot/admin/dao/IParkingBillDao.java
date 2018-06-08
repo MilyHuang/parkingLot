@@ -43,6 +43,12 @@ public interface IParkingBillDao {
 	 */
 	List<ParkingBillEntity> selectBillsByPhoneAndFlag(@Param("phone") String phone,@Param("flag") Integer flag);
 	
+	/**
+	 * 查询某停车场的未缴账单
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectUnPayBill(int id);
 	
 	/**
 	 * 查找停车卡的最新账单时间
