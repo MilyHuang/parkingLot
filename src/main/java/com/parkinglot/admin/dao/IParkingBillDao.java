@@ -73,4 +73,13 @@ public interface IParkingBillDao {
 	 * @return
 	 */
 	int updateBillInfo(ParkingBillEntity billEntity);
+	
+	/**
+	 * 查找某张停车卡是否还有逾期未缴的账单
+	 * @param cardId  停车卡id
+	 * @param flag  缴费状态
+	 * @return
+	 */
+	ParkingBillEntity selectBillByCardIdAndFlag(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
+	
 }

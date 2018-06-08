@@ -77,4 +77,9 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 		return jsonResult;
 	}
 
+	@Override
+	public ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId, Integer flag) {
+		return parkingBillDao.selectBillByCardIdAndFlag(cardId, flag);
+	}
+
 }

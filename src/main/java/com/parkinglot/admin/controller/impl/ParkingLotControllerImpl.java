@@ -123,7 +123,7 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 		//设置卡为禁用，并删除停车场
 		else {
 			parkingCardService.updateCardsUseLimit(id);
-			 parkingLotService.deleteParkingLotById(id);
+		    parkingLotService.deleteParkingLotById(id);
 		}
 		
 		return jsonResult;
