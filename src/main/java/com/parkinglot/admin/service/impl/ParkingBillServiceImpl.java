@@ -1,5 +1,6 @@
 package com.parkinglot.admin.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 		ParkingBillEntity unPayBill = parkingBillDao.selectUnPayBill(id);
 		return unPayBill;
 	}
+
 	public ParkingBillEntity selectAllParkingBillEntityByCardId(Integer cardId) {
 		return parkingBillDao.selectAllParkingBillEntityByCardId(cardId);
 	}
@@ -75,6 +77,16 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 			return new JsonResult(new ServiceException("缴费失败"));
 		}
 		return jsonResult;
+	}
+
+	@Override
+	public JsonResult updateOldBill(ParkingBillEntity billEntity) {
+		return parkingBillDao.updateOldBill(billEntity);
+	}
+
+	@Override
+	public List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId) {
+		return parkingBillDao.selectAllParkingBillEntityByParkingLot(parkingId);
 	}
 
 }

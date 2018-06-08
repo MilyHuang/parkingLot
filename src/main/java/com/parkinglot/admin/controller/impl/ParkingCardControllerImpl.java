@@ -281,64 +281,6 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		return flag;
 	}
 
-	/**
-	 * 生成新账单
-	 * 
-	 * @param entity
-	 */
-	public void generateBill(ParkingBillEntity billEntity) {
-		//ParkingLotEntity parkingLotEntity = parkingService.selectParkingLotByNum(entity.getParkingNum());
-		//ParkingCardEntity parkingCardEntity = cardService.selectParkingCardByCardNum(entity.getCardNum());
-		int rand = new Random().nextInt(100000);
-		billEntity.setBillNum(String.valueOf(rand));  //设置账单编号
-		Calendar ca = Calendar.getInstance();
-		ca.setTime(new Date());
-		int nowDate = ca.get(Calendar.DAY_OF_MONTH);
-		Integer year = ca.get(Calendar.YEAR);
-		Integer month = ca.get(Calendar.MONTH) + 1;
-		switch (month) {
-		case 1:
-			;
-		case 2:
-			;
-		case 3:
-			ca.set(year, 2, 31);
-			break;
-		case 4:
-			;
-		case 5:
-			;
-		case 6:
-			ca.set(year, 5, 30);
-			break;
-		case 7:
-			;
-		case 8:
-			;
-		case 9:
-			ca.set(year, 8, 30);
-			break;
-		case 10:
-			;
-		case 11:
-			;
-		case 12:
-			ca.set(year, 11, 31);
-			break;
-		}
-		billEntity.setFirstDate(new Date());
-		billEntity.setStatementDate(ca.getTime());  //设置时间
-		billEntity.setFlag(2);   //设置账单状态
-		// 获取当前月天数
-		ca.set(Calendar.DATE, 1);// 把日期设置为当月第一天
-		ca.roll(Calendar.DATE, -1);// 日期回滚一天，也就是最后一天
-		int maxDate = ca.get(Calendar.DATE);
-		double account = parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice() * (maxDate - nowDate + 1)
-				/ maxDate;
-		DecimalFormat df = new DecimalFormat("#.00");
-		billEntity.setAccount(Double.parseDouble(df.format(account)));
-		billEntity.setPrice(parkingService.selectParkingLotById(billEntity.getParkingId()).getPrice());
-		parkingBillService.insertParkingBill(billEntity);
-	}
+	
 }
 	

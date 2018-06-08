@@ -3,6 +3,8 @@ package com.parkinglot.admin.service;
 import java.sql.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.common.util.JsonResult;
@@ -62,10 +64,24 @@ public interface IParkingBillService {
 	 * 更新账单
 	 */
 	int updateParkingBill(ParkingBillEntity entity);
+	
 	/** 用户缴费
 	 * @param billEntity
 	 * @return
 	 */
 	JsonResult updateBillInfo(ParkingBillEntity billEntity);
+	
+	
+	
+	/**
+	 * 停車場价格改变后，账单价格跟随改变；
+	 */
+	JsonResult updateOldBill(ParkingBillEntity billEntity);
+	
+	/**
+	 * 獲取某停車場的所有要修改价格的账单
+	 */
+	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
+	
 	
 }
