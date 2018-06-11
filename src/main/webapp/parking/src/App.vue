@@ -22,7 +22,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 ul li {
@@ -53,8 +53,8 @@ ul li {
 /* 导航内容等高 */
 .parking-nav {
   float: left;
-  margin-bottom: -2500px;
-  padding-bottom: 2500px; 
+  margin-bottom: -25000px;
+  padding-bottom: 25000px; 
   width: 200px;
   min-height: 900px;
   background-color: #ededed;
@@ -77,11 +77,12 @@ ul li {
 } */
 
 .parking-con {
+  /* display: inline-block; */
+  min-height: 900px;
   margin-left: 201px;
   width: calc(100% -200);
-  height: 90%;
-  padding-left: 50px;
-  padding-top: 50px;
+  height: auto;
+  padding: 50px;
 }
 
 .router-link-active {
