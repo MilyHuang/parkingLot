@@ -28,11 +28,13 @@
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-		id,users_id,parking_id,card_num,createdTime,state
+			id,users_id,parking_id,card_num,createdTime,state
 		FROM
-		parking_card
+			parking_card
 		WHERE
-		card_num=#{cardNum,jdbcType=VARCHAR}
+			card_num=#{cardNum,jdbcType=VARCHAR}
+		AND 
+			state=#{state,jdbcType=INTEGER}
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->
@@ -82,10 +84,10 @@
 		WHERE users_id=#{userId,jdbcType=INTEGER}
 	</select>
 	
-	<!-- 禁用某停车场内所有卡 -->
-	<update id="updateCardsUseLimit">
-		update parking_card set state = 1 where parking_id = #{id , jdbcType=INTEGER}
-	</update>
+	<!-- 查询Active状态的卡 -->
+	<select id="selectActiveCard" resultMap="BaseResultMap">
+		select * from parking_card where parking_id = #{id,jdbcType=INTEGER} and state = 0 limit 1
+	</select>
 
 	<!-- 更新停车卡状态 -->
 	<update id="updateCardState" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">

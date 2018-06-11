@@ -41,8 +41,8 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	}
 
 	@Override
-	public ParkingCardEntity selectParkingCardByCardNum(String cardNum) {
-		return cardDao.selectCardByCardNum(cardNum);
+	public ParkingCardEntity selectParkingCardByCardNum(String cardNum,Integer state) {
+		return cardDao.selectCardByCardNum(cardNum,state);
 	}
 
 	@Override
@@ -81,10 +81,7 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		return cardDao.countCardsForUser(userId);
 	}
 
-	@Override
-	public int updateCardsUseLimit(int id) {
-		int rows = cardDao.updateCardsUseLimit(id);
-		return rows;}
+	
 	public JsonResult updateCardState(ParkingCardEntity cardEntity) {
 		JsonResult jsonResult = new JsonResult();
 		int rows = cardDao.updateCardState(cardEntity);
@@ -92,6 +89,11 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 			return new JsonResult(new ServiceException("更新状态失败"));
 		}
 		return jsonResult;
+	}
+
+	@Override
+	public ParkingCardEntity selectActiveCard(int id) {
+		return cardDao.selectActiveCard(id);
 	}
 
 }

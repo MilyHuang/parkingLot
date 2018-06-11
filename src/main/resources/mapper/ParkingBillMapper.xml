@@ -12,7 +12,8 @@
 		<result column="price" property="price" jdbcType="DOUBLE" />
 		<result column="account" property="account" jdbcType="DOUBLE" />
 		<result column="firstDate" property="firstDate" jdbcType="TIMESTAMP" />
-		<result column="statementDate" property="statementDate"	jdbcType="TIMESTAMP" />
+		<result column="statementDate" property="statementDate"
+			jdbcType="TIMESTAMP" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
 		<result column="tis" property="tis" jdbcType="NVARCHAR" />
 	</resultMap>
@@ -23,6 +24,7 @@
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
 		from parking_bill where
 		phone=#{phone,jdbcType=VARCHAR}
+		ORDER BY statementDate DESC
 	</select>
 
 
@@ -71,14 +73,15 @@
 		AND
 		flag=#{flag,jdbcType=INTEGER}
 	</select>
-	
-	 <!-- 查询未缴，未出账，欠费账单 -->
+
+	<!-- 查询未缴，未出账，欠费账单 -->
 	<select id="selectUnPayBill" resultMap="BaseResultMap">
-		select 
-		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag 
-		from parking_bill where parking_id = #{id,jdbcType=INTEGER} and flag != 1 limit 1
-	</select> 
-	
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag
+		from parking_bill where parking_id = #{id,jdbcType=INTEGER} and flag
+		!= 1 limit 1
+	</select>
+
 
 	<select id="selectAllParkingBillEntityByCardId" resultMap="BaseResultMap">
 		select
@@ -96,6 +99,7 @@
 		select
 		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
 		from parking_bill where flag=#{flag,jdbcType=INTEGER}
+		
 	</select>
 
 	<update id="updateParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
@@ -116,5 +120,34 @@
 		WHERE id=#{id,jdbcType=INTEGER}
 	</update>
 
+	<!-- 停車場价格改变后，账单价格跟随改变 -->
+	<update id="updateOldBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
+		update parking_bill
+		set
+		price = #{price,jdbcType=DOUBLE},
+		account = #{account,jdbcType=DOUBLE}
+		where
+		 id = #{id,jdbcType=INTEGER}
+	</update>
+
+
+	<select id="selectAllParkingBillEntityByParkingLot" resultMap="BaseResultMap">
+		select
+		id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		from parking_bill where
+		parking_id = #{parkingId,jdbcType=INTEGER} and
+		flag=2
+	</select>
+
+	<!-- 查找某张停车卡是否有逾期未缴的账单 -->
+	<select id="selectBillByCardIdAndFlag" resultMap="BaseResultMap">
+		SELECT
+			id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		FROM parking_bill 
+		WHERE 
+			card_id=#{cardId,jdbcType=INTEGER}
+		AND
+			flag=#{flag,jdbcType=INTEGER}
+	</select>
 
 </mapper>
