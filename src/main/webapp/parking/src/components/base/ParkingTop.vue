@@ -48,6 +48,7 @@
       showToggle: function() {
         this.isShow = !this.isShow
       },
+      //登出
       LoginOut: function() {
         if(sessionStorage.phone!=''){
           this.$router.push({ path: '/UserLogin' });

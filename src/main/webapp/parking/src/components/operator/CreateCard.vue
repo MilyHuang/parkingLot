@@ -4,6 +4,7 @@
       <el-button type="primary" @click="SelectUser()">查找</el-button>
       <div class="tip" v-show="isDisabled">今日办卡业务暂停</div>
       <div v-if="changeFlag">
+        <!-- 创新卡 -->
       <el-form ref="cardInfo" :model="cardInfo" label-width="50px"  :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
@@ -31,6 +32,7 @@
       </el-form>
       </div>
       <div v-else="changeFlag">
+        <!-- 创旧卡 -->
        <el-form ref="oldInfo" :model="oldInfo" label-width="50px" :disabled="isDisabled">
         <el-form-item>
           <span>用户名</span>
@@ -79,6 +81,7 @@ export default {
       searchNumber: ``,
       //老用户卡数
       cardCount: ``,
+      //新用户信息
       cardInfo: {
         name: ``,
         phoneNumber: ``,
@@ -86,11 +89,6 @@ export default {
         cardAccount: ``,
         password: ``
       },
-      formLabelAlign: {
-        name: '123',
-        region: '456',
-        type: '789'
-      }
     }
   },
   mounted: function() {
@@ -101,6 +99,7 @@ export default {
     })
   },
   methods:{
+    // 判断空格
     spaceLimit(){
       var input=document.getElementsByTagName("input");
       console.log(input);
@@ -110,6 +109,7 @@ export default {
         }
       }
     },
+    // 按日期禁用按钮
     inputDisabled(){
       var date=new Date();
       var nowDate=date.getMonth()+1+'/'+date.getDate();
@@ -118,6 +118,7 @@ export default {
         this.isDisabled=true;
       }
     },
+    //新用户表单验证
     newInputLimit(info){
       if(!(info.name && info.phoneNumber && info.lotNumber && info.cardAccount && info.password)){
         this.$notify({
@@ -142,6 +143,7 @@ export default {
         this.isPass=true;
       }
     },
+    //旧用户表单验证
     oldInputLimit(info){
       if(!(info.lotNumber && info.cardAccount)){
         this.$notify({
@@ -159,6 +161,7 @@ export default {
         this.isPass=true;
       }
     },
+    //查询用户
     SelectUser(){
       if (this.searchNumber == '') {
         this.$notify({

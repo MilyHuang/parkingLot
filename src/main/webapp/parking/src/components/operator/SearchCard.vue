@@ -78,6 +78,7 @@
 			}
 		},
 		methods:{
+			// 通过手机查询停车卡
 			searchCard(){
 				if(this.InputLimit(this.searchNumber))
 				this.axios.post(this.baseURI + '/parkingCard/selectUserCardsForList', { "phone": this.searchNumber})
@@ -89,6 +90,7 @@
 					console.log(err);
 				})
 			},
+			//单选事件
 			handleCurrentChange(val) {
 				this.currentCardNum = val.cardNum;
 				this.currentCardId = val.id;
@@ -99,6 +101,7 @@
             	let res = new Date(date).toLocaleString();
             	return res.slice(0,res.indexOf(' '));
             },
+            //输入限制
             InputLimit(cardNum){
                 //进入输入判断
                 	if(!cardNum){
@@ -119,12 +122,8 @@
                 	}
                     return false;
  			},
+ 			//补办
  			modifyCard(){
- 				    this.$notify({
-                			title: '提示信息',
-                			message: '卡号已存在!',
-                			type: 'error'
-                		});
                  if(this.InputLimit(this.modifyCardNum))
                  	this.axios.post(this.baseURI + `/parkingCard/createNewCardReplaceOldOne`,{
                  		id: this.currentCardId,
@@ -137,6 +136,7 @@
 
                  })
  			},
+ 			//弹窗限制
  			judgeChosenCard(){
  				if(this.currentCardNum){
  					this.cardFormVisible = true;
