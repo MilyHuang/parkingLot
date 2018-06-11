@@ -7,19 +7,24 @@
     @current-change="handleCurrentChange"
     style="width: 100%">
     <el-table-column
-      label="停车场编号"
+      type="index"
+      label="序号"
       width="100">
+    </el-table-column>
+    <el-table-column
+      label="停车场编号"
+      width="150">
       <template slot-scope="scope">{{ scope.row.parkingNum }}</template>
     </el-table-column>
     <el-table-column
       prop="parkingName"
       label="停车场名"
-      width="100">
+      width="150">
     </el-table-column>
     <el-table-column
       prop="address"
       label="地址"
-      width="300">
+      width="200">
     </el-table-column>
     <el-table-column
       prop="total"
@@ -131,6 +136,14 @@ export default {
     },
     //删除停车场
     deleteParkingLot(){
+        //检验是否有选中的停车场
+        if(!this.currentLotNum){
+          this.$notify({ 
+              title: '提示信息',
+              message: `没有选中任何停车场！`,
+              type: 'error'
+            });
+        }
         this.axios.post(this.baseURI +  `/parkinglot/deleteParkinglot`,{id:this.currentLotNum})
         .then( res => {
           console.log(res);
@@ -148,6 +161,7 @@ export default {
               type: 'error'
             });
           }
+          this.currentLotNum = ``;
           this.initParkingLot();
         })
         .catch( err => {

@@ -1,7 +1,7 @@
 <template>
 	<div class="search-card">
-		<el-input v-model="searchNumber" placeholder="请输入手机号查询账单"></el-input>
-		<el-button type="primary" @click="SearchUserBill()">查找</el-button>
+		<el-input v-model.trim="searchNumber" placeholder="请输入手机号查询账单"></el-input>
+		<el-button type="primary" @click="SearchUserBill(1)">查找</el-button>
 		<el-table
           :data="UserBillData"
           style="width: 95%">
@@ -69,12 +69,17 @@
 		mounted(){
             this.$nextTick( () =>{
             	if(this.$route.params.phone){
+                    //判断是否第一次进入
+                    if(this.$route.params.phone != 0)
+                      this.time = this.$route.params.phone;
                     this.SearchUserBill();
             	}
             })
 		},
 		data(){
 			return{
+        time: 0,
+        flag: ``,
 				searchNumber: ``,
 				//保存下来的电话
 				prePhone: ``,
@@ -87,10 +92,14 @@
 			//查询账单
 			SearchUserBill(){
 				//接收搜索的信息
-				if(this.$route.params.phone == 0)
+				if(this.$route.params.phone == 0){
 					this.prePhone = this.searchNumber;
-                else
-                	this.prePhone = this.$route.params.phone;
+        }
+        //接受传过来的手机
+        else
+          this.prePhone = this.$route.params.phone;
+        //检查输入的手机
+        if( this.InputLimit())
 				this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": this.prePhone})
                 .then(res => {
                   // sessionStorage.getItem("phone")
@@ -101,11 +110,38 @@
                   console.log(err)
                 })
 			},
-      		//时间转换函数
-      		secondToDate(date){
-      		    let res = new Date(date).toLocaleString();
-      		    return res.slice(0,res.indexOf(' '));
-      		}
+      //时间转换函数
+      secondToDate(date){
+        let res = new Date(date).toLocaleString();
+        return res.slice(0,res.indexOf(' '));
+      },
+      InputLimit(){
+      //第一次进入则不判断输入
+      if(this.time == 0){
+        this.time++;
+        return false;
+      }
+      //否则进入输入判断
+      else{ 
+        if(!this.prePhone){
+          this.$notify({
+            title: '提示信息',
+            message: '请填写完整',
+            type: 'error'
+          });
+        }
+        else if(!(/^[0-9]*$/.test(this.prePhone))){
+          this.$notify({
+            title: '提示信息',
+            message: '卡号必须为数字',
+            type: 'error'
+          });
+        }else{ 
+          return true;
+        }
+      }
+      return false;
+    }
 
 		}
 	}

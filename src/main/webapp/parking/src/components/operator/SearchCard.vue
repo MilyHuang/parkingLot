@@ -1,6 +1,6 @@
 <template>
 <div class="search-card">
-	<el-input v-model="searchNumber" placeholder="请输入手机号"></el-input>
+	<el-input v-model.trim="searchNumber" placeholder="请输入手机号查询停车卡"></el-input>
 	<el-button type="primary" @click="searchCard()">查找</el-button>
 	<el-table ref="singleTable"  
 	highlight-current-row 
@@ -40,6 +40,7 @@
 		},
 		methods:{
 			searchCard(){
+				if(this.InputLimit())
 				this.axios.post(this.baseURI + '/parkingCard/selectUserCardsForList', { "phone": this.searchNumber})
 				.then( res => {
                     console.log(res);
@@ -56,7 +57,27 @@
             secondToDate(date){
             	let res = new Date(date).toLocaleString();
             	return res.slice(0,res.indexOf(' '));
-            }
+            },
+            InputLimit(){
+                //进入输入判断
+                	if(!this.searchNumber){
+                		this.$notify({
+                			title: '提示信息',
+                			message: '请填写完整',
+                			type: 'error'
+                		});
+                	}
+                	else if(!(/^[0-9]*$/.test(this.searchNumber))){
+                		this.$notify({
+                			title: '提示信息',
+                			message: '卡号必须为数字',
+                			type: 'error'
+                		});
+                	}else{ 
+                		return true;
+                	}
+                    return false;
+  }
 		}
 	}
 </script>
