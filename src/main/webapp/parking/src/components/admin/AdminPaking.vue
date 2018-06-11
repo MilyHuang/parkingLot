@@ -6,6 +6,9 @@
     highlight-current-row
     @current-change="handleCurrentChange"
     style="width: 100%">
+    <el-table-column label="" width="50">
+        <template slot-scope="scope"><img v-if="currentLotNum==scope.row.id" src='../../../static/tick.jpg'></template>
+      </el-table-column>
     <el-table-column
       type="index"
       label="序号"
@@ -29,7 +32,7 @@
     <el-table-column
       prop="total"
       label="容量"
-      width="200">
+      width="150">
     </el-table-column>
     <el-table-column
       prop="rent"
@@ -205,5 +208,8 @@ export default {
   width: 100%;
   font-size: 14px;
 }
-
+img{
+    width: 20px;
+    height: 20px;
+  }
 </style>
