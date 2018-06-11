@@ -100,6 +100,7 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 			billEntity2.setParkingId(bill.getParkingId());
 			billEntity2.setParkingName(bill.getParkingName());
 			billEntity2.setPhone(bill.getPhone());
+			billUtils.generateBill(billEntity2);
 		}else if (bill.getFlag() == 1) {
 			return new JsonResult(new ServiceException("该账单已缴费"));
 		} else if (bill.getFlag() == 2) {
