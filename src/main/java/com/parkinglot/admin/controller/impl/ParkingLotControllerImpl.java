@@ -1,5 +1,6 @@
 package com.parkinglot.admin.controller.impl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,17 +92,19 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 	@Override
 	public JsonResult updateParkingLotPrice(@RequestBody ParkingLotEntity entity) {
 		JsonResult jsonResult = new JsonResult();
-		System.out.println(entity.getPrice());
+		System.out.println(entity);
 		if ("".equals(entity.getPrice()) || entity.getPrice() == 0) {
 			logger.info("输入价格不能为空");
 			jsonResult = new JsonResult(new ServiceException("輸入的價格不能為空"));
 			return jsonResult;
 		}
+		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		jsonResult = parkingLotService.updateParkingLotPrice(entity);
-		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntityByParkingLot(entity.getId());
+		List<ParkingBillEntity> list = parkingBillService.selectAllParkingBillEntityByParkingLot(parkingLotEntity.getId());
+		DecimalFormat df = new DecimalFormat("#.00");
 		for (int i = 0; i < list.size(); i++) {
 			double account = entity.getPrice() / list.get(i).getPrice() * list.get(i).getAccount(); // 计算改变价格后的account的
-			list.get(i).setAccount(account);
+			list.get(i).setAccount(Double.parseDouble(df.format(account)));
 			list.get(i).setPrice(entity.getPrice());
 			parkingBillService.updateOldBill(list.get(i));
 		}
@@ -124,16 +127,15 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
 		}
 		// 不能有未缴账单
-		else if (unPayBill != null) {
+		/*else if (unPayBill != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
-		}
+		}*/
 		
 		// 该停车场所有卡已被禁用
 		else if (activeCard != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在可用停车卡，无法删除"));
-		}
-		// 删除停车场
-		else {
+		}else {
+			// 删除停车场
 			parkingLotService.deleteParkingLotById(id);
 		}
 

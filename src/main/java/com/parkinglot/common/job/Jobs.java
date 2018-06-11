@@ -65,7 +65,7 @@ public class Jobs {
 			parkingCardEntity.setState(1);
 			parkingCardService.updateCardState(parkingCardEntity);
 			parkingBillService.updateParkingBill(list.get(i));
-			//createOverdueBill(list.get(i));
+			createOverdueBill(list.get(i));
 		}
 		System.out.println("已更新账单");
 	}
@@ -101,7 +101,10 @@ public class Jobs {
 		Integer month = ca.get(Calendar.MONTH) + 1;
 		ca.set(year, month, 1);
 		entity.setFirstDate(ca.getTime());
-		entity.setStatementDate(new Date());  //设置时间
+		entity.setStatementDate(new Date()); 
+		entity.setFlag(3);//设置时间
+		int rand = new Random().nextInt(100000);
+		entity.setBillNum(String.valueOf(rand));
 		// 获取当前月天数
 		double account = parkinglotService.selectParkingLotById(entity.getParkingId()).getPrice();
 		DecimalFormat df = new DecimalFormat("#.00");

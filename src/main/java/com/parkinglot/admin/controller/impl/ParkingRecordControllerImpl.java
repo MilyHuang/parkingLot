@@ -53,7 +53,7 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum(),0);
 		ParkingRecordEntity parkingRecordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
-		UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
+	//	UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
 		if (parkingLotEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场不存在"));
 			return jsonResult;

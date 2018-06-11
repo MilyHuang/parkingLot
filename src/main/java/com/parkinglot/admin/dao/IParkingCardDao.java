@@ -85,7 +85,8 @@ public interface IParkingCardDao {
 	  */
 	ParkingCardEntity selectActiveCard(int id);
 	
-	 /* 更新停车卡的状态
+	
+	 /**更新停车卡的状态
 	 * @param cardEntity
 	 * @return
 	 */

@@ -90,5 +90,5 @@ public interface IParkingBillService {
 	 */
 	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
 	
-	
+
 }

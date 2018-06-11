@@ -83,13 +83,22 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 	public ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId, Integer flag) {
 		return parkingBillDao.selectBillByCardIdAndFlag(cardId, flag);
 	}
+	
+	@Override
 	public JsonResult updateOldBill(ParkingBillEntity billEntity) {
-		return parkingBillDao.updateOldBill(billEntity);
+		JsonResult jsonResult = new JsonResult();
+		int rows = parkingBillDao.updateOldBill(billEntity);
+		if (rows <= 0) {
+			return new JsonResult(new ServiceException("修改失败"));
+		}
+		return jsonResult;
 	}
 
 	@Override
 	public List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId) {
 		return parkingBillDao.selectAllParkingBillEntityByParkingLot(parkingId);
 	}
+	
+
 
 }

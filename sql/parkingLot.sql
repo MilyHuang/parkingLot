@@ -101,4 +101,22 @@ CREATE TABLE parking_bill(
 );
 
 	
-	
+/*支付网关信息表*/
+DROP TABLE IF EXISTS pay_info;
+
+CREATE TABLE pay_info(
+	id int(8) auto_increment not null,
+	bill_id int(8) not null,/*账单Id*/
+	pay_num varchar(20) not null,/*支付编号*/
+	phone varchar(11) not null,/*手机号*/
+	account double not null, /*支付金额*/
+	receive_code varchar(10) not null,/*收款方code*/
+	pay_time datetime,/*支付时间*/
+	result boolean ,/*返回结果: true:成功  false:失败*/
+	error_code varchar(10),/*错误代码*/
+	message nvarchar(200) ,/*错误信息*/
+	primary key(id)
+);
+
+
+
