@@ -6,7 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 // Vue.prototype.baseURI = `http://10.65.35.170:8080/parkingLot`
 // Vue.prototype.baseURI = `http://10.65.35.187:8080/parkingLot`
-Vue.prototype.baseURI = `http://10.65.35.89:8080/parkingLot`
+Vue.prototype.baseURI = `http://10.65.35.35:8080/parkingLot`
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios' 
 
