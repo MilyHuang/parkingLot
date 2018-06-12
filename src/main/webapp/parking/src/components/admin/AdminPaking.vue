@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 980px;">
+  <div style="width: 980px;" class="admin-paking">
     <el-table
     :data="adminPackingLotTable"
     tooltip-effect="dark"
@@ -211,7 +211,7 @@ export default {
   width: 100%;
   font-size: 14px;
 }
-img{
+.admin-paking img{
     width: 20px;
     height: 20px;
   }
