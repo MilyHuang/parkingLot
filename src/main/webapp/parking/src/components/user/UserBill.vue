@@ -46,10 +46,12 @@
           <el-table-column
             label="状态">
             <template slot-scope="scope">
-              <!-- 显示状态 -->
-              <span :class="{unpaid:scope.row.flag == 0}">{{ payArr[scope.row.flag] }}</span>
+              <!-- 显示未缴费状态 -->
+              <span v-if="scope.row.flag == 0 || scope.row.flag == 3" :class="{unpaid:scope.row.flag == 0 || scope.row.flag == 3}">{{ payArr[0] }}</span>
+              <!-- 显示未出账和已交费 -->
+              <span v-else>{{ payArr[scope.row.flag] }}</span>
               <!-- 显示提示信息 -->
-              <span v-if="scope.row.flag == 0"  class="tip">{{ '（' + scope.row.tis + '）'}}</span>
+              <span v-if="scope.row.flag == 0 || scope.row.flag == 3"  class="tip">{{ '（' + scope.row.tis + '）'}}</span>
             </template>
           </el-table-column>
            <!-- <el-table-column>
@@ -104,7 +106,7 @@
 				  // }
 				],
         //缴费样式数组
-        payArr:[`未缴费`,`已缴费`,`未出账`],
+        payArr:[`未缴费`,`已缴费`,`未出账`,`欠费`],
 			}
 		},
     mounted: function() {
@@ -113,6 +115,7 @@
       })
     },
     methods:{
+      //加载账单
       initBillList(){
         this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": sessionStorage.getItem("phone")})
           .then(res => {

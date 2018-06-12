@@ -97,7 +97,7 @@ export default new Router({
         },
         //操作员查询用户账单
         {
-          path: '/OperatorIndex/SearchBill',
+          path: '/OperatorIndex/SearchBill/:phone',
           name: 'SearchBill',
           component: SearchBill
         },
@@ -120,7 +120,6 @@ export default new Router({
           path: '/UserIndex/UserInfo',
           name: 'UserInfo',
           component: UserInfo
-          
         },
         {
           //个人账单

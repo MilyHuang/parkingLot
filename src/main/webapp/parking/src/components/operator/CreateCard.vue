@@ -1,6 +1,5 @@
 <template>
   <div class="create-card">
-    
       <el-input v-model="searchNumber" placeholder="请输入手机号"></el-input>
       <el-button type="primary" @click="SelectUser()">查找</el-button>
       <div class="tip" v-show="isDisabled">今日办卡业务暂停</div>
