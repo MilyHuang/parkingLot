@@ -109,8 +109,8 @@ CREATE TABLE pay_info(
 	bill_id int(8) not null,/*账单Id*/
 	pay_num varchar(20) not null,/*支付编号*/
 	phone varchar(11) not null,/*手机号*/
-	account double not null, /*支付金额*/
-	receive_code varchar(10) not null,/*收款方code*/
+	account double, /*支付金额*/
+	receive_code varchar(10) ,/*收款方code*/
 	pay_time datetime,/*支付时间*/
 	result boolean ,/*返回结果: true:成功  false:失败*/
 	error_code varchar(10),/*错误代码*/

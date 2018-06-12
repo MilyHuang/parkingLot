@@ -25,7 +25,7 @@
 			#{phone,jdbcType=VARCHAR},
 			#{account,jdbcType=DOUBLE},
 			#{receiveCode,jdbcType=VARCHAR},
-			#{now(),jdbcType=TIMESTAMP},
+			now(),
 			#{result,jdbcType=BOOLEAN},
 			#{errorCode,jdbcType=VARCHAR},
 			#{message,jdbcType=VARCHAR}
@@ -38,6 +38,8 @@
 		FROM pay_info
 		WHERE
 			bill_id=#{billId,jdbcType=INTEGER}
+		AND
+			result=#{result,jdbcType=BOOLEAN}
 	</select>
 
 	<!-- 通过Id查询账单信息 -->

@@ -25,7 +25,7 @@ public interface IPayInfoDao {
 	 * @param billId
 	 * @return
 	 */
-	PayInfoEntity selectPayInfoByBillId(@Param("billId") Integer billId);
+	PayInfoEntity selectPayInfoByBillId(@Param("billId") Integer billId,@Param("result") Boolean result);
 	
 	/**
 	 * 通过id查询支付信息

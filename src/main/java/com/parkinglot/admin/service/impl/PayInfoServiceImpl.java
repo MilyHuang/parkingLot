@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.parkinglot.admin.dao.IPayInfoDao;
 import com.parkinglot.admin.entity.PayInfoEntity;
 import com.parkinglot.admin.service.IPayInfoService;
+import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.JsonResult;
 
 /**
@@ -26,23 +27,15 @@ public class PayInfoServiceImpl implements IPayInfoService{
 	public JsonResult insertPayInfo(PayInfoEntity entity) {
 		JsonResult jsonResult = new JsonResult();
 		int rows = payInfoDao.insertPayInfo(entity);
-		if(rows <= 0) {
-			PayInfoEntity payInfo = new PayInfoEntity();
-			payInfo.setPhone(entity.getPhone());
-			payInfo.setAccount(entity.getAccount());
-			payInfo.setResult(false);
-			payInfo.setErrorCode("");
-			payInfo.setMessage("");
-			payInfo.setReceiveCode("");
-			payInfo.getPayNum();
-			
+		if(rows <=0 ) {
+			return new JsonResult(new ServiceException("返回支付信息失败"));
 		}
 		return jsonResult;
 	}
 
 	@Override
-	public PayInfoEntity selectPayInfoByBillId(Integer billId) {
-		return payInfoDao.selectPayInfoByBillId(billId);
+	public PayInfoEntity selectPayInfoByBillId(Integer billId,Boolean result) {
+		return payInfoDao.selectPayInfoByBillId(billId,result);
 	}
 
 	@Override

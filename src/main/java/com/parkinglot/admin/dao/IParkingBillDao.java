@@ -81,7 +81,7 @@ public interface IParkingBillDao {
 	 * @param flag  缴费状态
 	 * @return
 	 */
-	ParkingBillEntity selectBillByCardIdAndFlag(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
+	List<ParkingBillEntity> selectBillByCardIdAndFlagForList(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
 	
 
 	/**
@@ -96,5 +96,19 @@ public interface IParkingBillDao {
 	 */
 	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
 	
+	/**
+	 * 通过id查询账单信息
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectBillById(Integer id);
+	
+	/**
+	 * 查询账单
+	 * @param cardId
+	 * @param flag
+	 * @return
+	 */
+	ParkingBillEntity selectBillByCardIdAndFlag(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
 	
 }

@@ -30,7 +30,8 @@
 		FROM admin
 		WHERE 
 		         username=#{username,jdbcType=VARCHAR} 
-		     AND password=#{password,jdbcType=VARCHAR} 
+		     AND password=#{password,jdbcType=VARCHAR}
+	  limit 1
 	</select>
 	
 	<!-- 查询内部用户列表 -->

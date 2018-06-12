@@ -80,8 +80,8 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 	}
 
 	@Override
-	public ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId, Integer flag) {
-		return parkingBillDao.selectBillByCardIdAndFlag(cardId, flag);
+	public List<ParkingBillEntity> selectBillByCardIdAndFlagForList(Integer cardId, Integer flag) {
+		return parkingBillDao.selectBillByCardIdAndFlagForList(cardId, flag);
 	}
 	
 	@Override
@@ -97,6 +97,16 @@ public class ParkingBillServiceImpl implements IParkingBillService {
 	@Override
 	public List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId) {
 		return parkingBillDao.selectAllParkingBillEntityByParkingLot(parkingId);
+	}
+
+	@Override
+	public ParkingBillEntity selectBillById(Integer id) {
+		return parkingBillDao.selectBillById(id);
+	}
+
+	@Override
+	public ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId, Integer flag) {
+		return parkingBillDao.selectBillByCardIdAndFlag(cardId, flag);
 	}
 	
 
