@@ -280,6 +280,43 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		return flag;
 	}
 
+	/**
+	 * è¡¥åŠžæ–°å�¡
+	 * 
+	 * @param entity
+	 */
+	@RequestMapping(value="/createNewCardReplaceOldOne" , method=RequestMethod.POST)
+	@ResponseBody
+	@Override
+	public JsonResult createNewCardReplaceOldOne(@RequestBody ParkingCardEntity cardEntity) {
+		JsonResult jsonResult = new JsonResult();
+		System.out.println("frfrfrf"+cardEntity);
+		int id = cardEntity.getId();
+		String cardNum = cardEntity.getCardNum();
+		ParkingCardEntity cardinfo = cardService.selectCardByCardNumber(cardNum);
+		int cardState = cardService.selectCardStateById(id);
+		
+		//ç¦�ç”¨å�¡ä¸�èƒ½è¡¥åŠž
+		if(cardState == 1) {
+			jsonResult = new JsonResult(new ServiceException("è¯¥å�¡å·²ç¦�ç”¨ï¼Œä¸�èƒ½è¡¥åŠžï¼�"));
+		}
+		//å�¡å�·ä¸�èƒ½å·²å­˜åœ¨
+		else if(cardinfo != null)
+		{
+			jsonResult = new JsonResult(new ServiceException("è¯¥å�¡å�·å·²å­˜åœ¨ï¼�"));
+		}
+		//è¡¥åŠžæ–°å�¡
+		else {
+			System.out.println("frfrfrf"+cardNum);
+			int rows = cardService.updateCardNumById(id, cardNum);
+			if(rows <= 0) {
+				jsonResult = new JsonResult(new ServiceException("æ�¢å�¡å¤±è´¥ï¼�"));
+			}
+		}
+		return jsonResult;
+	}
+
+	
 	
 }
 	
