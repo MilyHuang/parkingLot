@@ -99,15 +99,24 @@
 					this.prePhone = this.searchNumber;
         }
         //接受传过来的手机
-        else
+        else if(!this.searchNumber){
           this.prePhone = this.$route.params.phone;
+        }else
+          this.prePhone = this.searchNumber;
         //检查输入的手机
         if( this.InputLimit())
 				this.axios.post(this.baseURI + '/parkingBill/selectAllParkingBillEntity', { "phone": this.prePhone})
                 .then(res => {
                   // sessionStorage.getItem("phone")
-                  console.log(res);
-                  this.UserBillData = res.data.data;
+                  if(!res.data.data){
+                    this.$notify({
+                      title: '提示信息',
+                      message: res.data.message,
+                      type: 'error'
+                    });
+                  }
+                  else
+                    this.UserBillData = res.data.data;
                 })
                 .catch(err => {
                   console.log(err)
@@ -133,10 +142,10 @@
             type: 'error'
           });
         }
-        else if(!(/^[0-9]*$/.test(this.prePhone))){
+        else if(!(/^1[34578]\d{9}$/.test(this.prePhone))){
           this.$notify({
             title: '提示信息',
-            message: '卡号必须为数字',
+            message: '手机号格式错误!',
             type: 'error'
           });
         }else{ 
@@ -159,4 +168,13 @@
 		width: 270px;
 		margin-bottom: 30px;
 	}
+  .tip{
+  color: red;
+  font-weight: bold;
+}
+/* 未缴费 */
+.unpaid{
+  color: blue;
+  font-weight: bold;
+}
 </style>
