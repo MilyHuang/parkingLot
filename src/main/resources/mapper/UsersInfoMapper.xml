@@ -33,7 +33,7 @@
 	<select id="selectUserInfoByLogin" resultMap="BaseResultMap">
 		SELECT id,username,phone 
 		FROM users_info
-		WHERE phone=#{phone,jdbcType=VARCHAR} AND password=#{password,jdbcType=VARCHAR}
+		WHERE phone=#{phone,jdbcType=VARCHAR} AND password=#{password,jdbcType=VARCHAR} LIMIT 1
 	</select>
 
 <!-- 通过id查询用户信息 -->

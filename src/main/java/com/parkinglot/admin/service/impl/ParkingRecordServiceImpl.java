@@ -62,6 +62,9 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 	@Override
 	public ParkingRecordEntity selectParkingRecord(String cardNum) {
 		ParkingCardEntity entity = parkingCardDao.selectCardByCardNum(cardNum,0);
+		if(entity == null) {
+			return null;
+		}
 		return recordDao.selectParkingRecord(entity.getId());
 	}
 
