@@ -75,6 +75,13 @@ public interface IParkingBillDao {
 	 */
 	int updateBillInfo(ParkingBillEntity billEntity);
 	
+	/**
+	 * 查找某张停车卡是否还有逾期未缴的账单
+	 * @param cardId  停车卡id
+	 * @param flag  缴费状态
+	 * @return
+	 */
+	List<ParkingBillEntity> selectBillByCardIdAndFlagForList(@Param("cardId") Integer cardId,@Param("flag") Integer flag);
 	
 
 	/**
@@ -90,9 +97,16 @@ public interface IParkingBillDao {
 	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
 	
 	/**
-	 * 查找某张停车卡是否还有逾期未缴的账单
-	 * @param cardId  停车卡id
-	 * @param flag  缴费状态
+	 * 通过id查询账单信息
+	 * @param id
+	 * @return
+	 */
+	ParkingBillEntity selectBillById(Integer id);
+	
+	/**
+	 * 查询账单
+	 * @param cardId
+	 * @param flag
 	 * @return
 	 */
 	ParkingBillEntity selectBillByCardIdAndFlag(@Param("cardId") Integer cardId,@Param("flag") Integer flag);

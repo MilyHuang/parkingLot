@@ -1,5 +1,7 @@
 package jdbc;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Before;
@@ -48,6 +50,13 @@ public class TestParkingCard {
 //		System.err.println("添加成功");
 //	}
 //	
-	
+	/**
+	 * 测试查询卡列表
+	 */
+	@Test
+	public void test2() {
+		List<ParkingCardEntity> cards = cardService.selectUserCards(65);
+		System.out.println(cards);
+	}
 
 }

@@ -26,4 +26,19 @@ public interface IParkingBillController {
 	 * @return
 	 */
 	JsonResult payBill(ParkingBillEntity billEntity);
+	
+	/**
+	 * 判断停车场是否已经满了
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult isParkingLotFull(ParkingBillEntity billEntity);
+	
+	/**
+	 * 管理员帮用户缴费
+	 * @param billEntity
+	 * @return
+	 */
+	JsonResult payBillByOperator(ParkingBillEntity billEntity);
+	
 }

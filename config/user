@@ -2,3 +2,15 @@
  URL:http://10.65.35.190:8080/parkingLot/userinfo/login
   input:phone,password
   outout:id ,username,phone
+  
+2.payBill
+ URL:http://10.65.35.170:8080/parkingLot/parkingBill/payBill
+  input:id,account
+ 
+  3. is the parking lot full
+ URL:http://10.65.35.170:8080/parkingLot/parkingBill/isParkingLotFull
+  input:billNum
+
+  4. pay bill by operator
+ URL:http://10.65.35.170:8080/parkingLot/parkingBill/payBillByOperator
+  input:billNum

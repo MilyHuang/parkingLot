@@ -71,6 +71,23 @@ public interface IParkingBillService {
 	 */
 	JsonResult updateBillInfo(ParkingBillEntity billEntity);
 	
+	/**
+	 * 查询某张停车卡是否还有逾期缴费的账单
+	 * @param cardId
+	 * @param flag
+	 * @return
+	 */
+	List<ParkingBillEntity> selectBillByCardIdAndFlagForList(Integer cardId,Integer flag);
+	
+	
+	
+	/**
+	 * 查询某张停车卡是否还有逾期缴费的账单
+	 * @param cardId
+	 * @param flag
+	 * @return
+	 */
+	ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId,Integer flag);
 	
 	
 	/**
@@ -84,11 +101,9 @@ public interface IParkingBillService {
 	List<ParkingBillEntity> selectAllParkingBillEntityByParkingLot(Integer parkingId);
 	
 	/**
-	 * 查询某张停车卡是否还有逾期缴费的账单
-	 * @param cardId
-	 * @param flag
+	 * 通过id查询账单信息
 	 * @return
 	 */
-	ParkingBillEntity selectBillByCardIdAndFlag(Integer cardId,Integer flag);
-	
+	ParkingBillEntity selectBillById(Integer id);
+
 }

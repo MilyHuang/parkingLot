@@ -67,6 +67,7 @@ public class Jobs {
 			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list.get(i).getCardId());
 			parkingCardEntity.setState(1);
 			parkingCardService.updateCardState(parkingCardEntity);
+
 			// 更新旧bill
 			parkingBillService.updateOldBill(list.get(i));
 
@@ -74,7 +75,6 @@ public class Jobs {
 			ParkingBillEntity parkingBillEntity = parkingBillService.selectBillByCardIdAndFlag(list.get(i).getCardId(),
 					2);
 			parkingBillEntity.setStatementDate(new Date());
-			System.out.println(parkingBillEntity);
 			parkingBillService.updateOldBill(parkingBillEntity);
 		}
 		System.out.println("已更新账单");
@@ -93,12 +93,7 @@ public class Jobs {
 			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list2.get(i).getCardId());
 			ParkingBillEntity parkingBillEntity = parkingBillService
 					.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-			Calendar ca = Calendar.getInstance();
-			ca.setTime(parkingBillEntity.getStatementDate());
-			int lastMonth = ca.getTime().getMonth() + 1;
-			ca.setTime(new Date());
-			int nowMonth = ca.getTime().getMonth() + 1;
-			if (parkingCardEntity.getState() == 0 && nowMonth - lastMonth <= 3) {
+			if (parkingCardEntity.getState() == 0 ) {
 				billUtils.generateBill(parkingBillEntity);
 			}
 		}

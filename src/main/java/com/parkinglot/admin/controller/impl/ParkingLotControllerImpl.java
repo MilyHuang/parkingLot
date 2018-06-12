@@ -127,14 +127,15 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 			jsonResult = new JsonResult(new ServiceException("该停车场内有车未移出，无法删除"));
 		}
 		// 不能有未缴账单
-		else if (unPayBill != null) {
+		/*else if (unPayBill != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在未缴费账单，无法删除"));
-		}
+		}*/
+		
 		// 该停车场所有卡已被禁用
 		else if (activeCard != null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场存在可用停车卡，无法删除"));
-		// 删除停车场
 		}else {
+			// 删除停车场
 			parkingLotService.deleteParkingLotById(id);
 		}
 

@@ -76,12 +76,15 @@ public interface IParkingCardDao {
 	 * @param id
 	 * @return
 	 */
+	int updateCardsUseLimit(int id);
+	
+	 /**更新停车卡的状态
+	  * 
+	  * @param id
+	  * @return
+	  */
 	ParkingCardEntity selectActiveCard(int id);
 	
-	 /* 更新停车卡的状态
-	  * 
-	  */
-	int updateCardsUseLimit(int id);
 	
 	 /**更新停车卡的状态
 	 * @param cardEntity

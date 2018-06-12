@@ -1,6 +1,10 @@
 package com.parkinglot.admin.controller.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +16,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.parkinglot.admin.controller.IParkingBillController;
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
+import com.parkinglot.admin.entity.ParkingLotEntity;
+import com.parkinglot.admin.entity.PayInfoEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
+import com.parkinglot.admin.service.IParkingLotService;
+import com.parkinglot.admin.service.IPayInfoService;
+import com.parkinglot.admin.service.impl.PayInfoServiceImpl;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.BillUtils;
 import com.parkinglot.common.util.JsonResult;
+import com.parkinglot.common.util.PayUtil;
+import com.sun.tools.internal.xjc.generator.bean.ImplStructureStrategy.Result;
 
 @Controller
 @RequestMapping("/parkingBill")
@@ -29,9 +40,18 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	@Autowired
 	private IParkingCardService parkingCardService;
 
+	@Autowired 
+	private IParkingLotService parkingLotService;
+	
 	@Autowired
 	private BillUtils billUtils;
 
+	@Autowired
+	private  PayUtil payUtils;
+
+	@Autowired
+	private IPayInfoService payInfoService;
+	
 	@RequestMapping(value = "/selectAllParkingBillEntity", method = RequestMethod.POST)
 	@ResponseBody
 	@Override
@@ -53,10 +73,18 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	@ResponseBody
 	@Override
 	public JsonResult selectParkingBillByBillNum(@RequestBody ParkingBillEntity entity) {
-		ParkingBillEntity parkingBillEntity = parkingBillSerivice.selectParkingBillByBillNum(entity.getBillNum());
-		String cardNum = parkingCardService.selectCardByCardId(parkingBillEntity.getCardId()).getCardNum();
-		parkingBillEntity.setCardNum(cardNum);
-		return new JsonResult(parkingBillEntity);
+		ParkingBillEntity parkingBill = parkingBillSerivice.selectParkingBillByBillNum(entity.getBillNum());
+		String cardNum = parkingCardService.selectCardByCardId(parkingBill.getCardId()).getCardNum();
+		parkingBill.setCardNum(cardNum);
+		Map<String,Object> map = new HashMap<String,Object>();
+		PayInfoEntity payInfo;
+		map.put("bill", parkingBill);
+		if(parkingBill.getFlag() == 1) {
+			 Boolean result=true; //查询缴费成功的账单
+			 payInfo = payInfoService.selectPayInfoByBillId(parkingBill.getId(),result);
+			 map.put("payInfo", payInfo);
+		}
+		return new JsonResult(map);
 	}
 
 	@RequestMapping(value = "/payBill", method = RequestMethod.POST)
@@ -71,36 +99,69 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		}
 		// 0 未缴费，1 已缴费 2未出账 3 逾期欠费
 		if (bill.getFlag() == 0) { // 未缴费
-			billEntity.setFlag(1);
-			billEntity.setId(bill.getId());
-			billEntity.setTis("");
-			parkingBillSerivice.updateBillInfo(billEntity);
-			return jsonResult;
-
+			//模拟调用支付接口
+			PayInfoEntity payInfoEntity = new PayInfoEntity();
+			payInfoEntity.setPhone(bill.getPhone());
+			payInfoEntity.setAccount(bill.getAccount());
+			payInfoEntity.setBillId(bill.getId());
+			payInfoEntity.setReceiveCode(parkingLotService.selectParkingLotById(bill.getParkingId()).getParkingNum());
+			PayInfoEntity payInfo = payUtils.payInfoUtil(payInfoEntity);
+			if(payInfo.getResult()==true) {
+				//缴费成功
+				billEntity.setFlag(1);
+				billEntity.setId(bill.getId());
+				billEntity.setTis("");
+				parkingBillSerivice.updateBillInfo(billEntity);
+				return new JsonResult(payInfo);
+			}else {
+				return new JsonResult(payInfo);
+			}
 
 		} else if (bill.getFlag() == 3) { // 逾期缴费
-			billEntity.setFlag(1);
-			billEntity.setId(bill.getId());
-			billEntity.setTis("");
-			parkingBillSerivice.updateBillInfo(billEntity);
-			//判断逾期缴费的账单是否全部付清
-			ParkingBillEntity bills = parkingBillSerivice.selectBillByCardIdAndFlag(bill.getCardId(), 3);  //flag = 3
-			if(bills != null) {
-				return jsonResult;
+			//模拟调用支付接口,返回支付信息
+			PayInfoEntity payInfoEntity = new PayInfoEntity();
+			payInfoEntity.setPhone(bill.getPhone());
+			payInfoEntity.setAccount(bill.getAccount());
+			payInfoEntity.setBillId(bill.getId());
+			payInfoEntity.setReceiveCode(parkingLotService.selectParkingLotById(bill.getParkingId()).getParkingNum());
+			PayInfoEntity payInfo = payUtils.payInfoUtil(payInfoEntity);  //支付信息
+			//如果支付成功,设置账单状态为已缴费
+			if(payInfo.getResult()==true) {
+				//缴费成功
+				billEntity.setFlag(1);
+				billEntity.setId(bill.getId());
+				billEntity.setTis("");
+				parkingBillSerivice.updateBillInfo(billEntity);
+				//停车场信息
+				ParkingLotEntity parkingLot = parkingLotService.selectParkingLotById(bill.getParkingId());
+				//判断停车场是否已满
+				if (parkingCardService.selectCards(parkingLot.getId()) >= parkingLotService.selectParkingLotById(parkingLot.getId()).getTotal()) {
+					return new JsonResult(payInfo);
+				}else { //如果停车场未满
+					//判断逾期缴费的账单是否全部付清
+					List<ParkingBillEntity> bills = parkingBillSerivice.selectBillByCardIdAndFlagForList(bill.getCardId(), 3);  //flag = 3
+					if(bills.size()!=0) {
+						return new  JsonResult(payInfo);
+					}				
+					// 更改用户停车卡的状态，重新启用
+					ParkingCardEntity cardEntity = new ParkingCardEntity();
+					cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
+					cardEntity.setId(bill.getCardId()); // 停车卡id
+					parkingCardService.updateCardState(cardEntity);
+					// 重新生成新的账单
+					ParkingBillEntity billEntity2 = new ParkingBillEntity();
+					billEntity2.setCardId(bill.getCardId());
+					billEntity2.setParkingId(bill.getParkingId());
+					billEntity2.setParkingName(bill.getParkingName());
+					billEntity2.setPhone(bill.getPhone());
+					billUtils.generateBill(billEntity2);
+					return new JsonResult(payInfo);
+				}
+
+			}else {
+				return new JsonResult(payInfo);
 			}
 			
-			// 更改用户停车卡的状态，重新启用
-			ParkingCardEntity cardEntity = new ParkingCardEntity();
-			cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
-			cardEntity.setId(bill.getCardId()); // 停车卡id
-			parkingCardService.updateCardState(cardEntity);
-			// 重新生成新的账单
-			ParkingBillEntity billEntity2 = new ParkingBillEntity();
-			billEntity2.setCardId(bill.getCardId());
-			billEntity2.setParkingId(bill.getParkingId());
-			billEntity2.setParkingName(bill.getParkingName());
-			billEntity2.setPhone(bill.getPhone());
-			billUtils.generateBill(billEntity2);
 		}else if (bill.getFlag() == 1) {
 			return new JsonResult(new ServiceException("该账单已缴费"));
 		} else if (bill.getFlag() == 2) {
@@ -109,4 +170,80 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		return jsonResult;
 	}
 
+	@RequestMapping("/isParkingLotFull")
+	@ResponseBody
+	@Override
+	public JsonResult isParkingLotFull(@RequestBody ParkingBillEntity billEntity) {
+		JsonResult jsonResult = new JsonResult();
+		ParkingBillEntity bill = parkingBillSerivice.selectParkingBillByBillNum(billEntity.getBillNum());
+		ParkingLotEntity parkingLot = parkingLotService.selectParkingLotById(bill.getParkingId());
+		//判断停车场是否已满
+		if (parkingCardService.selectCards(parkingLot.getId()) >= parkingLotService.selectParkingLotById(parkingLot.getId()).getTotal()) {
+			jsonResult = new JsonResult("该停车场已满");
+			return jsonResult;
+		}else {
+			return jsonResult;
+		}
+	}
+
+	@RequestMapping("/payBillByOperator")
+	@ResponseBody
+	@Override
+	public JsonResult payBillByOperator(@RequestBody ParkingBillEntity billEntity) {
+		JsonResult jsonResult = new JsonResult();
+		//通过账单编号查询账单
+		ParkingBillEntity bill = parkingBillSerivice.selectParkingBillByBillNum(billEntity.getBillNum());
+		if(bill == null) {
+			return new JsonResult(new ServiceException("该账单不存在"));
+		}
+		// 0 未缴费，1 已缴费 2未出账 3 逾期欠费
+		if(bill.getFlag() == 0) {  //正常未缴费
+			//缴费成功
+			billEntity.setFlag(1);
+			billEntity.setId(bill.getId());
+			billEntity.setTis("");
+			parkingBillSerivice.updateBillInfo(billEntity);
+			return jsonResult;
+		}else if(bill.getFlag() == 3) {//逾期缴费
+			//缴费成功
+			billEntity.setFlag(1);
+			billEntity.setId(bill.getId());
+			billEntity.setTis("");
+			parkingBillSerivice.updateBillInfo(billEntity);
+			ParkingLotEntity parkingLot = parkingLotService.selectParkingLotById(bill.getParkingId());
+			//判断停车场是否已满
+			if (parkingCardService.selectCards(parkingLot.getId()) >= parkingLotService.selectParkingLotById(parkingLot.getId()).getTotal()) {
+				return jsonResult;
+			}else {
+				//判断逾期缴费的账单是否全部付清
+				List<ParkingBillEntity> bills = parkingBillSerivice.selectBillByCardIdAndFlagForList(bill.getCardId(), 3);  //flag = 3
+				if(bills.size()!=0) {
+					return jsonResult;
+				}				
+				// 更改用户停车卡的状态，重新启用
+				ParkingCardEntity cardEntity = new ParkingCardEntity();
+				cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
+				cardEntity.setId(bill.getCardId()); // 停车卡id
+				parkingCardService.updateCardState(cardEntity);
+				// 重新生成新的账单
+				ParkingBillEntity billEntity2 = new ParkingBillEntity();
+				billEntity2.setCardId(bill.getCardId());
+				billEntity2.setParkingId(bill.getParkingId());
+				billEntity2.setParkingName(bill.getParkingName());
+				billEntity2.setPhone(bill.getPhone());
+				billUtils.generateBill(billEntity2);
+				return jsonResult;
+			}
+		}else if(bill.getFlag() == 1) {  //已缴费
+			return new JsonResult(new ServiceException("该账单已缴费"));
+		}else if (bill.getFlag() == 2) {  //未出账
+			return new JsonResult(new ServiceException("该账单未出账"));
+		}
+		return jsonResult;
+	}
+
+	
+	
+	
+	
 }
