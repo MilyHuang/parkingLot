@@ -96,4 +96,9 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		return cardDao.selectActiveCard(id);
 	}
 
+	@Override
+	public List<ParkingCardEntity> selectAllUsedCards(Integer state) {
+		return cardDao.selectAllUsedCards(state);
+	}
+
 }

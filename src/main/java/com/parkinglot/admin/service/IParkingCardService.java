@@ -84,5 +84,9 @@ public interface IParkingCardService {
 	 * @return
 	 */
 	JsonResult updateCardState(ParkingCardEntity cardEntity);
-	
+	/**
+	 * 查找停车场中卡的总数
+	 * @return
+	 */
+	List<ParkingCardEntity> selectAllUsedCards(Integer state);
 }

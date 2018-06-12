@@ -89,4 +89,10 @@ public interface IParkingCardDao {
 	 */
 	int updateCardState(ParkingCardEntity cardEntity);
 	
+	
+	/**
+	 * 查找停车场中卡的总数
+	 * @return
+	 */
+	List<ParkingCardEntity> selectAllUsedCards(Integer state);
 }
