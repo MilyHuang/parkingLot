@@ -17,6 +17,9 @@
 	    <el-table-column label="办理时间" width="220">
 	    	<template slot-scope="scope">{{ secondToDate(scope.row.createdTime) }}</template>
 	    </el-table-column>
+	    <el-table-column label="停车场" width="220">
+	    	<template slot-scope="scope">{{ scope.row.parkingName }}</template>
+	    </el-table-column>
 	    <el-table-column label="状态" show-overflow-tooltip>
 			<template slot-scope="scope">{{ cardState[scope.row.state] }}</template>
 	    </el-table-column>
@@ -32,6 +35,9 @@
       			@change="output()">
       		    </el-date-picker>
       		</el-form-item> -->
+      		<el-form-item label="停车场：" label-width="200" >
+      			<span>{{currentParkingName}}</span>
+      		</el-form-item>
       		<el-form-item label="当前卡号：" label-width="200" >
       			<span>{{currentCardNum}}</span>
       		</el-form-item>
@@ -73,6 +79,8 @@
 				currentCardId: ``,
 				//当前卡号
 				currentCardNum: ``,
+				//当前卡号对应的停车场
+				currentParkingName: ``,
 				//补办卡号
 				modifyCardNum: ``,
 			}
@@ -94,6 +102,7 @@
 			handleCurrentChange(val) {
 				this.currentCardNum = val.cardNum;
 				this.currentCardId = val.id;
+				this.currentParkingName = val.parkingName
 				console.log(this.currentCardNum + ` ` + this.currentCardId);
 			},
             //时间转换函数
@@ -114,9 +123,10 @@
                 	else if(!(/^[0-9]*$/.test(cardNum))){
                 		this.$notify({
                 			title: '提示信息',
-                			message: '卡号必须为数字',
+                			message: '请输入数字',
                 			type: 'error'
                 		});
+                		console.log(123);
                 	}else{ 
                 		return true;
                 	}
@@ -144,8 +154,9 @@
                 			message: res.data.message,
                 			type: 'error'
                 		})
+                		console.log(res.data.message);
                  	}
-                    
+                    this.cardFormVisible = false;
                  })
                  .catch( err =>{
 

@@ -57,7 +57,7 @@
           	@click="appearDialog(scope.row.parkingNum,scope.row.price)">修改价格</el-button>
           	<el-button
           	size="mini"
-          	@click="checkReport(scope.row.parkingName)">查看报表</el-button><!-- 
+          	@click="checkReport(scope.row.parkingName,scope.row.id)">查看报表</el-button><!-- 
           	<router-link to="/ManagerIndex/SellManage/123">jump</router-link> -->
           </template>
         </el-table-column>
@@ -202,10 +202,10 @@
         }
 	  	},
     //查看报表
-    checkReport(lotName){
+    checkReport(lotName,lotId){
     	this.$router.push({
     		name: `SellManage`,
-    		params:{lotName:lotName}
+    		params:{lotName:lotName,lotId:lotId}
     	});
     }
 	}

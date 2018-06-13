@@ -71,7 +71,7 @@ export default new Router({
         },
         //销售管理
         {
-          path: '/ManagerIndex/SellManage/:lotName',
+          path: '/ManagerIndex/SellManage/:lotName/:lotId',
           name: 'SellManage',
           component: SellManage
         },
