@@ -45,10 +45,28 @@
 		select * from parking_record where card_id =
 		#{cardId,jdbcType=INTEGER} and flag = 1
 	</select>
-	
+
 	<!-- 是否有车停在指定停车场 -->
-	<select id="isHasCarInTheParking" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-		select * from parking_record where parking_id = #{id,jdbcType=INTEGER} and flag = 1
+	<select id="isHasCarInTheParking" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from parking_record where parking_id =
+		#{id,jdbcType=INTEGER} and flag = 1
+	</select>
+
+
+
+	<!-- 查詢停車場使用情況 -->
+	<select id="selectUsageOfParkingCard" parameterType="com.parkinglot.admin.entity.UsageOfParkingCard"
+		resultType="com.parkinglot.admin.entity.UsageOfParkingCard">
+		select count(*) as count,card_id as cardId from (select * from parking_record where
+		parking_id=#{id, jdbcType=INTEGER}
+		<if test="null!=firstDate">
+			and checkin_time between #{firstDate,jdbcType=TIMESTAMP}
+			and
+			#{lastDate,jdbcType=TIMESTAMP}
+		</if>
+		) c
+		group by card_id;
 	</select>
 
 </mapper>
