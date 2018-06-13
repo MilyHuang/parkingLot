@@ -34,6 +34,10 @@
           :data="useData"
           style="width: 80%">
           <el-table-column
+            prop="phone"
+            label="手机号码">
+          </el-table-column>
+          <el-table-column
             prop="cardNum"
             label="卡号"
             width="280">
