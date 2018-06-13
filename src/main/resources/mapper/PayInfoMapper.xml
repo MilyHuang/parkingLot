@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.parkinglot.admin.dao.IPayInfoDao">
+
+	<resultMap id="BaseResultMap" type="com.parkinglot.admin.entity.PayInfoEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="bill_id" property="billId" jdbcType="INTEGER" />
+		<result column="pay_num" property="payNum" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="DOUBLE" />
+		<result column="receive_code" property="receiveCode" jdbcType="VARCHAR" />
+		<result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<result column="result" property="result" jdbcType="BOOLEAN" />
+		<result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+		<result column="message" property="message" jdbcType="NVARCHAR" />
+	</resultMap>
+
+	<!-- 返回网关信息 -->
+	<insert id="insertPayInfo" parameterType="com.parkinglot.admin.entity.PayInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO pay_info
+		(bill_id,pay_num,phone,account,receive_code,pay_time,result,error_code,message)
+		VALUES(
+			#{billId,jdbcType=INTEGER},
+			#{payNum,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{account,jdbcType=DOUBLE},
+			#{receiveCode,jdbcType=VARCHAR},
+			now(),
+			#{result,jdbcType=BOOLEAN},
+			#{errorCode,jdbcType=VARCHAR},
+			#{message,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 通过账单Id查询支付信息 -->
+	<select id="selectPayInfoByBillId" resultMap="BaseResultMap">
+		SELECT id,bill_id,pay_num,phone,account,receive_code,pay_time,result,error_code,message
+		FROM pay_info
+		WHERE
+			bill_id=#{billId,jdbcType=INTEGER}
+		AND
+			result=#{result,jdbcType=BOOLEAN}
+	</select>
+
+	<!-- 通过Id查询账单信息 -->
+	<select id="selectPayInfoById" resultMap="BaseResultMap">
+		SELECT id,bill_id,pay_num,phone,account,receive_code,pay_time,result,error_code,message
+		FROM pay_info
+		WHERE
+			id=#{id,jdbcType=INTEGER}
+	</select>
+
+
+</mapper>

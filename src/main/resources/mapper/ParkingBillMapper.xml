@@ -101,7 +101,7 @@
 		from parking_bill where flag=#{flag,jdbcType=INTEGER}
 		
 	</select>
-
+	<!-- 缴费 -->
 	<update id="updateParkingBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		update
 		parking_bill
@@ -119,6 +119,7 @@
 		flag=#{flag,jdbcType=INTEGER}
 		WHERE id=#{id,jdbcType=INTEGER}
 	</update>
+
 
 	<!-- 停車場价格改变后，账单价格跟随改变 -->
 	<update id="updateOldBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
@@ -143,6 +144,17 @@
 	</select>
 
 	<!-- 查找某张停车卡是否有逾期未缴的账单 -->
+	<select id="selectBillByCardIdAndFlagForList" resultMap="BaseResultMap">
+		SELECT
+			id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		FROM parking_bill 
+		WHERE 
+			card_id=#{cardId,jdbcType=INTEGER}
+		AND
+			flag=#{flag,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查找某张停车卡是否有逾期未缴的账单 -->
 	<select id="selectBillByCardIdAndFlag" resultMap="BaseResultMap">
 		SELECT
 			id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
@@ -152,5 +164,17 @@
 		AND
 			flag=#{flag,jdbcType=INTEGER}
 	</select>
+
+	
+	<!-- 通过Id查询账单信息 -->
+	<select id="selectBillById" resultMap="BaseResultMap">
+		SELECT
+			id,bill_num,parking_id,parking_name,card_id,phone,price,account,firstDate,statementDate,flag,tis
+		FROM parking_bill 
+		WHERE id=#{id,jdbcType=INTEGER}
+		
+	</select>
+
+
 
 </mapper>

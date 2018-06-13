@@ -280,6 +280,43 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		return flag;
 	}
 
+	/**
+	 * 补办新卡
+	 * 
+	 * @param entity
+	 */
+	@RequestMapping(value="/createNewCardReplaceOldOne" , method=RequestMethod.POST)
+	@ResponseBody
+	@Override
+	public JsonResult createNewCardReplaceOldOne(@RequestBody ParkingCardEntity cardEntity) {
+		JsonResult jsonResult = new JsonResult();
+		System.out.println("frfrfrf"+cardEntity);
+		int id = cardEntity.getId();
+		String cardNum = cardEntity.getCardNum();
+		ParkingCardEntity cardinfo = cardService.selectCardByCardNumber(cardNum);
+		int cardState = cardService.selectCardStateById(id);
+		
+		//注销的卡不能补办
+		if(cardState == 2) {
+			jsonResult = new JsonResult(new ServiceException("该卡已注销！"));
+		}
+		//卡号必须不存在
+		if(cardinfo != null)
+		{
+			jsonResult = new JsonResult(new ServiceException("卡号已存在！"));
+		}
+		//补办新卡
+		else {
+			System.out.println("frfrfrf"+cardNum);
+			int rows = cardService.updateCardNumById(id, cardNum);
+			if(rows <= 0) {
+				jsonResult = new JsonResult(new ServiceException("补办失败！"));
+			}
+		}
+		return jsonResult;
+	}
+
+	
 	
 }
 	

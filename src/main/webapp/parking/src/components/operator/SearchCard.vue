@@ -35,7 +35,7 @@
       		<el-form-item label="当前卡号：" label-width="200" >
       			<span>{{currentCardNum}}</span>
       		</el-form-item>
-      		<el-form-item label="补办卡号" label-width="180" >
+      		<el-form-item label="补办卡号" label-width="100" >
       			<!-- <div class="tip" v-show="isDisabled">今日为出账日，禁止修改价格</div> -->
       			<el-input v-model.number="modifyCardNum" placeholder="请输入补办的卡号"></el-input>
       		</el-form-item>
@@ -127,12 +127,27 @@
                  if(this.InputLimit(this.modifyCardNum))
                  	this.axios.post(this.baseURI + `/parkingCard/createNewCardReplaceOldOne`,{
                  		id: this.currentCardId,
-                 		cardNum: this.currentCardNum
+                 		cardNum: this.modifyCardNum
                  	})
                  .then( res =>{
-                    console.log(res);
+                 	if(res.data.message == "OK"){
+                        this.$notify({
+                			title: '提示信息',
+                			message: '补办成功！',
+                			type: 'success'
+                		});
+                		this.searchCard();
+                 	}
+                 	else{
+   						this.$notify({
+                			title: '提示信息',
+                			message: res.data.message,
+                			type: 'error'
+                		})
+                 	}
+                    
                  })
-                 .err( err =>{
+                 .catch( err =>{
 
                  })
  			},
@@ -159,7 +174,7 @@
 	}
 	.el-input {
 		display: inline-block;
-		width: 270px;
+		width: 230px;
 		margin-bottom: 30px;
 	}
 	.operator-card {

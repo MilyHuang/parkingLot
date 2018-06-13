@@ -15,32 +15,34 @@ import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingCardController {
 	/**
-	 * 新用户办理停车卡
-	 * @param userEntity  用户信息
-	 * @param cardEntity 停车卡信息
+	 * æ–°ç”¨æˆ·åŠžç�†å�œè½¦å�¡
+	 * @param userEntity  ç”¨æˆ·ä¿¡æ�¯
+	 * @param cardEntity å�œè½¦å�¡ä¿¡æ�¯
 	 * @return
 	 */
 	JsonResult createNewParkingCard(UserAndCardEntity entity);
 	
 	/**
-	 * 老用户办卡
-	 * @param cardEntity  停车卡信息
+	 * è€�ç”¨æˆ·åŠžå�¡
+	 * @param cardEntity  å�œè½¦å�¡ä¿¡æ�¯
 	 * @return
 	 */
 	JsonResult createNewParkingCardByOldUser(UserAndCardEntity cardEntity);
 	
 	/**
-	 * 通过手机号码查询用户信息
-	 * @param phone 手机号
+	 * é€šè¿‡æ‰‹æœºå�·ç �æŸ¥è¯¢ç”¨æˆ·ä¿¡æ�¯
+	 * @param phone æ‰‹æœºå�·
 	 * @return
 	 */
 	JsonResult selectUserByPhone(UsersInfoEntity userEntity);
 	
 	/**
-	 * 查询用户的卡信息
-	 * @param entity  电话号码
+	 * æŸ¥è¯¢ç”¨æˆ·çš„å�¡ä¿¡æ�¯
+	 * @param entity  ç”µè¯�å�·ç �
 	 * @return
 	 */
 	JsonResult selectUserCardsList(UsersInfoEntity entity);
+
+	JsonResult createNewCardReplaceOldOne(ParkingCardEntity cardEntity);
 	
 }

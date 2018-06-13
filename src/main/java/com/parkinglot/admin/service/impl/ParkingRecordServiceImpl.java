@@ -97,7 +97,7 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 	}
 
 	public UsageOfParkingCard setDate(UsageOfParkingCard entity) {
-		if (entity.getFirstDate() != null) {
+		if(entity.getFirstDate()!=null) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(entity.getFirstDate());
 			cal.set(Calendar.DAY_OF_MONTH, 1);
