@@ -20,6 +20,17 @@ public class UsageOfParkingCard {
 	private Integer count;
    //卡号
 	private String cardNum;
+	
+	//电话
+	private String phone;
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public String getCardNum() {
 		return cardNum;
 	}
@@ -73,7 +84,7 @@ public class UsageOfParkingCard {
 	@Override
 	public String toString() {
 		return "UsageOfParkingCard [id=" + id + ", firstDate=" + firstDate + ", lastDate=" + lastDate + ", cardId="
-				+ cardId + ", count=" + count + "]";
+				+ cardId + ", count=" + count + ", cardNum=" + cardNum + ", phone=" + phone + "]";
 	}
 
 

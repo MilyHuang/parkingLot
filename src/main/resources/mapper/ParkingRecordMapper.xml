@@ -58,15 +58,16 @@
 	<!-- 查詢停車場使用情況 -->
 	<select id="selectUsageOfParkingCard" parameterType="com.parkinglot.admin.entity.UsageOfParkingCard"
 		resultType="com.parkinglot.admin.entity.UsageOfParkingCard">
-		select count(*) as count,card_id as cardId from (select * from parking_record where
-		parking_id=#{id, jdbcType=INTEGER}
+		select count(card_id) as count,c.card_id as cardId,c.phone from (select * from parking_record where
+		parking_id=#{id,jdbcType=INTEGER}
 		<if test="null!=firstDate">
 			and checkin_time between #{firstDate,jdbcType=TIMESTAMP}
 			and
 			#{lastDate,jdbcType=TIMESTAMP}
 		</if>
 		) c
-		group by card_id;
+		group by card_id,c.phone
+		order by c.phone,count(card_id) desc;
 	</select>
 
 </mapper>
