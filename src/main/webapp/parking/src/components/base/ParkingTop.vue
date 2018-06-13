@@ -25,14 +25,14 @@
 
 <script>
 	export default {
-    // mounted: function() {
-    //     路由拦截
-    //   this.$nextTick(function () {
-    //     if (!sessionStorage.token) { 
-    //         this.$router.push({ path: '/' });
-    //     }
-    //   })
-    // },
+    mounted: function() {
+        // 路由拦截
+      this.$nextTick(function () {
+        if (sessionStorage.token==undefined) { 
+            this.$router.push({ path: '/' });
+        }
+      })
+    },
     data() {
       return {
         updateCode:{
@@ -50,13 +50,14 @@
       },
       //登出
       LoginOut: function() {
-        if(sessionStorage.phone!=''){
+        if(sessionStorage.phone!=undefined){
           this.$router.push({ path: '/UserLogin' });
         }else{
           this.$router.push({ path: '/' });
         }
-        sessionStorage.phone='';
-        sessionStorage.token='';
+        sessionStorage.removeItem("phone");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("role");
       }
     }
 }
