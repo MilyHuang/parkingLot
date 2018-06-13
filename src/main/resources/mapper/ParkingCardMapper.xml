@@ -120,11 +120,14 @@
 	<select id = "selectCardByCardNumber" resultMap = "BaseResultMap">
 		select * from parking_card where card_num = #{cardNum, jdbcType = VARCHAR}
 	</select>
+	
+		<!-- 更换停车卡号 -->
+	<update id="updateCardNumById" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+		update parking_card
+		set
+		card_num = #{cardNum, jdbcType=VARCHAR}
+		where 
+		id = #{id, jdbcType=INTEGER}
+	</update>
 
-    <!-- 查找能用的所有卡 -->
-	<select id="selectAllUsedCards" resultMap="BaseResultMap">
-		select
-		id,users_id,parking_id,card_num,createdTime,state from parking_card
-		where state=#{state,jdbcType=INTEGER};
-	</select>
 </mapper>

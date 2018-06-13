@@ -281,7 +281,7 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	}
 
 	/**
-	 * è¡¥åŠžæ–°å�¡
+	 * 补办新卡
 	 * 
 	 * @param entity
 	 */
@@ -296,21 +296,21 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 		ParkingCardEntity cardinfo = cardService.selectCardByCardNumber(cardNum);
 		int cardState = cardService.selectCardStateById(id);
 		
-		//ç¦�ç”¨å�¡ä¸�èƒ½è¡¥åŠž
-		if(cardState == 1) {
-			jsonResult = new JsonResult(new ServiceException("è¯¥å�¡å·²ç¦�ç”¨ï¼Œä¸�èƒ½è¡¥åŠžï¼�"));
+		//注销的卡不能补办
+		if(cardState == 2) {
+			jsonResult = new JsonResult(new ServiceException("该卡已注销！"));
 		}
-		//å�¡å�·ä¸�èƒ½å·²å­˜åœ¨
-		else if(cardinfo != null)
+		//卡号必须不存在
+		if(cardinfo != null)
 		{
-			jsonResult = new JsonResult(new ServiceException("è¯¥å�¡å�·å·²å­˜åœ¨ï¼�"));
+			jsonResult = new JsonResult(new ServiceException("卡号已存在！"));
 		}
-		//è¡¥åŠžæ–°å�¡
+		//补办新卡
 		else {
 			System.out.println("frfrfrf"+cardNum);
 			int rows = cardService.updateCardNumById(id, cardNum);
 			if(rows <= 0) {
-				jsonResult = new JsonResult(new ServiceException("æ�¢å�¡å¤±è´¥ï¼�"));
+				jsonResult = new JsonResult(new ServiceException("补办失败！"));
 			}
 		}
 		return jsonResult;
