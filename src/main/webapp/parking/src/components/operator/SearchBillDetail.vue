@@ -9,10 +9,31 @@
       <div><span>总费用：</span>{{billData.account}}元</div>
       <div><span>计费时间段：</span>{{secondToDate(billData.firstDate) + "~" + secondToDate(billData.statementDate)}}</div>
       <div><span>出账日期：</span>{{secondToDate(billData.statementDate)}}</div>
-      <el-button type="primary" v-if="billData.flag == 0 || billData.flag == 3" @click="payforBill()">{{payArr[0]}}</el-button>
-      <el-button type="primary" v-else disabled>{{payArr[billData.flag]}}</el-button>
-      <router-link :to="{ name:'SearchBill', params: {phone: phone}}"> 返回查看所有帐单</router-link>
+      <div v-if="billData.flag==1 && billPayed!=null">
+        <div><span>支付账单编号:</span>{{billPayed.payNum}}</div>
+        <div><span>支付手机号:</span>{{billPayed.phone}}</div>
+        <div><span>支付收款方:</span>{{billPayed.receiveCode}}</div>
+        <div><span>支付金额:</span>{{billPayed.account}}</div>
+        <div><span>支付时间:</span>{{secondToDate(billPayed.payTime)}}</div>
+      </div>
+      <el-button type="primary" @click="parkingFull()" v-if="billData.flag == 0 || billData.flag == 3">{{payArr[0]}}</el-button><!--  -->
+      <el-button type="primary" v-else disabled> {{payArr[billData.flag]}}</el-button>
+      <router-link :to="{ name:'SearchBill', params: {phone:billData.phone}}"> 返回查看所有帐单</router-link>
     </div>
+    <!-- 缴费弹窗 -->
+    <el-dialog class="dialog-width" title="用户缴费" :visible.sync="payingVisible" width="30%">
+      <div style="color: #f00;" v-if="iParkingFull">停车场已满,缴费后停车卡无法激活!</div>
+      <div>
+        <div><span>用户账号:</span>{{billPaying.userPhone}}</div>
+        <div><span>账单卡号:</span>{{billPaying.cardNum}}</div>
+        <div><span>账单编号:</span>{{billPaying.billNum}}</div>
+        <div><span>账单金额:</span>{{billPaying.billPrice}}</div>
+        <div class="dialog-footer">
+          <el-button @click="payingVisible = false">取 消</el-button>
+          <el-button type="primary" @click="payforBill()">确 定</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -21,19 +42,15 @@
     name: `UserInfo`,
     data(){
       return{
-        billData:{
-          // billNum: 20180514111111,
-          // cardNum: 88888888,
-          // singlePrice: 100,
-          // totalPrice: 300,
-          // lotName:`A停车场`,
-          // billTime:`2018-3-31~2018-6-30`,
-          // outBillTime:`2018-6-30`,
-          // state: `未缴费`
-        },
-         //缴费样式数组
+        billData:{},
+        billPaying:{},
+        billPayed:{},
+        billPayError:{},
+        payingVisible:false,
+        iParkingFull:false,
+        payState:0,
+        //缴费样式数组
         payArr:[`缴费`,`已缴费`,`未出账`],
-        phone: ``,
       }
     },
     mounted: function() {
@@ -48,33 +65,46 @@
       initBillDetail(){
         this.axios.post(this.baseURI + '/parkingBill/selectParkingBillByBillNum', { "billNum": this.$route.params.billNum})
           .then(res => {
-            console.log(res);
-            this.billData = res.data.data;
-            this.phone = res.data.data.phone; 
+            //账单详情页面显示
+            this.billData = res.data.data.bill;
+            console.log(res.data.data);
+            
+            //账单支付详情显示
+            this.billPayed=res.data.data.payInfo;
+            
+            // 弹窗初始显示账单信息
+            this.billPaying.userPhone = this.$route.params.phone;
+            this.billPaying.billNum = this.$route.params.billNum;
+            this.billPaying.billPrice = this.billData.account;
+            this.billPaying.cardNum = this.billData.cardNum;
           })
           .catch(err => {
             console.log(err)
           })
       },
+      parkingFull(){
+        if(this.billData.flag==3){
+          this.axios.post(this.baseURI + '/parkingBill/isParkingLotFull',{billNum: this.$route.params.billNum})
+          .then( res => {
+            console.log(res);
+            if(res.data.data){
+              this.iParkingFull=true;
+            }
+          })
+        }
+        this.payingVisible = true; 
+      },
       //支付账单
       payforBill(){
-        this.$confirm('是否支付账单?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(() => {
-          this.axios.post(this.baseURI + '/parkingBill/payBill',{billNum: this.$route.params.billNum})
+          this.axios.post(this.baseURI + '/parkingBill/payBillByOperator',{billNum: this.$route.params.billNum})
           .then( res => {
-            if(res.data.message == "OK"){
-              this.$message({
+            this.$message({
                 type: 'success',
                 message: '缴费成功!'
               });
-              this.initBillDetail();
-            }
+            this.billData.flag=1;
+            this.payingVisible = false; 
           })
-        })   
-            
-          
       },
       //时间转换函数
       secondToDate(date){
