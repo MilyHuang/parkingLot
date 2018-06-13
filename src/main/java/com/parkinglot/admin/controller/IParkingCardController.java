@@ -8,7 +8,6 @@ package com.parkinglot.admin.controller;
 
 */
 
-import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.common.util.JsonResult;

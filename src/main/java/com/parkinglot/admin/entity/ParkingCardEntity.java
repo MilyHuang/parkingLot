@@ -29,6 +29,17 @@ public class ParkingCardEntity implements Serializable{
 	private Date createdTime;
 	/**卡的状态 0可用，1不可用*/
 	private Integer state ;
+	
+	/**停车场名字*/
+	private String parkingName;
+	
+	
+	public String getParkingName() {
+		return parkingName;
+	}
+	public void setParkingName(String parkingName) {
+		this.parkingName = parkingName;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -49,15 +60,11 @@ public class ParkingCardEntity implements Serializable{
 		this.cardNum = cardNum;
 	}
 	
-	
 	public Integer getParkingId() {
 		return parkingId;
 	}
 	public void setParkingId(Integer parkingId) {
 		this.parkingId = parkingId;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 	public Date getCreatedTime() {
 		return createdTime;
@@ -74,7 +81,7 @@ public class ParkingCardEntity implements Serializable{
 	@Override
 	public String toString() {
 		return "ParkingCardEntity [id=" + id + ", userId=" + userId + ", parkingId=" + parkingId + ", cardNum="
-				+ cardNum + ", createdTime=" + createdTime + ", state=" + state + "]";
+				+ cardNum + ", createdTime=" + createdTime + ", state=" + state + ", parkingName=" + parkingName + "]";
 	}
 	
 	

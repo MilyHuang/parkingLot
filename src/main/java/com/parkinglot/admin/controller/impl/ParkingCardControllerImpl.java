@@ -232,15 +232,18 @@ public class ParkingCardControllerImpl implements IParkingCardController {
 	public JsonResult selectUserCardsList(@RequestBody UsersInfoEntity entity) {
 		JsonResult jsonResult = new JsonResult();
 		if(entity == null) {
-			return new JsonResult(new ServiceException("输入的电话号码不能为空"));
+			return new JsonResult(new ServiceException("输入的手机号不能为空"));
 		}
-		System.out.println(entity);
 		//用户的ID
 		Integer userId = userService.selectUserInfoByPhone(entity.getPhone()).getId();
 		//用户卡信息
 		List<ParkingCardEntity> cards = cardService.selectUserCards(userId);
 		if(cards.size() == 0) {
 			return new JsonResult("该用户没有办理停车卡");
+		}
+		for(int i=0;i<cards.size();i++) {
+			String parkingName = parkingService.selectParkingLotById(cards.get(i).getParkingId()).getParkingName();
+			cards.get(i).setParkingName(parkingName);
 		}
 		return new JsonResult(cards);
 	}

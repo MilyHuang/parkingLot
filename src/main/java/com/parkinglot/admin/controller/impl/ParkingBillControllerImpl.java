@@ -13,26 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.parkinglot.admin.controller.IParkingBillController;
+import com.parkinglot.admin.entity.BillAndPaymentEntity;
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
-import com.parkinglot.admin.entity.PayInfoEntity;
+import com.parkinglot.admin.entity.PaymentEntity;
+import com.parkinglot.admin.entity.PaymentRecvEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
 import com.parkinglot.admin.service.IParkingCardService;
 import com.parkinglot.admin.service.IParkingLotService;
-import com.parkinglot.admin.service.IPayInfoService;
-import com.parkinglot.admin.service.impl.PayInfoServiceImpl;
+import com.parkinglot.admin.service.IUsersInfoService;
 import com.parkinglot.common.service.ServiceException;
 import com.parkinglot.common.util.BillUtils;
+import com.parkinglot.common.util.HttpURLConnectionUtils;
 import com.parkinglot.common.util.JsonResult;
-import com.parkinglot.common.util.PayUtil;
-import com.sun.tools.internal.xjc.generator.bean.ImplStructureStrategy.Result;
 
 @Controller
 @RequestMapping("/parkingBill")
 public class ParkingBillControllerImpl implements IParkingBillController {
+	
+	/**访问第三方接口的url*/
+	private static final String path=" https://simbank/redeem";
+	
 
 	@Autowired
 	private IParkingBillService parkingBillSerivice;
@@ -47,21 +52,25 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 	private BillUtils billUtils;
 
 	@Autowired
-	private  PayUtil payUtils;
-
-	@Autowired
-	private IPayInfoService payInfoService;
+	private IUsersInfoService usersInfoService;
 	
 	@RequestMapping(value = "/selectAllParkingBillEntity", method = RequestMethod.POST)
 	@ResponseBody
 	@Override
 	public JsonResult selectAllParkingBillEntity(@RequestBody UsersInfoEntity user) {
 		JsonResult jsonResult = new JsonResult();
+		UsersInfoEntity userInfo = usersInfoService.selectUserInfoByPhone(user.getPhone());
+		//判断该手机号是否存在
+		if(userInfo == null) {
+			return new JsonResult(new ServiceException("该账号不存在"));
+		}
+		//判断是否有账单信息
 		List<ParkingBillEntity> list = parkingBillSerivice.selectAllParkingBillEntity(user.getPhone());
 		if (list.size() == 0) {
 			jsonResult = new JsonResult(new ServiceException("用户还没有账单信息！"));
 			return jsonResult;
 		}
+		//把账单信息返回给前端
 		for(int i=0;i<list.size();i++) {
 			String cardNum = parkingCardService.selectCardByCardId(list.get(i).getCardId()).getCardNum();
 			list.get(i).setCardNum(cardNum);
@@ -76,73 +85,70 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 		ParkingBillEntity parkingBill = parkingBillSerivice.selectParkingBillByBillNum(entity.getBillNum());
 		String cardNum = parkingCardService.selectCardByCardId(parkingBill.getCardId()).getCardNum();
 		parkingBill.setCardNum(cardNum);
-		Map<String,Object> map = new HashMap<String,Object>();
-		PayInfoEntity payInfo;
-		map.put("bill", parkingBill);
-		if(parkingBill.getFlag() == 1) {
-			 Boolean result=true; //查询缴费成功的账单
-			 payInfo = payInfoService.selectPayInfoByBillId(parkingBill.getId(),result);
-			 map.put("payInfo", payInfo);
-		}
-		return new JsonResult(map);
+		return new JsonResult(parkingBill);
 	}
 
 	@RequestMapping(value = "/payBill", method = RequestMethod.POST)
 	@ResponseBody
 	@Override
-	public JsonResult payBill(@RequestBody ParkingBillEntity billEntity) {
+	public JsonResult payBill(@RequestBody BillAndPaymentEntity entity) {
+		System.out.println("paybill:"+entity);
 		JsonResult jsonResult = new JsonResult();
 		// 通过账单编号查询账单信息
-		ParkingBillEntity bill = parkingBillSerivice.selectParkingBillByBillNum(billEntity.getBillNum());
+		ParkingBillEntity bill = parkingBillSerivice.selectParkingBillByBillNum(entity.getBillNum());
 		if (bill == null) {
 			return new JsonResult(new ServiceException("该账单不存在"));
 		}
 		// 0 未缴费，1 已缴费 2未出账 3 逾期欠费
-		if (bill.getFlag() == 0) { // 未缴费
-			//模拟调用支付接口
-			PayInfoEntity payInfoEntity = new PayInfoEntity();
-			payInfoEntity.setPhone(bill.getPhone());
-			payInfoEntity.setAccount(bill.getAccount());
-			payInfoEntity.setBillId(bill.getId());
-			payInfoEntity.setReceiveCode(parkingLotService.selectParkingLotById(bill.getParkingId()).getParkingNum());
-			PayInfoEntity payInfo = payUtils.payInfoUtil(payInfoEntity);
-			if(payInfo.getResult()==true) {
+		ParkingBillEntity billEntity = new ParkingBillEntity();
+		//设置第三方接口传入参数
+		PaymentEntity paymentEntity = new PaymentEntity();
+		paymentEntity.setPaymentCode(entity.getPaymentCode());
+		paymentEntity.setPayeeCode("simParkingCompany");
+		paymentEntity.setPayeePassword("1234");
+		paymentEntity.setPayerPhone(bill.getPhone());
+		paymentEntity.setAmount(bill.getAccount());
+		//把payment对象转为JSON字符串
+		String data = JSONObject.toJSONString(paymentEntity);
+		
+		if (bill.getFlag() == 0) {
+			String str = HttpURLConnectionUtils.sendPost(path, data);  //调用接口
+			//获取接口返回的参数
+			PaymentRecvEntity recv = new PaymentRecvEntity();
+			recv=JSONObject.parseObject(str, PaymentRecvEntity.class);
+			System.out.println("recv:"+recv);
+			if(recv.getRedeemResultCode() == 0) {
 				//缴费成功
 				billEntity.setFlag(1);
 				billEntity.setId(bill.getId());
 				billEntity.setTis("");
 				parkingBillSerivice.updateBillInfo(billEntity);
-				return new JsonResult(payInfo);
-			}else {
-				return new JsonResult(payInfo);
 			}
-
+			return new JsonResult(recv);
 		} else if (bill.getFlag() == 3) { // 逾期缴费
-			//模拟调用支付接口,返回支付信息
-			PayInfoEntity payInfoEntity = new PayInfoEntity();
-			payInfoEntity.setPhone(bill.getPhone());
-			payInfoEntity.setAccount(bill.getAccount());
-			payInfoEntity.setBillId(bill.getId());
-			payInfoEntity.setReceiveCode(parkingLotService.selectParkingLotById(bill.getParkingId()).getParkingNum());
-			PayInfoEntity payInfo = payUtils.payInfoUtil(payInfoEntity);  //支付信息
-			//如果支付成功,设置账单状态为已缴费
-			if(payInfo.getResult()==true) {
-				//缴费成功
-				billEntity.setFlag(1);
-				billEntity.setId(bill.getId());
-				billEntity.setTis("");
-				parkingBillSerivice.updateBillInfo(billEntity);
 				//停车场信息
 				ParkingLotEntity parkingLot = parkingLotService.selectParkingLotById(bill.getParkingId());
 				//判断停车场是否已满
 				if (parkingCardService.selectCards(parkingLot.getId()) >= parkingLotService.selectParkingLotById(parkingLot.getId()).getTotal()) {
-					return new JsonResult(payInfo);
+					return new JsonResult(new ServiceException("该停车场已满，不能缴费激活该停车卡"));
 				}else { //如果停车场未满
+					String str = HttpURLConnectionUtils.sendPost(path, data);  //调用接口
+					//获取接口返回的参数
+					PaymentRecvEntity recv = new PaymentRecvEntity();
+					recv=JSONObject.parseObject(str, PaymentRecvEntity.class);
+					System.out.println("recv:"+recv);
+					if(recv.getRedeemResultCode() == 0) {
+						//缴费成功
+						billEntity.setFlag(1);
+						billEntity.setId(bill.getId());
+						billEntity.setTis("");
+						parkingBillSerivice.updateBillInfo(billEntity);
+					}
 					//判断逾期缴费的账单是否全部付清
 					List<ParkingBillEntity> bills = parkingBillSerivice.selectBillByCardIdAndFlagForList(bill.getCardId(), 3);  //flag = 3
 					if(bills.size()!=0) {
-						return new  JsonResult(payInfo);
-					}				
+						return new JsonResult(recv);
+					}	
 					// 更改用户停车卡的状态，重新启用
 					ParkingCardEntity cardEntity = new ParkingCardEntity();
 					cardEntity.setState(0); // 启用 状态：0 可用 ，1 不可用
@@ -155,13 +161,9 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 					billEntity2.setParkingName(bill.getParkingName());
 					billEntity2.setPhone(bill.getPhone());
 					billUtils.generateBill(billEntity2);
-					return new JsonResult(payInfo);
+					return new JsonResult(recv);
 				}
 
-			}else {
-				return new JsonResult(payInfo);
-			}
-			
 		}else if (bill.getFlag() == 1) {
 			return new JsonResult(new ServiceException("该账单已缴费"));
 		} else if (bill.getFlag() == 2) {
@@ -205,16 +207,17 @@ public class ParkingBillControllerImpl implements IParkingBillController {
 			parkingBillSerivice.updateBillInfo(billEntity);
 			return jsonResult;
 		}else if(bill.getFlag() == 3) {//逾期缴费
-			//缴费成功
-			billEntity.setFlag(1);
-			billEntity.setId(bill.getId());
-			billEntity.setTis("");
-			parkingBillSerivice.updateBillInfo(billEntity);
+			
 			ParkingLotEntity parkingLot = parkingLotService.selectParkingLotById(bill.getParkingId());
 			//判断停车场是否已满
 			if (parkingCardService.selectCards(parkingLot.getId()) >= parkingLotService.selectParkingLotById(parkingLot.getId()).getTotal()) {
-				return jsonResult;
+				return new JsonResult(new ServiceException("该停车场已满，不能缴费激活该停车卡"));
 			}else {
+				//缴费成功
+				billEntity.setFlag(1);
+				billEntity.setId(bill.getId());
+				billEntity.setTis("");
+				parkingBillSerivice.updateBillInfo(billEntity);
 				//判断逾期缴费的账单是否全部付清
 				List<ParkingBillEntity> bills = parkingBillSerivice.selectBillByCardIdAndFlagForList(bill.getCardId(), 3);  //flag = 3
 				if(bills.size()!=0) {

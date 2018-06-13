@@ -1,5 +1,6 @@
 package com.parkinglot.admin.controller;
 
+import com.parkinglot.admin.entity.BillAndPaymentEntity;
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.common.util.JsonResult;
@@ -25,7 +26,7 @@ public interface IParkingBillController {
 	 * @param billEntity
 	 * @return
 	 */
-	JsonResult payBill(ParkingBillEntity billEntity);
+	JsonResult payBill(BillAndPaymentEntity entity);
 	
 	/**
 	 * 判断停车场是否已经满了

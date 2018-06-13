@@ -106,6 +106,8 @@ public class ParkingLotControllerImpl implements IParkingLotController {
 			double account = entity.getPrice() / list.get(i).getPrice() * list.get(i).getAccount(); // 计算改变价格后的account的
 			list.get(i).setAccount(Double.parseDouble(df.format(account)));
 			list.get(i).setPrice(entity.getPrice());
+			System.out.println(entity.getPrice());
+			System.out.println(list.get(i).getPrice() );
 			parkingBillService.updateOldBill(list.get(i));
 		}
 		return jsonResult;

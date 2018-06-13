@@ -13,7 +13,8 @@
 
 
 	<!-- 办理停车卡 -->
-	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity"
+		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
 		parking_card(users_id,parking_id,card_num,createdTime,state)
 		VALUES(
@@ -28,13 +29,13 @@
 	<!-- 查询卡信息 -->
 	<select id="selectCardByCardNum" resultMap="BaseResultMap">
 		SELECT
-			id,users_id,parking_id,card_num,createdTime,state
+		id,users_id,parking_id,card_num,createdTime,state
 		FROM
-			parking_card
+		parking_card
 		WHERE
-			card_num=#{cardNum,jdbcType=VARCHAR}
-		AND 
-			state=#{state,jdbcType=INTEGER}
+		card_num=#{cardNum,jdbcType=VARCHAR}
+		AND
+		state=#{state,jdbcType=INTEGER}
 	</select>
 
 	<!-- 查看停车场可用的卡总数 -->
@@ -49,9 +50,11 @@
 		state=0
 	</select>
 
-	 <update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity"> 
-		update parking_card set state=#{state,jdbcType=INTEGER} where card_num=#{cardNum,jdbcType=VARCHAR} 
-		
+	<update id="updateParkingCard" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
+		update parking_card
+		set state=#{state,jdbcType=INTEGER} where
+		card_num=#{cardNum,jdbcType=VARCHAR}
+
 	</update>
 
 	<!--查找某用户在某停车场中卡的总数 -->
@@ -64,11 +67,12 @@
 	</select>
 
 	<select id="selectAllCards" resultMap="BaseResultMap">
-		select * from parking_card;
+		select * from
+		parking_card;
 	</select>
 
 
-<!-- 查询卡信息 -->
+	<!-- 查询卡信息 -->
 	<select id="selectCardByCardId" resultMap="BaseResultMap">
 		SELECT
 		id,users_id,parking_id,card_num,createdTime,state
@@ -80,21 +84,30 @@
 
 	<!-- 查询用户办理的停车卡的总数 -->
 	<select id="countCardsForUser" resultType="int">
-		SELECT count(1) FROM parking_card
+		SELECT count(1) FROM
+		parking_card
 		WHERE users_id=#{userId,jdbcType=INTEGER}
 	</select>
-	
+
 	<!-- 查询Active状态的卡 -->
 	<select id="selectActiveCard" resultMap="BaseResultMap">
-		select * from parking_card where parking_id = #{id,jdbcType=INTEGER} and state = 0 limit 1
+		select * from
+		parking_card where parking_id = #{id,jdbcType=INTEGER} and state = 0
+		limit 1
 	</select>
 
 	<!-- 更新停车卡状态 -->
 	<update id="updateCardState" parameterType="com.parkinglot.admin.entity.ParkingCardEntity">
 		UPDATE parking_card
 		SET
-			state=#{state,jdbcType=INTEGER}
+		state=#{state,jdbcType=INTEGER}
 		WHERE id=#{id,jdbcType=INTEGER}
 	</update>
 
+    <!-- 查找能用的所有卡 -->
+	<select id="selectAllUsedCards" resultMap="BaseResultMap">
+		select
+		id,users_id,parking_id,card_num,createdTime,state from parking_card
+		where state=#{state,jdbcType=INTEGER};
+	</select>
 </mapper>

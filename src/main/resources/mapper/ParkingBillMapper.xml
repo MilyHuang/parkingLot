@@ -125,6 +125,7 @@
 	<update id="updateOldBill" parameterType="com.parkinglot.admin.entity.ParkingBillEntity">
 		update parking_bill
 		set
+		price = #{price,jdbcType=DOUBLE},
 		account = #{account,jdbcType=DOUBLE},
 		flag= #{flag,jdbcType=INTEGER},
 		statementDate=#{statementDate,jdbcType=TIMESTAMP},

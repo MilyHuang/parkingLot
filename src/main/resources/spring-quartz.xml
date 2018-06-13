@@ -48,23 +48,23 @@
 	<bean id="cronTrigger1"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job1" />
- <property name="cronExpression" value="0 0 0 L 3,6,9,12 ?" /> 
-	<!--  <property name="cronExpression" value="0/20 * * * * ?" />  -->
+		<property name="cronExpression" value="0 0 0 L 3,6,9,12 ?" />  
+	 <!--  <property name="cronExpression" value="0/20 * * * * ?" />    -->
 	</bean>
 
 <!-- 逾期缴费 -->
 	<bean id="cronTrigger2"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job2" />
-		  <property name="cronExpression" value="0 0 0 L 4,7,10,1 ?" />  
-		  <!-- <property name="cronExpression" value="0/20 * * * * ?" /> -->    
+		 <property name="cronExpression" value="0 0 0 L 4,7,10,1 ?" />
+		<!-- <property name="cronExpression" value="0/20 * * * * ?" />   -->
 	</bean>
 <!-- 季度出bill -->
 	<bean id="cronTrigger3"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="job3" />
-		<property name="cronExpression" value="0 0 0 1 4,7,10,1 ?" /> 
-		<!--  <property name="cronExpression" value="0/20 * * * * ?" />  -->
+	  <property name="cronExpression" value="0 0 0 1 4,7,10,1 ?" />
+	<!-- 	<property name="cronExpression" value="0/20 * * * * ?" /> -->
 	</bean>
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
@@ -75,5 +75,5 @@
 			</list>
 		</property>
 	</bean>
- 
+
 </beans>

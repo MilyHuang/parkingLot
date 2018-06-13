@@ -84,17 +84,13 @@ public class Jobs {
 	 * 每年4月1， 7月1， 10月1， 1月1生成新季度账单
 	 */
 	public void createNewBill() {
-		List<ParkingBillEntity> list0 = parkingBillService.selectAllParkingBillEntitys(0);
-		List<ParkingBillEntity> list1 = parkingBillService.selectAllParkingBillEntitys(1);
-		List<ParkingBillEntity> list2 = new ArrayList<ParkingBillEntity>();
-		list2.addAll(list0);
-		list2.addAll(list1);
-		for (int i = 0; i < list2.size(); i++) {
-			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list2.get(i).getCardId());
-			ParkingBillEntity parkingBillEntity = parkingBillService
-					.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-			if (parkingCardEntity.getState() == 0 ) {
-				billUtils.generateBill(parkingBillEntity);
+		List<ParkingCardEntity> list = parkingCardService.selectAllUsedCards(0);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).toString());
+			ParkingBillEntity parkingBillEntity = parkingBillService.selectAllParkingBillEntityByCardId(list.get(i).getId());
+			System.out.println(parkingBillEntity);
+			if(parkingBillEntity!=null) {
+				 billUtils.generateBill(parkingBillEntity);
 			}
 		}
 		System.out.println("已生成新季度账单");
