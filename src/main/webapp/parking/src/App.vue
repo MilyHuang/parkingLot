@@ -6,7 +6,38 @@
 </template>
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted: function() {
+    //token路由判断角色跳转
+    this.$nextTick(function () {
+      console.log(sessionStorage.token);
+      if (sessionStorage.token) { 
+        this.RoleChange(parseInt(sessionStorage.role));
+      }
+    })
+  },
+  methods: {
+    //登录角色跳转
+    RoleChange(role){
+      switch(role)
+      {
+        case 0:
+          this.$router.push({ path: '/AdminIndex' });
+          break;
+        case 1:
+          this.$router.push({ path: '/ManagerIndex'});
+          break;
+        case 2:
+          this.$router.push({ path: '/OperatorIndex'});
+          break;
+        case 3:
+          this.$router.push({ path: '/UserIndex'});
+          break;
+        default:
+          console.log('请登录');
+      }
+    }
+  }
 }
 
 </script>

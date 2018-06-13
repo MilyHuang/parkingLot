@@ -22,14 +22,6 @@ export default {
       }
     };
   },
-  mounted: function() {
-    //token路由判断角色跳转
-    this.$nextTick(function () {
-      if (!sessionStorage.token) { 
-        this.RoleChange(sessionStorage.token.role);
-      }
-    })
-  },
   methods: {
     //登录角色跳转
     RoleChange(role){
@@ -45,7 +37,7 @@ export default {
           this.$router.push({ path: '/OperatorIndex'});
           break;
         default:
-          console.log('error');
+          console.log('请登录');
       }
     },
     doLogin() {
@@ -65,10 +57,8 @@ export default {
             var data=res.data.data;
             if(data){
 
-              var user={};
-              user.name=data.username;
-              user.role=data.role;
-              sessionStorage.setItem("token",user);  
+              sessionStorage.setItem("token",data.username);  
+              sessionStorage.setItem("role",data.role); 
 
               this.$notify({
                 title: '提示信息',
