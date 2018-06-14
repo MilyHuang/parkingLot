@@ -2,6 +2,7 @@
 	<div class="search-card">
 		<el-input v-model.trim="searchNumber" placeholder="请输入手机号查询账单"></el-input>
 		<el-button type="primary" @click="SearchUserBill(1)">查找</el-button>
+    <!-- 账单查询 -->
 		<el-table
           :data="UserBillData"
           style="width: 95%">
@@ -78,10 +79,12 @@
 		},
 		data(){
 			return{
+        //页面进入次数
         time: 0,
-        flag: ``,
+        // flag: ``,
+        // 查询的电话
 				searchNumber: ``,
-				//保存下来的电话
+				//历史页面保存下来的电话
 				prePhone: ``,
 				UserBillData:[],
 				//缴费样式数组

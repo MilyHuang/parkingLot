@@ -1,11 +1,14 @@
 <template>
-  <div style="width: 980px;">
+  <div style="width: 980px;" class="admin-paking">
     <el-table
     :data="adminPackingLotTable"
     tooltip-effect="dark"
     highlight-current-row
     @current-change="handleCurrentChange"
     style="width: 100%">
+    <el-table-column label="" width="50">
+        <template slot-scope="scope"><img v-if="currentLotNum==scope.row.id" src='../../../static/tick.jpg'></template>
+      </el-table-column>
     <el-table-column
       type="index"
       label="序号"
@@ -29,7 +32,7 @@
     <el-table-column
       prop="total"
       label="容量"
-      width="200">
+      width="150">
     </el-table-column>
     <el-table-column
       prop="rent"
@@ -41,6 +44,7 @@
       <el-button type="primary" @click="adddialogVisible=true">增加停车场</el-button>
       <el-button type="primary" @click="deldialogVisible=true">删除停车场</el-button>
     </div>
+    <!-- 删除停车场弹窗 -->
     <el-dialog title="提示" :visible.sync="deldialogVisible" width="30%">
       <span>是否确定删除选择的停车场？</span>
       <span slot="footer" class="dialog-footer">
@@ -48,6 +52,7 @@
         <el-button type="primary" @click="deleteParkingLot()">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 添加停车场弹窗 -->
     <el-dialog title="添加停车场" :visible.sync="adddialogVisible" width="30%">
           停车场编号<el-input v-model="parkinglot.parkingNum" type="text"/>
           停车场名<el-input v-model="parkinglot.parkingName" type="text"/>
@@ -75,7 +80,7 @@ export default {
       },
       //停车场列表
       adminPackingLotTable: [],
-      //需求删除的停车场编号 
+      //需要删除的停车场编号 
       currentLotNum: ``,
       //删除停车场弹窗
       deldialogVisible: false,
@@ -90,6 +95,7 @@ export default {
     })
   },
   methods: {
+    //加载停车场列表
     initParkingLot(){
       this.axios.post(this.baseURI +'/parkinglot/selectParkinglot')
         .then(res => {
@@ -205,5 +211,8 @@ export default {
   width: 100%;
   font-size: 14px;
 }
-
+.admin-paking img{
+    width: 20px;
+    height: 20px;
+  }
 </style>
