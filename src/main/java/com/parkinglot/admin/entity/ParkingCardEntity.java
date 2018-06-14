@@ -27,7 +27,7 @@ public class ParkingCardEntity implements Serializable{
 	private String cardNum;
 	/**创建时间*/
 	private Date createdTime;
-	/**卡的状态 0可用，1不可用*/
+	/**卡的状态 0正常，1欠费，2注销*/
 	private Integer state ;
 	
 	/**停车场名字*/

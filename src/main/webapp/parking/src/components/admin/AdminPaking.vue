@@ -167,6 +167,7 @@ export default {
               type: 'error'
             });
           }
+          this.deldialogVisible = false;
           this.currentLotNum = ``;
           this.initParkingLot();
         })

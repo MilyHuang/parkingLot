@@ -1,6 +1,9 @@
 package com.parkinglot.admin.dao;
 
+import java.util.List;
+
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 
 /**
 @Description:  用户停车取车dao类
@@ -36,4 +39,10 @@ public interface IParkingRecordDao {
 	 * @return
 	 */
 	ParkingRecordEntity isHasCarInTheParking(Integer id);
+	
+	
+	/**
+	 * 查看停车场使用情况
+	 */
+	List<UsageOfParkingCard> selectUsageOfParkingCard(UsageOfParkingCard entity);
 }

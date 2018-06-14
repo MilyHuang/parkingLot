@@ -16,6 +16,7 @@ import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingLotEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.entity.UsersInfoEntity;
 import com.parkinglot.admin.service.IParkingBillService;
@@ -53,7 +54,6 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 		ParkingLotEntity parkingLotEntity = parkingLotService.selectParkingLotByNum(entity.getParkingNum());
 		ParkingCardEntity parkingCardEntity = parkingCardService.selectParkingCardByCardNum(entity.getCardNum(),0);
 		ParkingRecordEntity parkingRecordEntity = parkingRecordService.selectParkingRecord(entity.getCardNum());
-	//	UsersInfoEntity user = userService.selectUserInfoById(parkingCardEntity.getUserId());
 		if (parkingLotEntity == null) {
 			jsonResult = new JsonResult(new ServiceException("该停车场不存在"));
 			return jsonResult;
@@ -67,8 +67,6 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			jsonResult = new JsonResult(new ServiceException("停车场内没有车辆"));
 			return jsonResult;
 		} else {
-			 /**自动停卡*/
-		    parkingRecordService.checkCard(entity);
 			/** 更新停车场正在使用的车位数量 */
 			parkingLotEntity.setInuse(parkingLotEntity.getInuse() - 1);
 			jsonResult = parkingLotService.updateParkingLotInuse(parkingLotEntity);
@@ -104,8 +102,6 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 				jsonResult = new JsonResult(new ServiceException("您已停放辆车，不能停放其他车辆"));
 				return jsonResult;
 			}
-			    /**自动停卡*/
-			    parkingRecordService.checkCard(entity);
 			    
 				/** 更新停车场正在使用的车位数量 */
 				parkingLotEntity.setInuse(parkingLotEntity.getInuse() + 1);
@@ -126,8 +122,18 @@ public class ParkingRecordControllerImpl implements IParkingRecordController {
 			
 		}
 	}
-
-	
+	@RequestMapping("/usageOfParkingCard")
+	@ResponseBody
+	@Override
+	public JsonResult usageOfParkingCard(@RequestBody  UsageOfParkingCard entity) {
+		JsonResult jsonResult = new JsonResult();
+		List<UsageOfParkingCard> list=parkingRecordService.selectUsageOfParkingCard(entity);
+		if(list==null) {
+			jsonResult = new JsonResult(new ServiceException("没有停车记录"));
+			return jsonResult;
+		}
+		return new JsonResult(list);
+	}
 
 	
 }

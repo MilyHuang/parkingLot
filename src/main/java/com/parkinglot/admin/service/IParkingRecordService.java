@@ -8,7 +8,10 @@ package com.parkinglot.admin.service;
 
 */
 
+import java.util.List;
+
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingRecordService {
@@ -38,10 +41,8 @@ public interface IParkingRecordService {
 	 * @return
 	 */
 	ParkingRecordEntity isHasCarInTheParking(int id);
-	 /* 自动禁卡
-	 * @param entity
-	 * @return
+	/**
+	 * 查看停车场使用情况
 	 */
-	JsonResult checkCard(ParkingRecordEntity entity);
-	
+	List<UsageOfParkingCard> selectUsageOfParkingCard(UsageOfParkingCard entity);
 }

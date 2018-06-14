@@ -34,7 +34,6 @@ export default {
       }else{
         this.axios.post(this.baseURI + '/userinfo/login',{"phone":this.userInfo.phone,"password":this.userInfo.password})
         .then(res => {
-          console.log(res);
           if (res.status == 200) {
             var data=res.data.data
             if(data){
@@ -45,7 +44,7 @@ export default {
               });
               sessionStorage.setItem("phone",this.userInfo.phone);
               sessionStorage.setItem("token",this.userInfo.username);
-              console.log(data);
+              sessionStorage.setItem("role",3);
               this.$router.push({ path: '/UserIndex' });
             }
             else{

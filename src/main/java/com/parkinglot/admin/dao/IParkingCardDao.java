@@ -8,7 +8,7 @@ import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.common.util.JsonResult;
 
 /**
-@Description: 添加停车卡（办理停车卡）
+@Description: æ·»åŠ å�œè½¦å�¡ï¼ˆåŠžç�†å�œè½¦å�¡ï¼‰
 @version:1.0
 @author:MilyHuang
 @Date:May 22, 201810:25:00 AM
@@ -17,28 +17,28 @@ import com.parkinglot.common.util.JsonResult;
 */
 public interface IParkingCardDao {
 	/**
-	 * 办理停车卡
+	 * åŠžç�†å�œè½¦å�¡
 	 * @param entity
 	 * @return
 	 */
 	int insertParkingCard(ParkingCardEntity entity);
 	
 	/**
-	 * 通过停车卡num查询卡信息
+	 * é€šè¿‡å�œè½¦å�¡numæŸ¥è¯¢å�¡ä¿¡æ�¯
 	 * @param cardNum
-	 * @param state   0 可用，1停用
+	 * @param state   0 å�¯ç”¨ï¼Œ1å�œç”¨
 	 * @return
 	 */
 	ParkingCardEntity selectCardByCardNum(@Param("cardNum") String cardNum,@Param("state") Integer state);
 	
 	/**
-	 * 查找停车场中能用的卡的总数
+	 * æŸ¥æ‰¾å�œè½¦åœºä¸­èƒ½ç”¨çš„å�¡çš„æ€»æ•°
 	 * @return
 	 */
 	int selectCards(@Param("parkingId") Integer parkingId);
 	
 	/**
-	 * 停车后更新停车卡信息
+	 * å�œè½¦å�Žæ›´æ–°å�œè½¦å�¡ä¿¡æ�¯
 	 * @param entity
 	 * @return
 	 */
@@ -46,33 +46,33 @@ public interface IParkingCardDao {
 	
 	
 	/**
-	 * 查找某用户在某停车场中卡的总数
+	 * æŸ¥æ‰¾æŸ�ç”¨æˆ·åœ¨æŸ�å�œè½¦åœºä¸­å�¡çš„æ€»æ•°
 	 * @return
 	 */
 	List<ParkingCardEntity> selectUserCards(@Param("userId") Integer userId);
 	
 	/**
-	 * 查找停车场中卡的总数
+	 * æŸ¥æ‰¾å�œè½¦åœºä¸­å�¡çš„æ€»æ•°
 	 * @return
 	 */
 	List<ParkingCardEntity> selectAllCards();
 	
 	
 	/**
-	 * 通过停车卡id查询卡信息
+	 * é€šè¿‡å�œè½¦å�¡idæŸ¥è¯¢å�¡ä¿¡æ�¯
 	 * @param cardNum
 	 * @return
 	 */
 	ParkingCardEntity selectCardByCardId(@Param("cardId") Integer cardId);
 	
 	/**
-	 * 查询某个用户办理停车卡的总数
+	 * æŸ¥è¯¢æŸ�ä¸ªç”¨æˆ·åŠžç�†å�œè½¦å�¡çš„æ€»æ•°
 	 * @return
 	 */
 	int countCardsForUser(@Param("userId") Integer userId);
 	
 	/**
-	 * 查询未停用停车卡
+	 * æŸ¥è¯¢æœªå�œç”¨å�œè½¦å�¡
 	 * @param id
 	 * @return
 	 */
@@ -85,8 +85,7 @@ public interface IParkingCardDao {
 	  */
 	ParkingCardEntity selectActiveCard(int id);
 	
-	
-	 /**更新停车卡的状态
+	 /**æ›´æ–°å�œè½¦å�¡çš„çŠ¶æ€�
 	 * @param cardEntity
 	 * @return
 	 */
@@ -94,8 +93,31 @@ public interface IParkingCardDao {
 	
 	
 	/**
-	 * 查找停车场中卡的总数
+	 * æŸ¥æ‰¾å�œè½¦åœºä¸­å�¡çš„æ€»æ•°
 	 * @return
 	 */
 	List<ParkingCardEntity> selectAllUsedCards(Integer state);
+	
+	/**
+	 * Ã¦â€ºÂ´Ã¦ï¿½Â¢Ã¦â€“Â°Ã¥ï¿½Â¡
+	 * @param 
+	 * @return
+	 */
+	int updateCardNumById(ParkingCardEntity cardEntity);
+	
+
+	/**
+	 * Ã¦Å¸Â¥Ã¨Â¯Â¢Ã¥ï¿½Â¡Ã§Å¡â€žÃ§Å Â¶Ã¦â‚¬ï¿½
+	 * @param id
+	 * @return
+	 */
+	int selectCardStateById(int id);
+	
+	/**
+	 * Ã¦Å¸Â¥Ã¨Â¯Â¢Ã¦Å¸ï¿½Ã¥ï¿½Å“Ã¨Â½Â¦Ã¥ï¿½Â¡Ã¦ËœÂ¯Ã¥ï¿½Â¦Ã¥Â­ËœÃ¥Å“Â¨
+	 * @param id
+	 * @return
+	 */
+	ParkingCardEntity selectCardByCardNumber(String cardNum);
+	
 }

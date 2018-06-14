@@ -1,6 +1,7 @@
 package com.parkinglot.admin.controller;
 
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 import com.parkinglot.common.util.JsonResult;
 
 public interface IParkingRecordController {
@@ -17,4 +18,11 @@ public interface IParkingRecordController {
 	 * @return
 	 */
 	JsonResult insertParkingRecord(ParkingRecordEntity entity);
+	
+	/**
+	 * 查看停车场使用情况
+	 * @param entity
+	 * @return
+	 */
+   JsonResult usageOfParkingCard(UsageOfParkingCard entity);
 }

@@ -31,10 +31,10 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	public JsonResult insertParkingCard(ParkingCardEntity entity) {
 		JsonResult jsonResult = new JsonResult();
 		entity.setState(0);
-		//办理停车卡
+		//åŠžç�†å�œè½¦å�¡
 		int rows = cardDao.insertParkingCard(entity);
 		if(rows <=0 ) {
-			jsonResult = new JsonResult(new ServiceException("添加停车卡失败"));
+			jsonResult = new JsonResult(new ServiceException("æ·»åŠ å�œè½¦å�¡å¤±è´¥"));
 			return jsonResult;
 		}
 		return jsonResult;
@@ -55,7 +55,7 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		JsonResult jsonResult = new JsonResult();
 		int rows = cardDao.updateParkingCard(entity);
 		if(rows <=0 ) {
-			jsonResult = new JsonResult(new ServiceException("更新停车卡失败"));
+			jsonResult = new JsonResult(new ServiceException("æ›´æ–°å�œè½¦å�¡å¤±è´¥"));
 			return jsonResult;
 		}
 		return jsonResult;
@@ -86,7 +86,7 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 		JsonResult jsonResult = new JsonResult();
 		int rows = cardDao.updateCardState(cardEntity);
 		if(rows <=0) {
-			return new JsonResult(new ServiceException("更新状态失败"));
+			return new JsonResult(new ServiceException("æ›´æ–°çŠ¶æ€�å¤±è´¥"));
 		}
 		return jsonResult;
 	}
@@ -100,5 +100,24 @@ public class ParkingCardServiceImpl implements IParkingCardService{
 	public List<ParkingCardEntity> selectAllUsedCards(Integer state) {
 		return cardDao.selectAllUsedCards(state);
 	}
+	
+	@Override
+	public int updateCardNumById(int id, String cardNum) {
+		ParkingCardEntity cardEntity=new ParkingCardEntity();
+		cardEntity.setCardNum(cardNum);
+		cardEntity.setId(id);
+		return cardDao.updateCardNumById(cardEntity);
+	}
+
+	@Override
+	public int selectCardStateById(int id) {
+		return cardDao.selectCardStateById(id);
+	}
+
+	@Override
+	public ParkingCardEntity selectCardByCardNumber(String cardNum) {
+		return cardDao.selectCardByCardNumber(cardNum);
+	}
+	
 
 }

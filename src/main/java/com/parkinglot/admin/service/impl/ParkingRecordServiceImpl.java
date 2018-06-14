@@ -1,5 +1,7 @@
 package com.parkinglot.admin.service.impl;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import com.parkinglot.admin.dao.IParkingRecordDao;
 import com.parkinglot.admin.entity.ParkingBillEntity;
 import com.parkinglot.admin.entity.ParkingCardEntity;
 import com.parkinglot.admin.entity.ParkingRecordEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 import com.parkinglot.admin.entity.UserAndCardEntity;
 import com.parkinglot.admin.service.IParkingRecordService;
 import com.parkinglot.common.service.ServiceException;
@@ -61,43 +64,48 @@ public class ParkingRecordServiceImpl implements IParkingRecordService {
 
 	@Override
 	public ParkingRecordEntity selectParkingRecord(String cardNum) {
-		ParkingCardEntity entity = parkingCardDao.selectCardByCardNum(cardNum,0);
-		if(entity == null) {
-			return null;
+		ParkingCardEntity entity = parkingCardDao.selectCardByCardNum(cardNum, 0);
+		if (entity != null) {
+			return recordDao.selectParkingRecord(entity.getId());
 		}
-		return recordDao.selectParkingRecord(entity.getId());
+		return null;
 	}
 
 	@Override
 	public ParkingRecordEntity isHasCarInTheParking(int id) {
 		System.out.println("step in isHasCarInTheParking service");
 		ParkingRecordEntity entity = recordDao.isHasCarInTheParking(id);
-	//	System.out.println("step in isHasCarInTheParking service result"+entity.toString());
+		// System.out.println("step in isHasCarInTheParking service
+		// result"+entity.toString());
 		return entity;
 	}
 
-	public JsonResult checkCard(ParkingRecordEntity entity) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public List<UsageOfParkingCard> selectUsageOfParkingCard(UsageOfParkingCard entity) {
+		System.out.println(entity);
+		UsageOfParkingCard usageOfParkingCard = setDate(entity);
+		System.out.println(usageOfParkingCard);
+		List<UsageOfParkingCard> list = recordDao.selectUsageOfParkingCard(usageOfParkingCard);
+		ParkingCardEntity parkingCardEntity = new ParkingCardEntity();
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getCardId());
+			parkingCardEntity = parkingCardDao.selectCardByCardId(list.get(i).getCardId());
+			System.out.println(parkingCardEntity);
+			list.get(i).setCardNum(parkingCardEntity.getCardNum());
+		}
+		return list;
 	}
 
-//	/**
-//	 * 卡自动过期
-//	 */
-//	public JsonResult checkCard(ParkingRecordEntity entity) {
-//
-//		ParkingCardEntity parkingCardEntity = parkingCardDao.selectCardByCardNum(entity.getCardNum());
-//		ParkingBillEntity parkingBillEntity = parkingBillDao
-//				.selectAllParkingBillEntityByCardId(parkingCardEntity.getId());
-//		JsonResult jsonResult = new JsonResult();
-//		if (parkingBillEntity != null) {
-//			if (parkingBillEntity.getStatementDate().compareTo(new Date()) == -1 && parkingBillEntity.getFlag() == 0) {
-//				parkingCardEntity.setState(1);
-//				parkingCardDao.updateParkingCard(parkingCardEntity);
-//				jsonResult = new JsonResult(new ServiceException("卡被禁，请缴费激活"));
-//			}
-//		}
-//		return jsonResult;
-//	}
+	public UsageOfParkingCard setDate(UsageOfParkingCard entity) {
+		if(entity.getFirstDate()!=null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(entity.getFirstDate());
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			entity.setFirstDate(cal.getTime());
+			cal.roll(Calendar.DAY_OF_MONTH, -1);
+			entity.setLastDate(cal.getTime());
+		}
+		return entity;
+	}
 
 }

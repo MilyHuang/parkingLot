@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.parkinglot.admin.entity.ParkingLotEntity;
+import com.parkinglot.admin.entity.UsageOfParkingCard;
 import com.parkinglot.common.util.JsonResult;
 
 /**
@@ -73,4 +74,11 @@ public interface IParkingLotDao {
 	 * @return
 	 */
 	int selectInUseParkingLot(int id);
+	
+	
+	/**
+	 * 查看停车场使用情况
+	 */
+	List<UsageOfParkingCard> selectUsageOfParkingCard(UsageOfParkingCard entity);
+	
 }

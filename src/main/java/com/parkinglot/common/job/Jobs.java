@@ -67,7 +67,6 @@ public class Jobs {
 			ParkingCardEntity parkingCardEntity = parkingCardService.selectCardByCardId(list.get(i).getCardId());
 			parkingCardEntity.setState(1);
 			parkingCardService.updateCardState(parkingCardEntity);
-
 			// 更新旧bill
 			parkingBillService.updateOldBill(list.get(i));
 
@@ -75,6 +74,7 @@ public class Jobs {
 			ParkingBillEntity parkingBillEntity = parkingBillService.selectBillByCardIdAndFlag(list.get(i).getCardId(),
 					2);
 			parkingBillEntity.setStatementDate(new Date());
+			System.out.println(parkingBillEntity);
 			parkingBillService.updateOldBill(parkingBillEntity);
 		}
 		System.out.println("已更新账单");

@@ -31,6 +31,7 @@ import com.parkinglot.common.util.BillUtils;
 import com.parkinglot.common.util.HttpURLConnectionUtils;
 import com.parkinglot.common.util.JsonResult;
 
+
 @Controller
 @RequestMapping("/parkingBill")
 public class ParkingBillControllerImpl implements IParkingBillController {
