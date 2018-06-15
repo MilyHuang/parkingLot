@@ -6,6 +6,7 @@
     highlight-current-row
     @current-change="handleCurrentChange"
     style="width: 100%">
+    <!-- radio box -->
     <el-table-column label="" width="50">
         <template slot-scope="scope"><img v-if="currentLotNum==scope.row.id" src='../../../static/tick.jpg'></template>
       </el-table-column>

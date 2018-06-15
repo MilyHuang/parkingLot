@@ -43,10 +43,6 @@
             label="使用次数"
             width="280">
           </el-table-column>
-          <!-- <el-table-column
-            prop="address"
-            label="地址">
-          </el-table-column> -->
       </el-table>
   </div>
 

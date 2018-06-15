@@ -54,11 +54,6 @@
               <span v-if="scope.row.flag == 0 || scope.row.flag == 3"  class="tip">{{ '（' + scope.row.tis + '）'}}</span>
             </template>
           </el-table-column>
-           <!-- <el-table-column>
-            <template slot-scope="scope">
-              <span class="tip">{{ scope.row.tip }}</span>
-            </template>
-          </el-table-column> -->
         </el-table>
     </div>
     <router-view></router-view>
@@ -70,40 +65,8 @@
 		name: `UserBill`,
 		data(){
 			return{
+        //账单数据
 				billData:[
-				  // {
-				  //  	billNum: 201805,
-				  //  	cardNum: 88888888,
-						// singlePrice: 100,
-						// totalPrice: 300,
-						// lotName:`A停车场`,
-						// outBillTime:`2018-6-30`,
-      //       //0为未缴费
-						// state: 0,
-      //       tip: `请在2018/12/30前缴费`
-				  // },
-				  // {
-				  //  	billNum: 201804,
-				  //  	cardNum: 22222222,
-						// singlePrice: 100,
-						// totalPrice: 100,
-						// lotName:`A停车场`,
-						// outBillTime:`2017-6-30`,
-      //       //1为已缴费
-						// state: 1,
-      //       tip: ``
-				  // },
-				  // {
-				  //  	billNum: 201806,
-				  //  	cardNum: 11111111,
-						// singlePrice: 100,
-						// totalPrice: 300,
-						// lotName:`B停车场`,
-						// outBillTime:`2018-9-30`,
-      //       //2为未出账
-						// state: 2,
-      //       tip: ``
-				  // }
 				],
         //缴费样式数组
         payArr:[`未缴费`,`已缴费`,`未出账`,`欠费`],

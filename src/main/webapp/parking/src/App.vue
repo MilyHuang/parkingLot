@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
     <router-view/>
   </div>
 </template>
@@ -59,11 +58,11 @@ html {
 ul li {
   list-style: none;
 }
-
+/* 清楚浮动 */
 .clearfix{
   overflow: hidden;
 }
-
+/* 内容部分 */
 .parking-box {
   width: 100%;
   height: 100%;
@@ -73,7 +72,7 @@ ul li {
   font-family: '微软雅黑';
   color: #777;
 }
-/* top改成定值 */
+/* 头部 */
 .parking-top {
   width: 100%;
   min-width: 400px;
@@ -91,6 +90,7 @@ ul li {
   background-color: #ededed;
 }
 
+/* 导航 */
 .parking-nav a {
   display: block;
   width: 100%;
@@ -102,10 +102,6 @@ ul li {
   border-bottom: 1px solid #fff;
 }
 
-
-/* .parking-nav a:link{
-  color: #98d0f2;
-} */
 
 .parking-con {
   /* display: inline-block; */

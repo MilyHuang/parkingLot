@@ -50,7 +50,7 @@
           <span>卡号</span>
           <el-input v-model="oldInfo.cardAccount"></el-input>
         </el-form-item>
-        <div class="cardCount">该用户已办卡数：{{cardCount}}</div>
+        <div class="card-count">该用户已办卡数：{{cardCount}}</div>
         <el-form-item>
           <a href="#" @click="changeFlag = true">为其他用户办理新卡</a>
           <el-button class="deal-button" type="primary" @click="createOldCard()">老用户办理</el-button>
@@ -92,7 +92,6 @@ export default {
     }
   },
   mounted: function() {
-    //token路由判断角色跳转
     this.$nextTick(function () {
       this.inputDisabled();
       this.spaceLimit();
@@ -299,7 +298,7 @@ export default {
   margin-bottom: 30px;
 }
 
-.cardCount{
+.card-count{
   color: red;
   margin-bottom: 30px;
 }

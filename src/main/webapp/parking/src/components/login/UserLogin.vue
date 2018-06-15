@@ -1,7 +1,7 @@
 <template>
   <div class="login-bg">
-    <div class="login_box">
-      <div class="login_logo"><img src="../../assets/login_logo.png" /></div>
+    <div class="login-box">
+      <div class="login-logo"><img src="../../assets/login_logo.png" /></div>
       <div class="login">
         <form method="post">
           <el-input v-model="userInfo.phone" type="text" placeholder="手机号码" @keyup.13="doLogin"></el-input>
@@ -95,7 +95,7 @@ img {
   background-color: #98d0f2;
 }
 
-.login_box {
+.login-box {
   position: absolute;
   top: 25%;
   left: 50%;
@@ -113,7 +113,7 @@ img {
   margin-top: 100px;
 }
 
-.login_logo {
+.login-logo {
   position: absolute;
   top: -60px;
   right: 110px;

@@ -1,10 +1,5 @@
 <template>
 	<div class="price-manage">
-		<!-- 搜索停车场 -->
-		<!-- <div class="price-search">
-			<el-input v-model="searchNumber" placeholder="请输入停车场编号"></el-input>
-			<el-button type="primary">查找</el-button>
-		</div> -->
 		<!-- 停车场详细信息 -->
 		<div class="sell-detail">
 			<el-table
@@ -30,26 +25,11 @@
           	<span>{{scope.row.rent}}</span>
           </template>
         </el-table-column>
-          <!-- <el-table-column
-        prop="benefit"
-        label="销售额"
-        width="110">
-          </el-table-column> -->
-         <!--  <el-table-column
-        prop="parkingCount"
-        label="剩余车位"
-        width="110">
-          </el-table-column> -->
         <el-table-column label="车位总数" width="170">
           <template slot-scope="scope">
            	<span>{{scope.row.total}}</span>
           </template>
         </el-table-column>
-          <!-- <el-table-column
-        prop="usePercent"
-        label="使用率"
-        width="130">
-          </el-table-column> -->
         <el-table-column label="操作">
           <template slot-scope="scope">
           	<el-button
@@ -57,22 +37,13 @@
           	@click="appearDialog(scope.row.parkingNum,scope.row.price)">修改价格</el-button>
           	<el-button
           	size="mini"
-          	@click="checkReport(scope.row.parkingName,scope.row.id)">查看报表</el-button><!-- 
-          	<router-link to="/ManagerIndex/SellManage/123">jump</router-link> -->
+          	@click="checkReport(scope.row.parkingName,scope.row.id)">查看报表</el-button>
           </template>
         </el-table-column>
       </el-table>
             <!-- 修改价格弹窗 -->
       <el-dialog title="停车场价格" :visible.sync="priceFormVisible" :lock-scroll="false" >
       	<el-form :disabled="isDisabled">
-      		<!-- <el-form-item label="月份" label-width="150">
-      			<el-date-picker
-      			v-model="priceform.month"
-      			type="month"
-      			placeholder="选择月份"
-      			@change="output()">
-      		    </el-date-picker>
-      		</el-form-item> -->
       		<el-form-item label="价格" label-width="180" >
       			<div class="tip" v-show="isDisabled">今日为出账日，禁止修改价格</div>
       			<el-input v-model.number="modifyPrice"></el-input>

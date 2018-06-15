@@ -14,17 +14,7 @@
 				<el-button class="parking-button" type="primary" @click="parkingCar()">停车</el-button>
 				<el-button class="parking-button" type="primary" @click="withdrawCar()">取车</el-button>
 			</el-form-item>
-		</el-form>	
-		<!-- <h3>停车场取车</h3>
-		<el-form ref="parkingform" :model="parkingform" >
-            <el-form-item>
-				<label>卡号</label>
-				<el-input v-model="withdrawform.cardId" placeholder="请输入卡号"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button class="parking-button" type="primary" @click="parkingCar()">取车</el-button>
-			</el-form-item>
-		</el-form> -->
+		</el-form>
 	</div>
 </template>
 

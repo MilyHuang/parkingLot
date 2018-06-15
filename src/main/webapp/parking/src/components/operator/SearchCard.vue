@@ -92,7 +92,15 @@
 				this.axios.post(this.baseURI + '/parkingCard/selectUserCardsForList', { "phone": this.searchNumber})
 				.then( res => {
                     console.log(res);
+                    if(res.data.data)
                     this.UserCardTable = res.data.data;
+                    else{
+                    	this.$notify({
+                			title: '提示信息',
+                			message: res.data.message,
+                			type: 'error'
+                		});
+                    }
 				})
 				.catch( err => {
 					console.log(err);
