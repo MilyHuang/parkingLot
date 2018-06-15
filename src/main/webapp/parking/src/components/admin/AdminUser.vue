@@ -18,7 +18,7 @@
     <!-- 用户操作按钮 -->
     <div class="admin-user-operate">
       <el-button type="primary" @click="addUserVisible = true">增加用户</el-button>
-      <el-button type="primary" @click="delUserVisible=true">删除用户</el-button>
+      <el-button type="primary" @click="delOpen()">删除用户</el-button>
     </div>
     <!-- 删除用户弾框 -->
     <el-dialog title="提示" :visible.sync="delUserVisible" width="30%">
@@ -134,6 +134,17 @@ export default {
         this.delUserId.push(this.multipleSelection[i].id);
       }
     },
+    delOpen(){
+      if(this.delUserId.length == 0){
+        this.$notify({
+          title: '提示信息',
+          message: '请选择用户',
+          type: 'error'
+        });
+      }else{
+        this.delUserVisible=true;
+      }
+    },
     // 添加用户
     addUser() {
       if (this.adduser.username == '' || this.adduser.password == '') {
@@ -171,8 +182,7 @@ export default {
     },
     // 删除用户
     delUser() {
-      console.log(this.delUserId[0]);
-      this.axios.post(this.baseURI + '/admin/deleteAdminUser', { "datas": this.delUserId })
+        this.axios.post(this.baseURI + '/admin/deleteAdminUser', { "datas": this.delUserId })
         .then(res => {
           console.log(res);
           if (res.data.state == 1) {
