@@ -4,22 +4,10 @@
 		<span class="admin-icon" @click="showToggle">
 			<img src="../../assets/login_logo.png" />
 			<ul class="admin-operate"  v-show="isShow">
-				<!-- <li @click="updateCodeVisible = true">修改密码</li> -->
 				<li @click="LoginOut">注销</li>
 			</ul>
 			<span class="admin-down-triggle" v-show="isShow"></span>
 		</span>
-    <!-- <el-dialog title="修改密码" :visible.sync="updateCodeVisible" width="30%">
-        <form method="post">
-          用户名<el-input v-model="updateCode.name" type="text" /> 
-          重置密码<el-input v-model="updateCode.code" type="text" />
-          确认密码<el-input v-model="updateCode.surecode" type="text" />
-        </form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="updateCodeVisible = false">取 消</el-button>
-          <el-button type="primary" @click="updateCodeVisible = false">确 定</el-button>
-        </span>
-      </el-dialog> -->
 	</div>
 </template>
 
@@ -28,9 +16,9 @@
     mounted: function() {
         // 路由拦截
       this.$nextTick(function () {
-        // if (sessionStorage.token==undefined) { 
-        //     this.$router.push({ path: '/' });
-        // }
+        if (sessionStorage.token==undefined) { 
+            this.$router.push({ path: '/' });
+        }
       })
     },
     data() {

@@ -43,7 +43,7 @@
       		</el-form-item>
       		<el-form-item label="补办卡号" label-width="100" >
       			<!-- <div class="tip" v-show="isDisabled">今日为出账日，禁止修改价格</div> -->
-      			<el-input v-model.number="modifyCardNum" placeholder="请输入补办的卡号"></el-input>
+      			<el-input v-model="modifyCardNum" placeholder="请输入补办的卡号"></el-input>
       		</el-form-item>
       	</el-form>
       	<div slot="footer" class="dialog-footer">
@@ -66,6 +66,7 @@
 			return{
 				imgUrl: `../../../static/tick.jpg`,
 				searchNumber: ``,
+				state:0,
 				upadteCard:false,
 				deleteCard:false,
 				//卡状态
@@ -91,16 +92,17 @@
 				if(this.InputLimit(this.searchNumber))
 				this.axios.post(this.baseURI + '/parkingCard/selectUserCardsForList', { "phone": this.searchNumber})
 				.then( res => {
-                    console.log(res);
-                    if(res.data.data)
-                    this.UserCardTable = res.data.data;
-                    else{
-                    	this.$notify({
-                			title: '提示信息',
-                			message: res.data.message,
-                			type: 'error'
-                		});
-                    }
+                    if(!res.data.data){
+                    this.$notify({
+                      title: '提示信息',
+                      message: res.data.message,
+                      type: 'error'
+                    });
+                  }
+                  console.log(res.data);
+                  // if(res.data.state==0){
+                  		this.UserCardTable = res.data.data;
+                  	// }
 				})
 				.catch( err => {
 					console.log(err);
@@ -110,8 +112,9 @@
 			handleCurrentChange(val) {
 				this.currentCardNum = val.cardNum;
 				this.currentCardId = val.id;
+				this.state=val.state;
 				this.currentParkingName = val.parkingName
-				console.log(this.currentCardNum + ` ` + this.currentCardId);
+				console.log(this.currentCardNum + ` ` + this.currentCardId+` `+this.state);
 			},
             //时间转换函数
             secondToDate(date){
@@ -148,13 +151,14 @@
                  		cardNum: this.modifyCardNum
                  	})
                  .then( res =>{
-                 	if(res.data.message == "OK"){
+             		if(res.data.message == "OK"){
                         this.$notify({
                 			title: '提示信息',
                 			message: '补办成功！',
                 			type: 'success'
                 		});
                 		this.searchCard();
+                		this.cardFormVisible = false;
                  	}
                  	else{
    						this.$notify({
@@ -164,7 +168,7 @@
                 		})
                 		console.log(res.data.message);
                  	}
-                    this.cardFormVisible = false;
+                    
                  })
                  .catch( err =>{
 
@@ -173,14 +177,23 @@
  			//弹窗限制
  			judgeChosenCard(){
  				if(this.currentCardNum){
- 					this.cardFormVisible = true;
+ 					if(this.state==2){
+ 						this.$notify({
+                			title: '提示信息',
+                			message: '该卡已注销,无法补办!',
+                			type: 'error'
+                		});
+ 					}else{
+ 						this.cardFormVisible = true;
+ 					}
+ 					
  				}
  				else{
  					this.$notify({
-                			title: '提示信息',
-                			message: '请选择一个卡！',
-                			type: 'error'
-                		});
+            			title: '提示信息',
+            			message: '请选择一个卡！',
+            			type: 'error'
+            		});
  				}
  			}
 		}
